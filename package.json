@@ -1,6 +1,5 @@
 {
     "name": "next-ws",
-    "private": false,
     "version": "0.1.1",
     "description": "Add support for WebSockets in Next.js 13 app directory",
     "packageManager": "yarn@3.6.0",
@@ -20,7 +19,7 @@
         "clean": "rimraf ./*.{js,d.ts,js.map}",
         "lint": "eslint --ext .ts,.tsx src",
         "format": "prettier --write src/**/*.{ts,tsx} && eslint --fix --ext .ts,.tsx src/",
-        "postinstall": "node patch.js"
+        "postinstall": "node -e \"try{require('./patch.js')}catch{}\""
     },
     "dependencies": {
         "@babel/generator": "^7.22.3",
