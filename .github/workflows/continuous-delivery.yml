@@ -1,0 +1,69 @@
+name: Continuous Delivery
+
+on:
+  workflow_dispatch:
+    inputs:
+      pull_request:
+        description: The number of the PR that is being deployed.
+        required: false
+      branch:
+        description: The branch that is being deployed.
+        required: false
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/**'
+
+jobs:
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          repository: ${{ github.event.inputs.repository || github.repository }}
+          ref: ${{ github.event.inputs.branch || 'main' }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'yarn'
+
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.yarn
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Compile code
+        run: yarn build
+
+      - name: Determine tag
+        id: determine_tag
+        run: |
+          # Dispatch a pull request
+          if [[ ${{ github.event.inputs.pull_request != '' }} == true ]]
+          then
+            NUMBER=${{ github.event.inputs.pull_request }}
+            echo "TAG=pr-${NUMBER}" >> $GITHUB_OUTPUT
+
+          # Push or regular dispatch
+          else
+            echo "TAG=next" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Publish to NPM
+        if: steps.determine_tag.outputs.TAG != ''
+        run: |
+          TAG=${{ steps.determine_tag.outputs.TAG }}
+          VERSION="${TAG}.$(git rev-parse --verify --short HEAD)"
+          yarn publish --new-version $VERSION --tag $TAG --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

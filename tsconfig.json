@@ -1,0 +1,11 @@
+{
+    "extends": "ts-config-apteryx",
+    "compilerOptions": {
+        "outDir": ".",
+        "target": "es2017",
+        "moduleResolution": "nodenext",
+        "jsx": "react-jsx"
+    },
+    "exclude": ["./node_modules/", "./dist/", "./**/_*/", "./*.ts"],
+    "include": ["./src/**/*.ts", "src/**/*.tsx"]
+}

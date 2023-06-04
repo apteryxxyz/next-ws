@@ -1,0 +1,58 @@
+name: Continuous Integration
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  lint:
+    name: Linting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'yarn'
+
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.yarn
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Run ESLint
+        run: yarn lint
+
+  build:
+    name: Building
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'yarn'
+
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.yarn
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Compile code
+        run: yarn build
