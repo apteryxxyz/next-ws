@@ -1,3 +1,4 @@
+/* eslint-disable no-template-curly-in-string */
 import * as fs from 'node:fs/promises';
 import generate from '@babel/generator';
 import * as parser from '@babel/parser';
@@ -7,6 +8,7 @@ import type { ClassDeclaration, ClassMethod } from '@babel/types';
 void main();
 async function main() {
     await patchNextNodeServer();
+    await patchNextTypesPlugin();
 }
 
 const mod = template.expression.ast`require("next-ws/server")`;
@@ -40,4 +42,20 @@ async function patchNextNodeServer() {
     if (!existingStatement) constructorMethod.body.body.push(statement);
 
     await fs.writeFile(filePath, generate(ast).code);
+}
+
+// Add `SOCKET?: Function` to the page module interface check field thing in
+// `next/dist/build/webpack/plugins/next-types-plugin.js`
+async function patchNextTypesPlugin() {
+    const filePath = require.resolve(
+        'next/dist/build/webpack/plugins/next-types-plugin.js'
+    );
+    const content = await fs.readFile(filePath, 'utf8');
+    if (content.includes('SOCKET?: Function')) return;
+
+    const toFind = '.map((method)=>`${method}?: Function`).join("\\n  ")';
+    const replaceWith = `${toFind} + "; SOCKET?: Function"`;
+
+    const newContent = content.replace(toFind, replaceWith);
+    await fs.writeFile(filePath, newContent);
 }
