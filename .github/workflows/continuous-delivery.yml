@@ -62,8 +62,14 @@ jobs:
       - name: Publish to NPM
         if: steps.determine_tag.outputs.TAG != ''
         run: |
+          yarn version patch
+
+          VERSION=$(node -p "require('./package.json').version")
           TAG=${{ steps.determine_tag.outputs.TAG }}
-          VERSION="${TAG}.$(git rev-parse --verify --short HEAD)"
-          yarn publish --new-version $VERSION --tag $TAG --access public
+          IDENTIFIER="${VERSION}-${TAG}.$(git rev-parse --short HEAD)"
+
+          node -e "const fs=require('fs');const package=require('./package.json');package.version='${IDENTIFIER}';fs.writeFileSync('./package.json',JSON.stringify(package, null, 4));"
+
+          yarn npm publish --tag $TAG --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
