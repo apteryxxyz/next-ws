@@ -2,12 +2,12 @@ import { Server } from 'node:http';
 import path from 'node:path';
 import type internal from 'node:stream';
 import * as Log from 'next/dist/build/output/log';
-import { isAPIRoute } from 'next/dist/lib/is-api-route';
 import NextNodeServer from 'next/dist/server/next-server';
 import { isDynamicRoute } from 'next/dist/shared/lib/router/utils/is-dynamic';
 import { WebSocketServer } from 'ws';
 
 const openSockets = new Set<internal.Duplex>();
+let existingWebSocketServer: WebSocketServer | undefined;
 
 function hookNextNodeServer(this: NextNodeServer) {
     if (!this || !(this instanceof NextNodeServer))
@@ -21,8 +21,10 @@ function hookNextNodeServer(this: NextNodeServer) {
             "[next-ws] Failed to find NextNodeServer's HTTP server"
         );
 
+    if (existingWebSocketServer) return;
     const wss = new WebSocketServer({ noServer: true });
     Log.ready('[next-ws] loaded successfully');
+    existingWebSocketServer = wss;
 
     server.on('upgrade', async (request, socket, head) => {
         const url = new URL(request.url ?? '', 'http://next-ws');
@@ -69,14 +71,12 @@ function hookNextNodeServer(this: NextNodeServer) {
 }
 
 async function isPageFound(this: NextNodeServer, pathname: string) {
-    const isPageFound =
-        !isDynamicRoute(pathname) && (await this.hasPage(pathname));
-    if (isPageFound) return pathname;
-    else if (!this.dynamicRoutes) return false;
+    if (!isDynamicRoute(pathname) && (await this.hasPage(pathname)))
+        return pathname;
 
-    for (const route of this.dynamicRoutes) {
+    for (const route of this.dynamicRoutes ?? []) {
         const params = route.match(pathname) || undefined;
-        if (isAPIRoute(route.page) && params) return route.page;
+        if (params) return route.page;
     }
 
     return false;
