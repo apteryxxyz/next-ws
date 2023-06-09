@@ -31,6 +31,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
+          registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
 
       - name: Cache dependencies
@@ -70,6 +71,6 @@ jobs:
 
           node -e "const fs=require('fs');const package=require('./package.json');package.version='${IDENTIFIER}';fs.writeFileSync('./package.json',JSON.stringify(package, null, 4));"
 
-          yarn npm publish --tag $TAG --access public
+          npm publish --tag $TAG
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

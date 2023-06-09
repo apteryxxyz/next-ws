@@ -1,15 +1,19 @@
 import { Server } from 'node:http';
-import path from 'node:path';
-import type internal from 'node:stream';
+import * as path from 'node:path';
 import * as Log from 'next/dist/build/output/log';
 import NextNodeServer from 'next/dist/server/next-server';
 import { isDynamicRoute } from 'next/dist/shared/lib/router/utils/is-dynamic';
 import { WebSocketServer } from 'ws';
 
-const openSockets = new Set<internal.Duplex>();
+export type SocketHandler = (
+    client: import('ws').WebSocket,
+    request: import('http').IncomingMessage,
+    server: import('ws').WebSocketServer
+) => any;
+
 let existingWebSocketServer: WebSocketServer | undefined;
 
-function hookNextNodeServer(this: NextNodeServer) {
+export function hookNextNodeServer(this: NextNodeServer) {
     if (!this || !(this instanceof NextNodeServer))
         throw new Error(
             "[next-ws] 'this' of hookNextNodeServer is not a NextNodeServer"
@@ -23,7 +27,7 @@ function hookNextNodeServer(this: NextNodeServer) {
 
     if (existingWebSocketServer) return;
     const wss = new WebSocketServer({ noServer: true });
-    Log.ready('[next-ws] loaded successfully');
+    Log.ready('[next-ws] websocket server started successfully');
     existingWebSocketServer = wss;
 
     server.on('upgrade', async (request, socket, head) => {
@@ -55,18 +59,16 @@ function hookNextNodeServer(this: NextNodeServer) {
 
         const pageModule = await require(builtPagePath);
         // Equates to the exported "SOCKET" function in the route file
-        const socketHandler = pageModule.routeModule.userland.SOCKET;
+        const socketHandler: SocketHandler =
+            pageModule.routeModule.userland.SOCKET;
         if (!socketHandler || typeof socketHandler !== 'function')
             return Log.error(
                 `[next-ws] failed to find SOCKET handler for page ${pathname}`
             );
 
-        wss.handleUpgrade(request, socket, head, socketHandler);
-
-        if (this.serverOptions.dev) {
-            openSockets.add(socket);
-            socket.on('close', () => openSockets.delete(socket));
-        }
+        wss.handleUpgrade(request, socket, head, (client, request) => {
+            socketHandler(client, request, wss);
+        });
     });
 }
 
@@ -81,5 +83,3 @@ async function isPageFound(this: NextNodeServer, pathname: string) {
 
     return false;
 }
-
-export { hookNextNodeServer };

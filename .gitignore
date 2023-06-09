@@ -8,7 +8,7 @@ node_modules/
 .pnp.*
 
 # Build
-dist/
 *.js
 *.d.ts
-*.map
+*.js.map
+*.tgz

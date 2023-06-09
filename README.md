@@ -10,8 +10,10 @@
     <br>
     <a href="https://github.com/apteryxxyz/next-ws"><img alt="next-ws repo stars" src="https://img.shields.io/github/stars/apteryxxyz/next-ws?style=social"></a>
     <a href="https://github.com/apteryxxyz"><img alt="apteryxxyz followers" src="https://img.shields.io/github/followers/apteryxxyz?style=social"></a>
-    <a href="https://discord.gg/vZQbMhwsKY"><img src="https://discordapp.com/api/guilds/829836158007115806/widget.png?style=shield" alt="Discord Banner 2"/></a>
+    <a href="https://discord.gg/vZQbMhwsKY"><img src="https://discordapp.com/api/guilds/829836158007115806/widget.png?style=shield" alt="discord shield"/></a>
 </div>
+
+---
 
 ## 🤔 About
 
@@ -20,6 +22,8 @@ Next WS (`next-ws`) is an advanced Next.js **13** plugin designed to seamlessly 
 It's important to note that this module can only be used when working with a server. Unfortunately, in serverless environments like Vercel, WebSocket servers cannot be used.  Additionally, this module was built for the app directory and is incompatible with the older pages directory.
 
 This module is inspired by the now outdated `next-plugin-websocket`, if you are using an older version of Next.js, that module may work for you.
+
+---
 
 ## 🏓 Table of Contents
 
@@ -30,7 +34,7 @@ This module is inspired by the now outdated `next-plugin-websocket`, if you are 
 - [🌀 Example](#-example)
   - [📁 Server](#-server)
   - [📁 Client](#-client)
-
+  
 ---
 
 ## 📦 Installation
@@ -61,6 +65,7 @@ The `SOCKET` function receives two arguments: the WebSocket client and the HTTP 
 export function SOCKET(
     client: import('ws').WebSocket,
     request: import('http').IncomingMessage,
+    server: import('ws').WebSocketServer,
 ) {
     // ...
 }
