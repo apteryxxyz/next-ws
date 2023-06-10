@@ -1,6 +1,6 @@
 {
     "name": "next-ws",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "description": "Add support for WebSockets in Next.js 13 app directory",
     "packageManager": "yarn@3.6.0",
     "license": "MIT",
@@ -13,7 +13,7 @@
     "bugs": {
         "url": "https://github.com/apteryxxyz/next-ws/issues"
     },
-    "files": ["*.js", "*.d.ts"],
+    "files": ["client", "common", "server"],
     "scripts": {
         "build": "tsc",
         "clean": "rimraf client server common",
