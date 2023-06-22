@@ -159,8 +159,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 export default function Page() {
     const ws = useWebSocket();
-    // WebSocket instance only exists when connected
-    // It will be null when state is closed or connecting
+    //    ^? WebSocket on the client, null on the server
 
     const [value, setValue] = useState('');
     const [message, setMessage] = useState<string | null>('');
