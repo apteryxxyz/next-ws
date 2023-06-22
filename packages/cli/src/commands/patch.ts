@@ -62,7 +62,7 @@ export default new Command('patch')
         );
         await patch();
 
-        log.info('Creating patch informatiom file...');
+        log.info('Saving patch information file...');
         await fs.writeFile(
             path.join(
                 findWorkspaceRoot(),

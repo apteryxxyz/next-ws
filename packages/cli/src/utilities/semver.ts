@@ -27,5 +27,5 @@ export const maxVersion = (
         }
     }
 
-    return maximumVersion ?? new SemVer('x.x.x');
+    return maximumVersion;
 };
