@@ -32,5 +32,5 @@ export function verifyPatch() {
 
     const version = require('next/package.json').version.split('-')[0];
     if (patch.version !== version)
-        throw new Error(`Next.js version mismatch, expected ${patch.version} but found ${version}`);
+        throw new Error(`Next.js version mismatch, expected ${patch.version} but found ${version}, try running \`npx next-ws-cli patch\``);
 }
