@@ -1,6 +1,6 @@
 {
     "name": "next-ws-cli",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "CLI tool for Next WS, a library for adding support for WebSockets to Next.js 13",
     "license": "MIT",
     "bin": "./dist/program.js",

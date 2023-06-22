@@ -9,12 +9,11 @@ on:
       branch:
         description: The branch that is being deployed.
         required: false
-  # TODO: Uncomment when we have a stable release
-  # push:
-  #   branches:
-  #     - main
-  #   paths:
-  #     - 'packages/**/src/**'
+  push:
+    branches:
+      - main
+    paths:
+      - 'packages/**/src/**'
 
 jobs:
   integration:

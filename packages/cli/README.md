@@ -147,21 +147,6 @@ interface WebSocketProviderProps {
     protocols?: string[] | string;
     /** The binary type to use. */
     binaryType?: BinaryType;
-
-    /** Whether to reconnect when the WebSocket closes. */
-    reconnect?: boolean;
-    /** The maximum number of times to reconnect. */
-    maxReconnectAttempts?: number;
-    /** The delay between reconnect attempts. */
-    reconnectDelay?: number;
-
-    // NOTE: You do not need to use these, they are only here for convenience
-    /** Event listener that is triggered when the WebSocket connection opens. */
-    onOpen?(this: WebSocket, event: Event): any;
-    /** Event listener that is triggered when the WebSocket connection closes. */
-    onClose?(this: WebSocket, event: CloseEvent): any;
-    /** Event listener that is triggered when an error occurs. */
-    onError?(this: WebSocket, event: Event): any;
 }
 ```
 
