@@ -8,6 +8,8 @@ node_modules/
 .pnp.*
 
 # Build
+dist/
+.turbo/
 *.js
 *.d.ts
 *.js.map

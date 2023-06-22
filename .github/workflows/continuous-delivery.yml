@@ -9,15 +9,20 @@ on:
       branch:
         description: The branch that is being deployed.
         required: false
-  push:
-    branches:
-      - main
-    paths:
-      - 'src/**'
+  # TODO: Uncomment when we have a stable release
+  # push:
+  #   branches:
+  #     - main
+  #   paths:
+  #     - 'packages/**/src/**'
 
 jobs:
+  integration:
+    uses: ./.github/workflows/continuous-integration.yml
+
   publish:
     name: Publish
+    needs: integration
     runs-on: ubuntu-latest
     steps:
       - name: Checkout project
@@ -43,9 +48,6 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
-      - name: Compile code
-        run: yarn build
-
       - name: Determine tag
         id: determine_tag
         run: |
@@ -63,14 +65,27 @@ jobs:
       - name: Publish to NPM
         if: steps.determine_tag.outputs.TAG != ''
         run: |
-          yarn version patch
-
-          VERSION=$(node -p "require('./package.json').version")
           TAG=${{ steps.determine_tag.outputs.TAG }}
-          IDENTIFIER="${VERSION}-${TAG}.$(git rev-parse --short HEAD)"
+          HEAD="$(git rev-parse --short HEAD)"
 
-          node -e "const fs=require('fs');const package=require('./package.json');package.version='${IDENTIFIER}';fs.writeFileSync('./package.json',JSON.stringify(package, null, 4));"
+          for PACKAGE in packages/*
+          do
+            if [[ $(git diff HEAD~1 --name-only $PACKAGE/) ]]
+            then
+              pushd $PACKAGE
 
-          npm publish --tag $TAG
+              yarn lint
+              yarn build
+
+              yarn version patch
+              VERSION=$(node -p "require('./package.json').version")
+              IDENTIFIER="${VERSION}-${TAG}.${HEAD}"
+              node -e "const fs=require('fs');const package=require('./package.json');package.version='${IDENTIFIER}';fs.writeFileSync('./package.json',JSON.stringify(package, null, 4));"
+
+              npm publish --tag $TAG
+
+              popd
+            fi
+          done
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

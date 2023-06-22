@@ -1,9 +1,10 @@
 {
-    "extends": "ts-config-apteryx",
+    "extends": "../../tsconfig.json",
     "compilerOptions": {
-        "target": "ES2021",
+        "outDir": ".",
+        "esModuleInterop": true,
         "moduleResolution": "nodenext",
-        "jsx": "react-jsx"
+        "sourceMap": false
     },
     "exclude": ["./node_modules/", "*.d.ts"],
     "include": ["./src/**/*.ts"]

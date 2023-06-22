@@ -1,0 +1,10 @@
+{
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "outDir": "./dist",
+        "esModuleInterop": true,
+        "sourceMap": false
+    },
+    "exclude": ["./node_modules/", "*.d.ts"],
+    "include": ["./src/**/*.ts"]
+}

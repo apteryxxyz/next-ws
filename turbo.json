@@ -1,0 +1,20 @@
+{
+    "$schema": "https://turbo.build/schema.json",
+    "pipeline": {
+        "build": {
+            "dependsOn": ["^build"],
+            "inputs": ["package.json", "tsconfig.json", "src/**"],
+            "outputs": ["index.js", "index.d.ts", "client", "server"]
+        },
+        "lint": {
+            "dependsOn": ["^lint"],
+            "inputs": ["package.json", "tsconfig.json", "src/**"],
+            "outputs": []
+        },
+        "format": {
+            "dependsOn": ["^format"],
+            "inputs": ["package.json", "tsconfig.json", "src/**"],
+            "outputs": []
+        }
+    }
+}
