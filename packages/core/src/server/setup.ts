@@ -1,4 +1,3 @@
-import path from 'node:path';
 import * as Log from 'next/dist/build/output/log';
 import NextNodeServer from 'next/dist/server/next-server';
 import { WebSocketServer } from 'ws';
@@ -16,28 +15,32 @@ export function setupWebSocketServer(nextServer: NextNodeServer) {
 
     httpServer.on('upgrade', async (request, socket, head) => {
         const url = new URL(request.url ?? '', 'http://next-ws');
-        const pathname = await resolvePathname(nextServer, url.pathname);
-        if (!pathname) return;
+        const pathname = url.pathname;
 
-        const fsPathname = path
-            .join(pathname, 'route')
-            .replaceAll(path.sep, '/');
+        const fsPathname = await resolvePathname(nextServer, pathname);
+        if (!fsPathname) {
+            Log.error(`[next-ws] could not find module for page ${pathname}`);
+            return socket.destroy();
+        }
+
         const pageModule = await getPageModule(nextServer, fsPathname);
-        if (!pageModule)
-            return Log.error(
-                `[next-ws] could not find module for page ${pathname}`
-            );
+        if (!pageModule) {
+            Log.error(`[next-ws] could not find module for page ${pathname}`);
+            return socket.destroy();
+        }
 
         const socketHandler: SocketHandler | undefined =
             pageModule?.routeModule?.userland?.SOCKET;
-        if (!socketHandler || typeof socketHandler !== 'function')
-            return Log.error(
-                `[next-ws] could not find SOCKET handler for page ${pathname}`
-            );
+        if (!socketHandler || typeof socketHandler !== 'function') {
+            Log.error(`[next-ws] ${pathname} does not export a SOCKET handler`);
+            return socket.destroy();
+        }
 
-        wsServer.handleUpgrade(request, socket, head, (client, request) => {
-            socketHandler(client, request, wsServer);
-        });
+        // prettier-ignore
+        return wsServer.handleUpgrade(
+            request, socket, head,
+            (client, request) => socketHandler(client, request, wsServer)
+        );
     });
 }
 

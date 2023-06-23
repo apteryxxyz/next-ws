@@ -1,6 +1,5 @@
 import { Server } from 'node:http';
 import NextNodeServer from 'next/dist/server/next-server';
-import { isDynamicRoute } from 'next/dist/shared/lib/router/utils/is-dynamic';
 
 /** A function that handles a WebSocket connection. */
 export type SocketHandler = (
@@ -42,14 +41,18 @@ export async function resolvePathname(
 ) {
     if (pathname.startsWith('/_next')) return null;
 
-    // @ts-expect-error hasPage is protected
-    if (!isDynamicRoute(pathname) && (await nextServer.hasPage(pathname)))
-        return pathname;
+    const appRoutes = {
+        // @ts-expect-error appPathRoutes is protected
+        ...nextServer.appPathRoutes,
+        // @ts-expect-error getAppPathRoutes is protected
+        ...nextServer.getAppPathRoutes(),
+    };
 
-    // @ts-expect-error dynamicRoutes is protected
-    for (const route of nextServer.dynamicRoutes ?? []) {
-        const params = route.match(pathname) || undefined;
-        if (params) return route.page;
+    // TODO: 'appRoutes[pathname]' is an array of routes,  need to investigate in which case that array has more than one item
+    if (pathname in appRoutes) {
+        const route = appRoutes[pathname][0];
+        if (!route?.endsWith('/route')) return null;
+        return route;
     }
 
     return null;
