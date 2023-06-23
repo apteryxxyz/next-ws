@@ -16,6 +16,7 @@ export function setupWebSocketServer(nextServer: NextNodeServer) {
     httpServer.on('upgrade', async (request, socket, head) => {
         const url = new URL(request.url ?? '', 'http://next-ws');
         const pathname = url.pathname;
+        if (pathname.startsWith('/_next')) return;
 
         const fsPathname = await resolvePathname(nextServer, pathname);
         if (!fsPathname) {
