@@ -1,4 +1,4 @@
-import * as fs from 'node:fs/promises';
+import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { Command } from 'commander';
 import { prompt } from 'inquirer';
@@ -63,7 +63,7 @@ export default new Command('patch')
         await patch();
 
         log.info('Saving patch information file...');
-        await fs.writeFile(
+        fs.writeFileSync(
             path.join(
                 findWorkspaceRoot(),
                 'node_modules/next/.next-ws-trace.json'
@@ -77,7 +77,10 @@ export default new Command('patch')
     });
 
 function getCurrentNextVersion() {
-    // eslint-disable-next-line import/no-extraneous-dependencies
-    const packageJson = require('next/package.json');
-    return packageJson.version.split('-')[0];
+    const packagePath = path.join(
+        findWorkspaceRoot(),
+        'node_modules/next/package.json'
+    );
+    const packageJson = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
+    return packageJson.version.split('-')[0] as string;
 }
