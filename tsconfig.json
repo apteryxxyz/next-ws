@@ -5,6 +5,5 @@
         "moduleResolution": "nodenext",
         "jsx": "react-jsx"
     },
-    "exclude": ["./node_modules/", "*.d.ts"],
-    "include": ["./src/**/*.ts"]
+    "exclude": ["./node_modules/"]
 }
