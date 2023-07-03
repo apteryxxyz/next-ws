@@ -69,7 +69,7 @@ export async function getPageModule(
     filename: string
 ) {
     // @ts-expect-error HotReloader is private
-    await nextServer.hotReloader!.ensurePage({
+    await nextServer.hotReloader?.ensurePage({
         page: filename,
         clientOnly: false,
     });
