@@ -71,8 +71,7 @@ export default Object.assign(
         patchNextTypesPlugin();
     },
     {
-        // NOTE: As of 22/06/2023 the latest version is 13.4.7
         date: '2023-06-16' as const,
-        supported: '>=13.1.1 <=13.4.7' as const,
+        supported: '>=13.1.1 <=13.4.8' as const,
     }
 );
