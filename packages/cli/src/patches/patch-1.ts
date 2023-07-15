@@ -24,7 +24,7 @@ const NextTypesPatch = 'SOCKET?: Function';
 
 // Add `require('next-ws/server').setupWebSocketServer(this)` to the
 // constructor of `NextNodeServer` in `next/dist/server/next-server.js`
-function patchNextNodeServer() {
+export function patchNextNodeServer() {
     // prettier-ignore
     log.info('Adding WebSocket server setup script to NextNodeServer constructor...');
     const content = fs.readFileSync(NextServerFilePath, 'utf8');
@@ -53,7 +53,7 @@ function patchNextNodeServer() {
 
 // Add `SOCKET?: Function` to the page module interface check field thing in
 // `next/dist/build/webpack/plugins/next-types-plugin.js`
-function patchNextTypesPlugin() {
+export function patchNextTypesPlugin() {
     log.info("Adding 'SOCKET' to the page module interface type...");
     const content = fs.readFileSync(NextTypesFilePath, 'utf8');
     if (content.includes(NextTypesPatch)) return;
