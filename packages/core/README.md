@@ -45,7 +45,7 @@ This module is inspired by the now outdated `next-plugin-websocket`, if you are 
 In order to setup a WebSocket server, Next WS needs to patch your local Next.js installation. Next WS provides a CLI command to do this for you, it will automatically detect your Next.js version and patch it accordingly, however a minimum version of Next.js 13.1.1 is required.
 
 ```sh
-npx next-ws-cli patch
+npx next-ws-cli@latest patch
 ```
 
 > If at any point your local Next.js installation is changed or updated you will need to re-run the patch command.
@@ -54,6 +54,16 @@ Once the patch is complete, you will need to install the Next WS package into yo
 
 ```sh
 npm install next-ws
+```
+
+### 🚓 Verify Patch
+
+It is recommended to add the following code to the top level of your `next.config.js`.
+
+This will verify that Next WS has been patched correctly, and throw an error if it has not. Preventing you from accidentally deploying a broken setup.
+
+```ts
+require('next-ws/server').verifyPatch();
 ```
 
 ---
@@ -75,16 +85,6 @@ export function SOCKET(
 ```
 
 With this straightforward setup, you can fully leverage the capabilities of Next WS and efficiently handle WebSocket connections within your Next.js application.
-
-### 🚓 Verify Patch
-
-It is recommended to add the following code to the top level of your `next.config.js`.
-
-This will verify that Next WS has been patched correctly, and throw an error if it has not. Preventing you from accidentally deploying a broken setup.
-
-```ts
-require('next-ws/server').verifyPatch();
-```
 
 ---
 
@@ -134,6 +134,8 @@ export default function Layout() {
     </WebSocketProvider>;
 }
 ```
+
+To make it easier to connect to your new WebSocker server, Next WS also provides some client-side utilities. These are completely optional, you can use your own implementation if you wish.
 
 The following is the props interface for the `WebSocketProvider` component, containing all the available options.
 
