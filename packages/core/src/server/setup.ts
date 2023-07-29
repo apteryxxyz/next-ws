@@ -1,20 +1,20 @@
 import * as Log from 'next/dist/build/output/log';
 import NextNodeServer from 'next/dist/server/next-server';
-import { WebSocketServer } from 'ws';
 import {
     type SocketHandler,
     getHttpServer,
     getPageModule,
     resolvePathname,
 } from './utilities/next';
+import { getWsServer } from './utilities/ws';
 
 export function setupWebSocketServer(nextServer: NextNodeServer) {
     const httpServer = getHttpServer(nextServer);
-    const wsServer = new WebSocketServer({ noServer: true });
+    const wsServer = getWsServer();
     Log.ready('[next-ws] websocket server started successfully');
 
     httpServer.on('upgrade', async (request, socket, head) => {
-        const url = new URL(request.url ?? '', 'http://next-ws');
+        const url = new URL(request.url ?? '', 'ws://next');
         const pathname = url.pathname;
         if (pathname.startsWith('/_next')) return;
 

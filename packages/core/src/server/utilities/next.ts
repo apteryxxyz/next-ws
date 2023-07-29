@@ -21,7 +21,7 @@ export function getHttpServer(nextServer: NextNodeServer) {
     if (!nextServer || !(nextServer instanceof NextNodeServer))
         throw new Error('Next WS is missing access to the NextNodeServer');
 
-    // @ts-expect-error serverOptions is protected
+    // @ts-expect-error - serverOptions is protected
     const httpServer = nextServer.serverOptions?.httpServer;
     if (!httpServer || !(httpServer instanceof Server))
         throw new Error('Next WS is missing access to the http.Server');
@@ -41,18 +41,40 @@ export async function resolvePathname(
 ) {
     if (pathname.startsWith('/_next')) return null;
 
+    const pathParts = pathname.split('/');
     const appRoutes = {
-        // @ts-expect-error appPathRoutes is protected
+        // @ts-expect-error - appPathRoutes is protected
         ...nextServer.appPathRoutes,
-        // @ts-expect-error getAppPathRoutes is protected
+        // @ts-expect-error - getAppPathRoutes is protected
         ...nextServer.getAppPathRoutes(),
     };
 
-    // TODO: 'appRoutes[pathname]' is an array of routes,  need to investigate in which case that array has more than one item
-    if (pathname in appRoutes) {
-        const route = appRoutes[pathname][0];
-        if (!route?.endsWith('/route')) return null;
-        return route;
+    for (const [key, [path]] of Object.entries(appRoutes)) {
+        const hasDynamic = key.includes('[') && key.includes(']');
+
+        if (hasDynamic) {
+            const keyParts = key.split('/');
+            if (keyParts.length !== pathParts.length) continue;
+
+            for (let i = 0; i < keyParts.length; i++) {
+                const keyPart = keyParts[i];
+                const pathPart = pathParts[i];
+
+                const isDynamic =
+                    keyPart.includes('[') && keyPart.includes(']');
+                if (isDynamic) keyParts[i] = pathPart;
+                if (keyParts[i] !== pathParts[i]) break;
+
+                if (i === keyParts.length - 1) {
+                    if (!path?.endsWith('/route')) return null;
+                    return path;
+                }
+            }
+        } else {
+            if (key !== pathname) continue;
+            if (!path?.endsWith('/route')) return null;
+            return path;
+        }
     }
 
     return null;
@@ -68,13 +90,13 @@ export async function getPageModule(
     nextServer: NextNodeServer,
     filename: string
 ) {
-    // @ts-expect-error HotReloader is private
+    // @ts-expect-error - hotReloader is private
     await nextServer.hotReloader?.ensurePage({
         page: filename,
         clientOnly: false,
     });
 
-    // @ts-expect-error getPagePath is protected
+    // @ts-expect-error - getPagePath is protected
     const builtPagePath = nextServer.getPagePath(filename);
     return require(builtPagePath);
 }
