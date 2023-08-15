@@ -9,11 +9,6 @@ on:
       branch:
         description: The branch that is being deployed.
         required: false
-  push:
-    branches:
-      - main
-    paths:
-      - 'packages/**/src/**'
 
 jobs:
   integration:

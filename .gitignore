@@ -10,7 +10,10 @@ node_modules/
 # Build
 dist/
 .turbo/
+
 *.js
+!.*rc.*
+!*.config.*
 *.d.ts
 *.js.map
 *.tgz

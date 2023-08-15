@@ -1,11 +1,10 @@
 {
-    "extends": "../../tsconfig.json",
-    "compilerOptions": {
-        "outDir": ".",
-        "esModuleInterop": true,
-        "moduleResolution": "nodenext",
-        "sourceMap": false
-    },
-    "exclude": ["./node_modules/", "*.d.ts"],
-    "include": ["./src/**/*.ts"]
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": ".",
+    "esModuleInterop": true,
+    "sourceMap": false
+  },
+  "exclude": ["./node_modules/", "*.d.ts"],
+  "include": ["./src/**/*.ts"]
 }

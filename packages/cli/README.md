@@ -1,16 +1,16 @@
 <div align="center">
-    <h1><strong>Next WS</strong></h1>
-    <i>Add support for WebSockets in Next.js 13 app directory</i><br>
-    <code>npm install next-ws</code>
+  <h1><strong>Next WS</strong></h1>
+  <i>Add support for WebSockets in Next.js 13 app directory</i><br>
+  <code>npm install next-ws</code>
 </div>
 
 <div align="center">
-    <img alt="package version" src="https://img.shields.io/npm/v/next-ws?label=version">
-    <img alt="total downloads" src="https://img.shields.io/npm/dt/next-ws">
-    <br>
-    <a href="https://github.com/apteryxxyz/next-ws"><img alt="next-ws repo stars" src="https://img.shields.io/github/stars/apteryxxyz/next-ws?style=social"></a>
-    <a href="https://github.com/apteryxxyz"><img alt="apteryxxyz followers" src="https://img.shields.io/github/followers/apteryxxyz?style=social"></a>
-    <a href="https://discord.gg/vZQbMhwsKY"><img src="https://discordapp.com/api/guilds/829836158007115806/widget.png?style=shield" alt="discord shield"/></a>
+  <img alt="package version" src="https://img.shields.io/npm/v/next-ws?label=version">
+  <img alt="total downloads" src="https://img.shields.io/npm/dt/next-ws">
+  <br>
+  <a href="https://github.com/apteryxxyz/next-ws"><img alt="next-ws repo stars" src="https://img.shields.io/github/stars/apteryxxyz/next-ws?style=social"></a>
+  <a href="https://github.com/apteryxxyz"><img alt="apteryxxyz followers" src="https://img.shields.io/github/followers/apteryxxyz?style=social"></a>
+  <a href="https://discord.gg/vZQbMhwsKY"><img src="https://discordapp.com/api/guilds/829836158007115806/widget.png?style=shield" alt="discord shield"/></a>
 </div>
 
 ---
@@ -33,10 +33,10 @@ This module is inspired by the now outdated `next-plugin-websocket`, if you are 
 - [🏓 Table of Contents](#-table-of-contents)
 - [📦 Installation](#-installation)
 - [🚀 Usage](#-usage)
-    - [🚓 Verify Patch](#-verify-patch)
+  - [🚓 Verify Patch](#-verify-patch)
 - [🌀 Example](#-example)
-    - [📁 Server](#-server)
-    - [📁 Client](#-client)
+  - [📁 Server](#-server)
+  - [📁 Client](#-client)
 
 ---
 
@@ -56,7 +56,7 @@ Once the patch is complete, you will need to install the Next WS package into yo
 npm install next-ws
 ```
 
-### 🚓 Verify Patch
+### 🚓 Verify Patch (Optional)
 
 It is recommended to add the following code to the top level of your `next.config.js`.
 
@@ -76,11 +76,11 @@ The `SOCKET` function receives three arguments: the WebSocket client, the HTTP r
 
 ```ts
 export function SOCKET(
-    client: import('ws').WebSocket,
-    request: import('http').IncomingMessage,
-    server: import('ws').WebSocketServer,
+  client: import('ws').WebSocket,
+  request: import('http').IncomingMessage,
+  server: import('ws').WebSocketServer,
 ) {
-    // ...
+  // ...
 }
 ```
 
@@ -97,19 +97,19 @@ Create an API route anywhere within the app directory, and export a `SOCKET` fun
 ```ts
 // app/api/ws/route.ts (can be any route file in the app directory)
 export function SOCKET(
-    client: import('ws').WebSocket,
-    request: import('http').IncomingMessage,
-    server: import('ws').WebSocketServer,
+  client: import('ws').WebSocket,
+  request: import('http').IncomingMessage,
+  server: import('ws').WebSocketServer,
 ) {
-    console.log('A client connected!');
+  console.log('A client connected!');
 
-    client.on('message', message => {
-        client.send(message);
-    });
-    
-    client.on('close', () => {
-        console.log('A client disconnected!');
-    });
+  client.on('message', message => {
+    client.send(message);
+  });
+  
+  client.on('close', () => {
+    console.log('A client disconnected!');
+  });
 }
 ```
 
@@ -126,12 +126,12 @@ To make it easier to connect to your new WebSocker server, Next WS also provides
 import { WebSocketProvider } from 'next-ws/client';
 
 export default function Layout() {
-    return <WebSocketProvider
-        url="ws://localhost:3000/api/ws"
-        // ... other props
-    >
-        {...}
-    </WebSocketProvider>;
+  return <WebSocketProvider
+    url="ws://localhost:3000/api/ws"
+    // ... other props
+  >
+    {...}
+  </WebSocketProvider>;
 }
 ```
 
@@ -141,14 +141,14 @@ The following is the props interface for the `WebSocketProvider` component, cont
 
 ```ts
 interface WebSocketProviderProps {
-    children: React.ReactNode;
+  children: React.ReactNode;
 
-    /** The URL for the WebSocket to connect to. */
-    url: string;
-    /** The subprotocols to use. */
-    protocols?: string[] | string;
-    /** The binary type to use. */
-    binaryType?: BinaryType;
+  /** The URL for the WebSocket to connect to. */
+  url: string;
+  /** The subprotocols to use. */
+  protocols?: string[] | string;
+  /** The binary type to use. */
+  binaryType?: BinaryType;
 }
 ```
 
@@ -160,38 +160,38 @@ import { useWebSocket } from 'next-ws/client';
 import { useCallback, useEffect, useState } from 'react';
 
 export default function Page() {
-    const ws = useWebSocket();
-    //    ^? WebSocket on the client, null on the server
+  const ws = useWebSocket();
+  //  ^? WebSocket on the client, null on the server
 
-    const [value, setValue] = useState('');
-    const [message, setMessage] = useState<string | null>('');
+  const [value, setValue] = useState('');
+  const [message, setMessage] = useState<string | null>('');
 
-    const onMessage = useCallback((event: MessageEvent) => {
-        const text = await event.data.text();
-        setMessage(text);
-    }, []);
+  const onMessage = useCallback((event: MessageEvent) => {
+    const text = await event.data.text();
+    setMessage(text);
+  }, []);
 
-    useEffect(() => {
-        ws?.addEventListener('message', onMessage);
-        return () => ws?.removeEventListener('message', onMessage);
-    }, [ws]);
+  useEffect(() => {
+    ws?.addEventListener('message', onMessage);
+    return () => ws?.removeEventListener('message', onMessage);
+  }, [ws]);
 
-    return <>
-        <input
-            type="text"
-            value={value}
-            onChange={event => setValue(event.target.value)}
-        />
+  return <>
+    <input
+      type="text"
+      value={value}
+      onChange={event => setValue(event.target.value)}
+    />
 
-        <button onClick={() => ws.send(value)}>
-            Send message to server
-        </button>
+    <button onClick={() => ws.send(value)}>
+      Send message to server
+    </button>
 
-        <p>
-            {message === null
-                ? 'Waiting for server to send a message...'
-                : `Got message: ${message}`}
-        </p>
-    </>;
+    <p>
+      {message === null
+        ? 'Waiting for server to send a message...'
+        : `Got message: ${message}`}
+    </p>
+  </>;
 }
 ```

@@ -1,31 +1,32 @@
-import { type Options, Range, SemVer, gt } from 'semver';
+import { gt, Range, SemVer } from 'semver';
+import type { Options } from 'semver';
 
 export * from 'semver';
 export const maxVersion = (
-    range_: Range | string,
-    loose?: Options | boolean
+  range_: Range | string,
+  loose?: Options | boolean
 ) => {
-    const range = new Range(range_, loose);
-    let maximumVersion: SemVer | null = null;
+  const range = new Range(range_, loose);
+  let maximumVersion: SemVer | null = null;
 
-    for (const comparators of range.set) {
-        for (const {
-            operator,
-            semver: { version: version_ },
-        } of comparators) {
-            if (operator === '>' || operator === '>=') continue;
+  for (const comparators of range.set) {
+    for (const {
+      operator,
+      semver: { version: version_ },
+    } of comparators) {
+      if (operator === '>' || operator === '>=') continue;
 
-            const version = new SemVer(version_);
+      const version = new SemVer(version_);
 
-            if (operator === '<') {
-                version.patch--;
-                version.raw = version.format();
-            }
+      if (operator === '<') {
+        version.patch--;
+        version.raw = version.format();
+      }
 
-            if (!maximumVersion || gt(maximumVersion, version))
-                maximumVersion = version;
-        }
+      if (!maximumVersion || gt(maximumVersion, version))
+        maximumVersion = version;
     }
+  }
 
-    return maximumVersion;
+  return maximumVersion;
 };

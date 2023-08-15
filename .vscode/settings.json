@@ -1,61 +1,24 @@
 {
-    "editor.formatOnSave": true,
-    "editor.tabSize": 4,
-    "editor.useTabStops": true,
-    "editor.insertSpaces": true,
-    "editor.detectIndentation": false,
-    "files.autoSave": "onFocusChange",
-    "files.eol": "\n",
-    "prettier.tabWidth": 4,
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "eslint.format.enable": true,
-    "eslint.validate": ["typescript"],
-    "typescript.preferences.autoImportFileExcludePatterns": ["**/index.*"],
-    "typescript.tsdk": "node_modules\\typescript\\lib",
-    "files.exclude": {
-        "**/.git": true,
-        "**/.svn": true,
-        "**/.hg": true,
-        "**/CVS": true,
-        "**/.DS_Store": true,
-        "**/Thumbs.db": true,
-        "**/node_modules": true
-    },
-    "todohighlight.keywords": [
-        {
-            "text": "NOTE:",
-            "color": "cyan",
-            "border": "1px solid cyan",
-            "borderRadius": "2px",
-            "backgroundColor": "rgba(0,0,0,.2)",
-            "isWholeLine": true
-        },
-        {
-            "text": "IDEA:",
-            "color": "lime",
-            "border": "1px solid green",
-            "borderRadius": "2px",
-            "backgroundColor": "rgba(0,0,0,.2)",
-            "isWholeLine": true
-        },
-        {
-            "text": "TODO:",
-            "color": "orange",
-            "border": "1px solid orange",
-            "borderRadius": "2px",
-            "backgroundColor": "rgba(0,0,0,.2)",
-            "isWholeLine": true
-        },
-        {
-            "text": "FIXME:",
-            "color": "red",
-            "border": "1px solid red",
-            "borderRadius": "2px",
-            "backgroundColor": "rgba(0,0,0,.2)",
-            "isWholeLine": true
-        }
-    ],
-    "[json]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    }
+  "editor.formatOnSave": true,
+  "editor.tabSize": 4,
+  "editor.useTabStops": true,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": false,
+  "files.autoSave": "onFocusChange",
+  "files.eol": "\n",
+  "prettier.tabWidth": 4,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "eslint.format.enable": true,
+  "eslint.validate": ["typescript"],
+  "typescript.preferences.autoImportFileExcludePatterns": ["**/index.*"],
+  "typescript.tsdk": "node_modules\\typescript\\lib",
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    "**/node_modules": true
+  }
 }
