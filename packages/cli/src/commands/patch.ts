@@ -16,6 +16,9 @@ export default new Command('patch')
     const maximum = semver.maxVersion(supported)?.version ?? supported;
     const current = getCurrentNextVersion();
 
+    console.log(
+      `Supported versions: ${supported}. ${current}, ${minimum}, ${maximum}`
+    );
     if (semver.ltr(current, minimum)) {
       log.error(`Next.js v${current} is not supported,
                 a minimum of v${minimum} is required`);
@@ -63,7 +66,7 @@ export default new Command('patch')
     log.info('Saving patch information file...');
     fs.writeFileSync(
       path.join(findWorkspaceRoot(), 'node_modules/next/.next-ws-trace.json'),
-      JSON.stringify({ patch: supported, version: current })
+      JSON.stringify({ patch: patch.supported, version: current })
     );
 
     log.info(

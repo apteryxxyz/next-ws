@@ -28,7 +28,7 @@ export function verifyPatch() {
   const patch = getPatch();
   if (!patch)
     throw new Error(
-      'Next.js has not been patched to support Next WS, please run `npx next-ws-cli patch`'
+      'Next.js has not been patched to support Next WS, please run `npx next-ws-cli@latest patch`'
     );
 
   // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -36,6 +36,6 @@ export function verifyPatch() {
   const version = packageJson.version.split('-')[0];
   if (patch.version !== version)
     throw new Error(
-      `Next.js version mismatch, expected ${patch.version} but found ${version}, try running \`npx next-ws-cli patch\``
+      `Next.js version mismatch, expected ${patch.version} but found ${version}, try running \`npx next-ws-cli@latest patch\``
     );
 }
