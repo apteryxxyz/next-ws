@@ -1,7 +1,7 @@
 <div align="center">
   <h1><strong>Next WS</strong></h1>
   <i>Add support for WebSockets in Next.js 13 app directory</i><br>
-  <code>npm install next-ws</code>
+  <code>npm install next-ws ws</code>
 </div>
 
 <div align="center">
@@ -19,7 +19,9 @@
 
 Next WS (`next-ws`) is an advanced Next.js **13** plugin designed to seamlessly integrate WebSocket server functionality into API routes within the **app directory**. With Next WS, you no longer require a separate server for WebSocket functionality.
 
-It's important to note that this module can only be used when working with a server. Unfortunately, in serverless environments like Vercel, WebSocket servers cannot be used.  Additionally, this module was built for the app directory and is incompatible with the older pages directory.
+> The last supported version of Next.js is 13.4.12. 
+
+It's **important** to note that this module can only be used when working with a server. Unfortunately, in serverless environments like Vercel, WebSocket servers cannot be used. Additionally, this module was built for the app directory and is incompatible with the older pages directory.
 
 Next WS is still pre its 1.0 release, and as such, things may change. If you find any bugs or have any suggestions, please open an issue on the GitHub repository.
 
@@ -53,7 +55,8 @@ npx next-ws-cli@latest patch
 Once the patch is complete, you will need to install the Next WS package into your project.
 
 ```sh
-npm install next-ws
+npm install next-ws ws
+# ws is a peer dependency, you must install it as well
 ```
 
 ### 🚓 Verify Patch (Optional)

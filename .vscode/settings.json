@@ -1,12 +1,12 @@
 {
   "editor.formatOnSave": true,
-  "editor.tabSize": 4,
+  "editor.tabSize": 2,
   "editor.useTabStops": true,
   "editor.insertSpaces": true,
   "editor.detectIndentation": false,
   "files.autoSave": "onFocusChange",
   "files.eol": "\n",
-  "prettier.tabWidth": 4,
+  "prettier.tabWidth": 2,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "eslint.format.enable": true,
   "eslint.validate": ["typescript"],
@@ -19,6 +19,6 @@
     "**/CVS": true,
     "**/.DS_Store": true,
     "**/Thumbs.db": true,
-    "**/node_modules": true
+    "//**/node_modules": true
   }
 }
