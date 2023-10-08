@@ -16,12 +16,9 @@ export default new Command('patch')
     const maximum = semver.maxVersion(supported)?.version ?? supported;
     const current = getCurrentNextVersion();
 
-    console.log(
-      `Supported versions: ${supported}. ${current}, ${minimum}, ${maximum}`
-    );
     if (semver.ltr(current, minimum)) {
       log.error(`Next.js v${current} is not supported,
-                a minimum of v${minimum} is required`);
+        a minimum of v${minimum} is required`);
       process.exit(1);
     }
 
@@ -31,7 +28,7 @@ export default new Command('patch')
 
     if (!patch && semver.gtr(current, maximum)) {
       log.warn(`Next WS has not yet been tested with Next.js v${current},
-                it may or may not work, are you sure you want to continue?`);
+        it may or may not work, are you sure you want to continue?`);
 
       const confirm =
         Boolean(options.yes) ||
@@ -46,7 +43,7 @@ export default new Command('patch')
         patch = patches[patches.length - 1];
         log.info('Continuing with the latest patch');
         log.info(`If you encounter any issues please report them at
-                    https://github.com/apteryxxyz/next-ws/issues`);
+          https://github.com/apteryxxyz/next-ws/issues`);
       } else {
         log.info('Aborting');
         process.exit(1);
@@ -55,7 +52,7 @@ export default new Command('patch')
 
     if (!patch) {
       log.error(`Next WS does not have a patch for Next.js v${current},
-                please install a supported version of Next.js`);
+        please install a supported version of Next.js`);
       log.info(`Supported versions: ${supported}`);
       process.exit(1);
     }
