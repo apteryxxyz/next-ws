@@ -35,7 +35,8 @@ export function WebSocketProvider({
   }, [isBrowser, url, protocols]);
 
   useEffect(() => {
-    return () => instance?.close();
+    if (instance?.readyState !== WebSocket.OPEN) return;
+    return () => instance.close();
   }, []);
 
   return <WebSocketContext.Provider value={instance}>

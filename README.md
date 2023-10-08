@@ -164,20 +164,21 @@ import { useCallback, useEffect, useState } from 'react';
 
 export default function Page() {
   const ws = useWebSocket();
-  //  ^? WebSocket on the client, null on the server
+  //    ^? WebSocket on the client, null on the server
 
   const [value, setValue] = useState('');
-  const [message, setMessage] = useState<string | null>('');
+  const [message, setMessage] = useState<string | null>(null);
 
-  const onMessage = useCallback((event: MessageEvent) => {
-    const text = await event.data.text();
-    setMessage(text);
-  }, []);
-
+  const onMessage = useCallback(
+    (event: MessageEvent<Blob>) =>
+      void event.data.text().then(setMessage),
+    [],
+  );
+  
   useEffect(() => {
     ws?.addEventListener('message', onMessage);
     return () => ws?.removeEventListener('message', onMessage);
-  }, [ws]);
+  }, [onMessage, ws]);
 
   return <>
     <input
@@ -186,15 +187,16 @@ export default function Page() {
       onChange={event => setValue(event.target.value)}
     />
 
-    <button onClick={() => ws.send(value)}>
+    <button onClick={() => ws?.send(value)}>
       Send message to server
     </button>
 
     <p>
       {message === null
-        ? 'Waiting for server to send a message...'
+        ? 'Waiting to receive message...'
         : `Got message: ${message}`}
     </p>
   </>;
 }
+
 ```
