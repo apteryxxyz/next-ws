@@ -30,7 +30,7 @@ export function setupWebSocketServer(nextServer: NextNodeServer) {
       return socket.destroy();
     }
 
-    const socketHandler = pageModule?.routeModule?.userload?.SOCKET;
+    const socketHandler = pageModule?.routeModule?.userland?.SOCKET;
     if (!socketHandler || typeof socketHandler !== 'function') {
       Log.error(`[next-ws] ${pathname} does not export a SOCKET handler`);
       return socket.destroy();

@@ -91,7 +91,7 @@ export async function getPageModule(
 
 export interface PageModule {
   routeModule?: {
-    userload?: {
+    userland?: {
       SOCKET?: SocketHandler;
     };
   };
