@@ -19,7 +19,7 @@
 
 Next WS (`next-ws`) is an advanced Next.js **13** plugin designed to seamlessly integrate WebSocket server functionality into API routes within the **app directory**. With Next WS, you no longer require a separate server for WebSocket functionality.
 
-> The last supported version of Next.js is 13.4.12. 
+> The last supported version of Next.js is 13.4.12, read more [here](https://github.com/apteryxxyz/next-ws/issues/6). 
 
 It's **important** to note that this module can only be used when working with a server. Unfortunately, in serverless environments like Vercel, WebSocket servers cannot be used. Additionally, this module was built for the app directory and is incompatible with the older pages directory.
 
