@@ -1,6 +1,5 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
-import _ from 'lodash';
 import { log } from '../utilities/log';
 import { findWorkspaceRoot } from '../utilities/workspace';
 import { patchNextNodeServer } from './patch-1';
