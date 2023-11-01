@@ -8,18 +8,14 @@ import { log } from '../utilities/log';
 import { findWorkspaceRoot } from '../utilities/workspace';
 
 const WorkspaceRoot = findWorkspaceRoot();
-
 const NextServerFilePath = path.join(
   WorkspaceRoot,
   'node_modules/next/dist/server/next-server.js'
 );
-const NextServerPatch = 'require("next-ws/server")';
-
 const NextTypesFilePath = path.join(
   WorkspaceRoot,
   'node_modules/next/dist/build/webpack/plugins/next-types-plugin.js'
 );
-const NextTypesPatch = 'SOCKET?: Function';
 
 // Add `require('next-ws/server').setupWebSocketServer(this)` to the
 // constructor of `NextNodeServer` in `next/dist/server/next-server.js`
@@ -28,7 +24,7 @@ export function patchNextNodeServer() {
     'Adding WebSocket server setup script to NextNodeServer constructor...'
   );
   const content = fs.readFileSync(NextServerFilePath, 'utf8');
-  if (content.includes(NextServerPatch)) return;
+  if (content.includes('require("next-ws/server")')) return;
 
   const tree = parser.parse(content);
 
@@ -44,7 +40,7 @@ export function patchNextNodeServer() {
   if (!constructorMethod) return;
 
   const statement = template.statement
-    .ast`${NextServerPatch}.setupWebSocketServer(this)`;
+    .ast`require("next-ws/server").setupWebSocketServer(this)`;
   constructorMethod.body.body.push(statement);
 
   fs.writeFileSync(NextServerFilePath, generate(tree).code);
@@ -55,7 +51,7 @@ export function patchNextNodeServer() {
 export function patchNextTypesPlugin() {
   log.info("Adding 'SOCKET' to the page module interface type...");
   const content = fs.readFileSync(NextTypesFilePath, 'utf8');
-  if (content.includes(NextTypesPatch)) return;
+  if (content.includes('SOCKET?: Function')) return;
 
   const toFind = '.map((method)=>`${method}?: Function`).join("\\n  ")';
   const replaceWith = `${toFind} + "; SOCKET?: Function"`;

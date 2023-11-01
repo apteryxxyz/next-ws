@@ -23,7 +23,7 @@ export const maxVersion = (
         version.raw = version.format();
       }
 
-      if (!maximumVersion || gt(maximumVersion, version))
+      if (!maximumVersion || gt(version, maximumVersion))
         maximumVersion = version;
     }
   }

@@ -39,9 +39,11 @@ export function WebSocketProvider({
     return () => instance.close();
   }, []);
 
-  return <WebSocketContext.Provider value={instance}>
-    {children}
-  </WebSocketContext.Provider>;
+  return (
+    <WebSocketContext.Provider value={instance}>
+      {children}
+    </WebSocketContext.Provider>
+  );
 }
 
 export const WebSocketConsumer = WebSocketContext.Consumer;

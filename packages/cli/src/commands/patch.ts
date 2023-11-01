@@ -53,7 +53,7 @@ export default new Command('patch')
     if (!patch) {
       log.error(`Next WS does not have a patch for Next.js v${current},
         please install a supported version of Next.js`);
-      log.info(`Supported versions: ${supported}`);
+      log.info(`Supported ranges: ${supported}`);
       process.exit(1);
     }
 

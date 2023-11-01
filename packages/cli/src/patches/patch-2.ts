@@ -4,20 +4,17 @@ import { log } from '../utilities/log';
 import { findWorkspaceRoot } from '../utilities/workspace';
 import { patchNextNodeServer } from './patch-1';
 
-const WorkspaceRoot = findWorkspaceRoot();
-
 const NextTypesFilePath = path.join(
-  WorkspaceRoot,
+  findWorkspaceRoot(),
   'node_modules/next/dist/build/webpack/plugins/next-types-plugin/index.js'
 );
-const NextTypesPatch = 'SOCKET?: Function';
 
 // Add `SOCKET?: Function` to the page module interface check field thing in
 // `next/dist/build/webpack/plugins/next-types-plugin/index.js`
 export function patchNextTypesPlugin() {
   log.info("Adding 'SOCKET' to the page module interface type...");
   const content = fs.readFileSync(NextTypesFilePath, 'utf8');
-  if (content.includes(NextTypesPatch)) return;
+  if (content.includes('SOCKET?: Function')) return;
 
   const toFind = '.map((method)=>`${method}?: Function`).join("\\n  ")';
   const replaceWith = `${toFind} + "; SOCKET?: Function"`;
