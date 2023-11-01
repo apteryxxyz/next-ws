@@ -1,4 +1,5 @@
 import { Server } from 'node:http';
+import * as Log from 'next/dist/build/output/log';
 import NextNodeServer from 'next/dist/server/next-server';
 import type { SocketHandler } from './ws';
 
@@ -76,12 +77,28 @@ export async function getPageModule(
   nextServer: NextNodeServer,
   filename: string
 ) {
-  // @ts-expect-error - hotReloader is private
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-  await nextServer.hotReloader?.ensurePage({
-    page: filename,
-    clientOnly: false,
-  });
+  try {
+    // In Next.js 14, hotReloader was removed and ensurePage was moved to NextNodeServer
+    if ('hotReloader' in nextServer) {
+      // @ts-expect-error - hotReloader only exists in Next.js 13
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+      await nextServer.hotReloader?.ensurePage({
+        page: filename,
+        clientOnly: false,
+      });
+    } else if ('ensurePage' in nextServer) {
+      // ensurePage throws an error in production, so we need to catch it
+      // @ts-expect-error - ensurePage is protected
+      await nextServer.ensurePage({ page: filename, clientOnly: false });
+    } else {
+      // Future-proofing
+      Log.warnOnce(
+        '[next-ws] was unable to ensure page, you may need to open the route in your browser first so Next.js compiles it'
+      );
+    }
+  } catch {
+    void 0;
+  }
 
   // @ts-expect-error - getPagePath is protected
   const builtPagePath = nextServer.getPagePath(filename);
