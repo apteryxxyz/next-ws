@@ -1,6 +1,6 @@
 <div align="center">
   <h1><strong>Next WS</strong></h1>
-  <i>Add support for WebSockets in Next.js 13 app directory</i><br>
+  <i>Add support for WebSockets in Next.js app directory</i><br>
   <code>npm install next-ws ws</code>
 </div>
 
@@ -17,13 +17,9 @@
 
 ## 🤔 About
 
-Next WS (`next-ws`) is an advanced Next.js **13** plugin designed to seamlessly integrate WebSocket server functionality into API routes within the **app directory**. With Next WS, you no longer require a separate server for WebSocket functionality.
-
-> The last supported version of Next.js is 13.4.12, read more [here](https://github.com/apteryxxyz/next-ws/issues/6). 
+Next WS (`next-ws`) is an advanced Next.js plugin designed to seamlessly integrate WebSocket server functionality into API routes within the **app directory**. With Next WS, you no longer require a separate server for WebSocket functionality.
 
 It's **important** to note that this module can only be used when working with a server. Unfortunately, in serverless environments like Vercel, WebSocket servers cannot be used. Additionally, this module was built for the app directory and is incompatible with the older pages directory.
-
-Next WS is still pre its 1.0 release, and as such, things may change. If you find any bugs or have any suggestions, please open an issue on the GitHub repository.
 
 This module is inspired by the now outdated `next-plugin-websocket`, if you are using an older version of Next.js, that module may work for you.
 
@@ -138,8 +134,6 @@ export default function Layout() {
 }
 ```
 
-To make it easier to connect to your new WebSocker server, Next WS also provides some client-side utilities. These are completely optional, you can use your own implementation if you wish.
-
 The following is the props interface for the `WebSocketProvider` component, containing all the available options.
 
 ```ts
@@ -154,6 +148,8 @@ interface WebSocketProviderProps {
   binaryType?: BinaryType;
 }
 ```
+
+Now you can use the `useWebSocket` hook to get the WebSocket instance, and send and receive messages.
 
 ```tsx
 // page.tsx
