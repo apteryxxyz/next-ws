@@ -1,34 +1,15 @@
-import { Server } from 'node:http';
 import * as Log from 'next/dist/build/output/log';
 import NextNodeServer from 'next/dist/server/next-server';
-import type { SocketHandler } from './ws';
 
 /**
- * Get the http.Server instance from the NextNodeServer.
- * @param nextServer The NextNodeServer instance.
- * @returns The http.Server instance.
- */
-export function getHttpServer(nextServer: NextNodeServer) {
-  if (!nextServer || !(nextServer instanceof NextNodeServer))
-    throw new Error('Next WS is missing access to the NextNodeServer');
-
-  // @ts-expect-error - serverOptions is protected
-  const httpServer = nextServer.serverOptions?.httpServer;
-  if (!httpServer || !(httpServer instanceof Server))
-    throw new Error('Next WS is missing access to the http.Server');
-
-  return httpServer;
-}
-
-/**
- * Resolve a pathname to a page.
+ * Resolve a pathname to a page, or null if the page could not be resolved.
+ * @example resolvePathname(nextServer, '/about') // '/about/route'
+ * @example resolvePathname(nextServer, '/user/1') // '/user/[id]/route'
  * @param nextServer The NextNodeServer instance.
  * @param pathname The pathname to resolve.
  * @returns The resolved page, or null if the page could not be resolved.
  */
 export function resolvePathname(nextServer: NextNodeServer, pathname: string) {
-  if (pathname.startsWith('/_next')) return null;
-
   const pathParts = pathname.split('/');
   const appRoutes = {
     // @ts-expect-error - appPathRoutes is protected
@@ -77,27 +58,28 @@ export async function getPageModule(
   nextServer: NextNodeServer,
   filename: string
 ) {
-  try {
-    // In Next.js 14, hotReloader was removed and ensurePage was moved to NextNodeServer
-    if ('hotReloader' in nextServer) {
-      // @ts-expect-error - hotReloader only exists in Next.js 13
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-      await nextServer.hotReloader?.ensurePage({
-        page: filename,
-        clientOnly: false,
-      });
-    } else if ('ensurePage' in nextServer) {
-      // ensurePage throws an error in production, so we need to catch it
-      // @ts-expect-error - ensurePage is protected
-      await nextServer.ensurePage({ page: filename, clientOnly: false });
-    } else {
-      // Future-proofing
-      Log.warnOnce(
+  if (process.env['NODE_ENV'] !== 'production') {
+    try {
+      if ('hotReloader' in nextServer) {
+        // @ts-expect-error - hotReloader only exists in Next.js 13
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        await nextServer.hotReloader.ensurePage({
+          page: filename,
+          clientOnly: false,
+        });
+      } else if ('ensurePage' in nextServer) {
+        // @ts-expect-error - ensurePage is protected
+        await nextServer.ensurePage({ page: filename, clientOnly: false });
+      } else {
+        Log.warnOnce(
+          '[next-ws] cannot find a way to ensure page, you may need to open routes in your browser first so Next.js compiles them'
+        );
+      }
+    } catch (error) {
+      Log.error(
         '[next-ws] was unable to ensure page, you may need to open the route in your browser first so Next.js compiles it'
       );
     }
-  } catch {
-    void 0;
   }
 
   // @ts-expect-error - getPagePath is protected
@@ -109,7 +91,7 @@ export async function getPageModule(
 export interface PageModule {
   routeModule?: {
     userland?: {
-      SOCKET?: SocketHandler;
+      SOCKET?: unknown;
     };
   };
 }

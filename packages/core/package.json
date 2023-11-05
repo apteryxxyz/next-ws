@@ -48,7 +48,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "rimraf": "^5.0.1",
-    "typescript": "<5.1.0"
+    "typescript": "<5.1.0",
+    "ws": "^8.14.2"
   },
   "eslintConfig": {
     "root": true,
