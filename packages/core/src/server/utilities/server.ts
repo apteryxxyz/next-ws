@@ -13,17 +13,18 @@ export const CustomHttpServer = Symbol('NextWS::CustomHttpServer');
  * @returns The HTTP Server instance.
  */
 export function useHttpServer(nextServer: NextNodeServer) {
+  // NextNodeServer is always required, so check for it before attempting to use custom server
+  if (!nextServer || !(nextServer instanceof NextNodeServer)) {
+    Log.error('[next-ws] could not find the NextNodeServer instance');
+    process.exit(1);
+  }
+
   const existing = Reflect.get(globalThis, CustomHttpServer) as Server;
   if (existing) {
     Log.warnOnce(
       '[next-ws] is using a custom HTTP Server, this is experimental and may not work as expected'
     );
     return existing;
-  }
-
-  if (!nextServer || !(nextServer instanceof NextNodeServer)) {
-    Log.error('[next-ws] could not find the NextNodeServer instance');
-    process.exit(1);
   }
 
   // @ts-expect-error - serverOptions is protected
