@@ -5,7 +5,7 @@ import { WebSocketServer } from 'ws';
 
 // =============== HTTP Server ===============
 
-export const CustomHttpServer = Symbol('NextWS::CustomHttpServer');
+export const CustomHttpServer = 'NextWS::CustomHttpServer';
 
 /**
  * Get the HTTP Server instance from the NextNodeServer.
@@ -39,7 +39,7 @@ export function useHttpServer(nextServer: NextNodeServer) {
 
 // =============== WebSocket Server ===============
 
-export const CustomWsServer = Symbol('NextWS::CustomWsServer');
+export const CustomWsServer = 'NextWS::CustomWsServer';
 
 /**
  * Create a WebSocketServer.
