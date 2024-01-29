@@ -37,7 +37,7 @@ export function resolvePathname(nextServer: NextNodeServer, pathname: string) {
     ...nextServer.getAppPathRoutes(),
   };
 
-  for (const [key, [path]] of Object.entries(appRoutes)) {
+  outer: for (const [key, [path]] of Object.entries(appRoutes)) {
     const hasDynamic = key.includes('[') && key.includes(']');
 
     if (hasDynamic) {
@@ -53,7 +53,7 @@ export function resolvePathname(nextServer: NextNodeServer, pathname: string) {
         if (keyParts[i] !== pathParts[i]) break;
 
         if (i === keyParts.length - 1) {
-          if (!path?.endsWith('/route')) return null;
+          if (!path?.endsWith('/route')) continue outer;
           return path;
         }
       }
