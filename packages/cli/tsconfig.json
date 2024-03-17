@@ -3,7 +3,8 @@
   "compilerOptions": {
     "outDir": "./dist",
     "esModuleInterop": true,
-    "sourceMap": false
+    "sourceMap": false,
+    "noPropertyAccessFromIndexSignature": false,
   },
   "exclude": ["./node_modules/", "*.d.ts"],
   "include": ["./src/**/*.ts"]

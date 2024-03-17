@@ -30,6 +30,7 @@ This module is inspired by the now outdated `next-plugin-websocket`, if you are 
 - [🤔 About](#-about)
 - [🏓 Table of Contents](#-table-of-contents)
 - [📦 Installation](#-installation)
+  - [Automated Patching](#automated-patching)
 - [🚀 Usage](#-usage)
   - [🚓 Verify Patch](#-verify-patch)
 - [🌀 Example](#-example)
@@ -55,14 +56,27 @@ npm install next-ws ws
 # ws is a peer dependency, you must install it as well
 ```
 
+### Automated Patching
+
+If you would like to automate the patching process, you can add the following script to your `package.json` file.
+
+```json
+{
+  "scripts": {
+    "postinstall": "FORCE_NEXT_WS_PATCH=true npx next-ws-cli@latest patch"
+  }
+}
+```
+
 ### 🚓 Verify Patch (Optional)
 
-It is recommended to add the following code to the top level of your `next.config.js`.
+It is recommended to add the following code to the top level of your `next.config.mjs`.
 
 This will verify that Next WS has been patched correctly, and throw an error if it has not. Preventing you from accidentally deploying a broken setup.
 
 ```ts
-require('next-ws/server').verifyPatch();
+import { verifyPatch } from 'next-ws/server';
+verifyPatch();
 ```
 
 ---

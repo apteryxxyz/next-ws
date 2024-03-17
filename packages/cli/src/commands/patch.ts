@@ -39,7 +39,7 @@ export default new Command('patch')
           default: false,
         }).then((answer) => answer.confirm));
 
-      if (confirm) {
+      if (confirm || process.env.FORCE_NEXT_WS_PATCH) {
         patch = patches[patches.length - 1];
         log.info('Continuing with the latest patch');
         log.info(`If you encounter any issues please report them at
