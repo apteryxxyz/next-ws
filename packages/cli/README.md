@@ -116,7 +116,7 @@ You are pretty much done at this point, you can now connect to the WebSocket ser
 
 ### 📁 Client
 
-To make it easier to connect to your new WebSocker server, Next WS also provides some client-side utilities. These are completely optional, you can use your own implementation if you wish.
+To make it easier to connect to your new WebSocket server, Next WS also provides some client-side utilities. These are completely optional, you can use your own implementation if you wish.
 
 ```tsx
 // layout.tsx
@@ -124,13 +124,16 @@ To make it easier to connect to your new WebSocker server, Next WS also provides
 
 import { WebSocketProvider } from 'next-ws/client';
 
-export default function Layout() {
-  return <WebSocketProvider
-    url="ws://localhost:3000/api/ws"
-    // ... other props
-  >
-    {...}
-  </WebSocketProvider>;
+export default function Layout({ children }: React.PropsWithChildren) {
+  return <html>
+    <body>
+      <WebSocketProvider
+        url="ws://localhost:3000/api/ws"
+      >
+        {children}
+      </WebSocketProvider>
+    </body>
+  </html>;
 }
 ```
 
@@ -155,14 +158,14 @@ Now you can use the `useWebSocket` hook to get the WebSocket instance, and send 
 // page.tsx
 'use client';
 
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useWebSocket } from 'next-ws/client';
-import { useCallback, useEffect, useState } from 'react';
 
 export default function Page() {
   const ws = useWebSocket();
   //    ^? WebSocket on the client, null on the server
 
-  const [value, setValue] = useState('');
+  const inputRef = useRef<HTMLInputElement>(null);
   const [message, setMessage] = useState<string | null>(null);
 
   const onMessage = useCallback(
@@ -170,7 +173,7 @@ export default function Page() {
       void event.data.text().then(setMessage),
     [],
   );
-  
+
   useEffect(() => {
     ws?.addEventListener('message', onMessage);
     return () => ws?.removeEventListener('message', onMessage);
@@ -178,12 +181,13 @@ export default function Page() {
 
   return <>
     <input
+      ref={inputRef}
       type="text"
-      value={value}
-      onChange={event => setValue(event.target.value)}
     />
 
-    <button onClick={() => ws?.send(value)}>
+    <button
+      onClick={() => ws?.send(inputRef.current?.value ?? '')}
+    >
       Send message to server
     </button>
 
@@ -194,5 +198,4 @@ export default function Page() {
     </p>
   </>;
 }
-
 ```
