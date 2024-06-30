@@ -1,20 +1,31 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "pipeline": {
-    "build": {
-      "dependsOn": ["^build"],
-      "inputs": ["package.json", "tsconfig.json", "src/**"],
-      "outputs": ["index.js", "index.d.ts", "client", "server"]
+  "tasks": {
+    "format": {
+      "dependsOn": ["^format"],
+      "inputs": ["src/**"],
+      "outputs": ["src/**"]
     },
     "lint": {
       "dependsOn": ["^lint"],
-      "inputs": ["package.json", "tsconfig.json", "src/**"],
-      "outputs": []
+      "inputs": ["src/**"]
     },
-    "format": {
-      "dependsOn": ["^format"],
-      "inputs": ["package.json", "tsconfig.json", "src/**"],
-      "outputs": []
+    "test": {
+      "dependsOn": ["^test"],
+      "inputs": ["src/**", "test/**"]
+    },
+    "check": {
+      "dependsOn": ["^check"],
+      "inputs": ["src/**", "test/**"]
+    },
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": ["src/**"],
+      "outputs": ["dist/**"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
     }
   }
 }

@@ -1,20 +1,7 @@
-# Node Modules
 node_modules/
 
-# Yarn
-.yarn/*
-!.yarn/plugins
-!.yarn/releases
-.pnp.*
-
-# Build
-dist/
 .turbo/
-.next/
+.nx/
 
-*.js
-!.*rc.*
-!*.config.*
-*.d.ts
-*.js.map
-*.tgz
+dist/
+.next/

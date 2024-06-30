@@ -1,3 +1,7 @@
-export * from './utilities/patch';
-export type { SocketHandler } from './utilities/ws';
 export * from './setup';
+export {
+  setHttpServer,
+  getHttpServer,
+  setWebSocketServer,
+  getWebSocketServer,
+} from './helpers/persistent';

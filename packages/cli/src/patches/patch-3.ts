@@ -1,20 +1,20 @@
-import * as fs from 'node:fs';
-import * as path from 'node:path';
-import { log } from '../utilities/log';
-import { findWorkspaceRoot } from '../utilities/workspace';
+import fs from 'node:fs';
+import path from 'node:path';
+import logger from '~/helpers/logger';
+import { findWorkspaceRoot } from '~/helpers/workspace';
 import { patchNextNodeServer } from './patch-1';
 import { patchNextTypesPlugin } from './patch-2';
 
 const RouterServerFilePath = path.join(
   findWorkspaceRoot(),
-  'node_modules/next/dist/server/lib/router-server.js'
+  'node_modules/next/dist/server/lib/router-server.js',
 );
 
 // If Next.js receives a WebSocket connection on a matched route, it will
 // close it immediately. This patch prevents that from happening.
 export function patchRouterServer() {
-  log.info(
-    'Preventing Next.js from immediately closing WebSocket connections...'
+  logger.info(
+    'Preventing Next.js from immediately closing WebSocket connections...',
   );
 
   let content = fs.readFileSync(RouterServerFilePath, 'utf8');
@@ -35,6 +35,6 @@ export default Object.assign(
   },
   {
     date: '2023-11-01' as const,
-    supported: '>=13.5.1 <=14.1.4' as const,
-  }
+    supported: '>=13.5.1 <=14.2.4' as const,
+  },
 );

@@ -1,10 +1,10 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../tsconfig.base.json",
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"],
   "compilerOptions": {
-    "outDir": "./dist",
-    "esModuleInterop": true,
-    "sourceMap": false
-  },
-  "exclude": ["./node_modules/", "*.d.ts"],
-  "include": ["./src/**/*.ts"]
+    "baseUrl": ".",
+    "outDir": "dist",
+    "paths": { "~/*": ["src/*"] }
+  }
 }

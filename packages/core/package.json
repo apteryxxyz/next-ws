@@ -1,15 +1,10 @@
 {
   "name": "next-ws",
-  "version": "1.0.1",
+  "version": "1.1.0",
+  "type": "module",
   "description": "Add support for WebSockets in Next.js 13 app directory",
-  "keywords": [
-    "next",
-    "websocket",
-    "ws",
-    "server",
-    "client"
-  ],
   "license": "MIT",
+  "keywords": ["next", "websocket", "ws", "server", "client"],
   "homepage": "https://github.com/apteryxxyz/next-ws#readme",
   "repository": {
     "type": "git",
@@ -19,19 +14,25 @@
   "bugs": {
     "url": "https://github.com/apteryxxyz/next-ws/issues"
   },
-  "files": [
-    "index.js",
-    "index.d.ts",
-    "client",
-    "server"
-  ],
-  "main": "./index.js",
-  "types": "./index.d.ts",
+  "files": ["dist"],
+  "exports": {
+    "./client": {
+      "import": "./dist/client/index.mjs",
+      "require": "./dist/client/index.cjs",
+      "types": "./dist/client/index.d.ts"
+    },
+    "./server": {
+      "import": "./dist/server/index.mjs",
+      "require": "./dist/server/index.cjs",
+      "types": "./dist/server/index.d.ts"
+    }
+  },
   "scripts": {
-    "build": "cp ../../README.md . && tsc",
-    "clean": "rimraf index.js index.d.ts client server README.md",
-    "lint": "eslint --ext .ts,.tsx src",
-    "format": "prettier --write src/**/*.{ts,tsx} && eslint --fix --ext .ts,.tsx src/"
+    "lint": "biome lint . --write",
+    "format": "biome format . --write",
+    "check": "tsc --noEmit",
+    "build": "tsup && cp ../../readme.md .",
+    "dev": "pnpm build --watch"
   },
   "peerDependencies": {
     "next": ">=13.1.1",
@@ -39,21 +40,11 @@
     "ws": "*"
   },
   "devDependencies": {
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "@types/ws": "^8",
-    "eslint": "^8.43.0",
-    "next": "^14.0.1",
-    "prettier": "^2.8.8",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "rimraf": "^5.0.1",
-    "typescript": "<5.1.0"
-  },
-  "eslintConfig": {
-    "root": true,
-    "extends": [
-      "../../.eslintrc.js"
-    ]
+    "@configs/tsup": "workspace:^",
+    "@types/react": "^18.3.3",
+    "@types/ws": "^8.5.10",
+    "next": "^14.2.4",
+    "react": "^18.3.1",
+    "ws": "^8.17.1"
   }
 }

@@ -1,0 +1,12 @@
+{
+  "name": "@configs/tsup",
+  "type": "module",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "files": ["index.js", "index.d.ts"],
+  "devDependencies": {
+    "@types/node": "^20.14.9",
+    "tsup": "^8.1.0",
+    "typescript": "^5.5.2"
+  }
+}
