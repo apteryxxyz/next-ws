@@ -13,8 +13,6 @@
   <a href="https://discord.gg/vZQbMhwsKY"><img src="https://discordapp.com/api/guilds/829836158007115806/widget.png?style=shield" alt="discord shield"/></a>
 </div>
 
-
-
 ## 🤔 About
 
 Next WS (`next-ws`) is an advanced Next.js plugin that seamlessly integrates WebSocket server capabilities directly into routes located in the **app directory**. With Next WS, you no longer require a separate server for WebSocket functionality.
@@ -24,8 +22,15 @@ Next WS (`next-ws`) is an advanced Next.js plugin that seamlessly integrates Web
 
 This module is inspired by the now outdated `next-plugin-websocket`, if you are using an older version of Next.js, that module may work for you.
 
-
 ## 🏓 Table of Contents
+
+- [📦 Installation](#-installation)
+- [🚀 Usage](#-usage)
+- [🌀 Examples](#-examples)
+  - [Creating a Socket](#creating-a-socket)
+  - [Using a Custom Server](#using-a-custom-server)
+  - [Accessing the WebSocket Server](#accessing-the-websocket-server)
+  - [Client-Side Utilities](#client-side-utilities)
 
 ## 📦 Installation
 
