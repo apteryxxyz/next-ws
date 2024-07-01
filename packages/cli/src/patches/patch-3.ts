@@ -1,13 +1,13 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import logger from '~/helpers/logger';
-import { findWorkspaceRoot } from '~/helpers/workspace';
+import { findNextDirectory } from '~/helpers/next';
 import { patchNextNodeServer } from './patch-1';
 import { patchNextTypesPlugin } from './patch-2';
 
 const RouterServerFilePath = path.join(
-  findWorkspaceRoot(),
-  'node_modules/next/dist/server/lib/router-server.js',
+  findNextDirectory(),
+  'dist/server/lib/router-server.js',
 );
 
 // If Next.js receives a WebSocket connection on a matched route, it will

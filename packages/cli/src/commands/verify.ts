@@ -1,7 +1,7 @@
 import { Command } from 'commander';
 import logger from '~/helpers/logger';
+import { getNextVersion } from '~/helpers/next';
 import { getTrace } from '~/helpers/trace';
-import { getCurrentNextVersion } from '~/helpers/workspace';
 import patchCommand from './patch';
 
 export default new Command('verify')
@@ -25,7 +25,7 @@ export default new Command('verify')
       }
     }
 
-    const current = getCurrentNextVersion();
+    const current = getNextVersion();
     if (trace.version !== current) {
       logger.error(
         `Next.js version mismatch, expected v${trace.version} but found v${current}, try running \`npx next-ws-cli@latest patch\``,

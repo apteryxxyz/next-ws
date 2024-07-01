@@ -69,7 +69,7 @@ export function SOCKET(
 
 In production, Next.js uses a worker process for routes, which can make it difficult to access the WebSocket server from outside a `SOCKET` handler, especially when the WebSocket server exists on the main process. For those needing to overcome this challenge or preferring a custom server setup, Next WS provides a solution.
 
-The `next-ws/server` module offers functions for setting the HTTP and WebSocket servers. You use these functions to tell Next WS to use your server instances instead of creating its own. This allows you to then access the instances you created yourself from anywhere in your app. Refer to the [example below](#-using-a-custom-server).
+The `next-ws/server` module offers functions for setting the HTTP and WebSocket servers. You use these functions to tell Next WS to use your server instances instead of creating its own. This allows you to then access the instances you created yourself from anywhere in your app. Refer to the [example below](#using-a-custom-server).
 
 ## 🌀 Examples
 
@@ -143,7 +143,7 @@ app.prepare().then(() => {
 Along with setters, Next WS also provides getters for the HTTP and WebSocket servers. These functions can be used to access the servers from anywhere in your app.
 
 > [!IMPORTANT]  
-> In order to use the `getWebSocketServer` and `getHttpServer` functions, you must be using a [custom server](https://nextjs.org/docs/advanced-features/custom-server), this is due to a limitation in Next.js. Refer to the [With a Custom Server](#-with-a-custom-server).
+> In order to use the `getWebSocketServer` and `getHttpServer` functions, you must be using a [custom server](https://nextjs.org/docs/advanced-features/custom-server), this is due to a limitation in Next.js. Refer to the [With a Custom Server](#with-a-custom-server).
 
 ```ts
 // app/api/stats/route.ts

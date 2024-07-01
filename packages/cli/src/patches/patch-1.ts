@@ -1,19 +1,19 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import generate from '@babel/generator';
-import parser from '@babel/parser';
+import * as parser from '@babel/parser';
 import template from '@babel/template';
 import type { ClassDeclaration, ClassMethod } from '@babel/types';
 import logger from '~/helpers/logger';
-import { findWorkspaceRoot } from '~/helpers/workspace';
+import { findNextDirectory } from '~/helpers/next';
 
 const NextServerFilePath = path.join(
-  findWorkspaceRoot(),
-  'node_modules/next/dist/server/next-server.js',
+  findNextDirectory(),
+  'dist/server/next-server.js',
 );
 const NextTypesFilePath = path.join(
-  findWorkspaceRoot(),
-  'node_modules/next/dist/build/webpack/plugins/next-types-plugin.js',
+  findNextDirectory(),
+  'dist/build/webpack/plugins/next-types-plugin.js',
 );
 
 // Add `require('next-ws/server').setupWebSocketServer(this)` to the

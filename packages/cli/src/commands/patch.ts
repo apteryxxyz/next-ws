@@ -1,8 +1,8 @@
+import confirm from '@inquirer/confirm';
 import { Command } from 'commander';
-import inquirer from 'inquirer';
 import logger from '~/helpers/logger';
+import { getNextVersion } from '~/helpers/next';
 import { setTrace } from '~/helpers/trace';
-import { getCurrentNextVersion } from '~/helpers/workspace';
 import patches from '~/patches';
 import * as semver from '../helpers/semver';
 
@@ -13,7 +13,7 @@ export default new Command('patch')
     const supported = patches.map((p) => p.supported).join(' || ');
     const minimum = semver.minVersion(supported)?.version ?? supported;
     const maximum = semver.maxVersion(supported)?.version ?? supported;
-    const current = getCurrentNextVersion();
+    const current = getNextVersion();
 
     if (semver.ltr(current, minimum)) {
       logger.error(`Next.js v${current} is not supported,
@@ -26,18 +26,14 @@ export default new Command('patch')
       logger.warn(`Next WS has not yet been tested with Next.js v${current},
         it may or may not work, are you sure you want to continue?`);
 
-      const confirm =
+      const continueY =
         Boolean(options.yes) ||
-        (await inquirer
-          .prompt<{ confirm: boolean }>({
-            type: 'confirm',
-            name: 'confirm',
-            message: 'Continue?',
-            default: false,
-          })
-          .then((a) => a.confirm));
+        (await confirm({
+          message: 'Continue?',
+          default: false,
+        }));
 
-      if (confirm) {
+      if (continueY) {
         patch = patches[patches.length - 1];
         logger.info('Continuing with the latest patch');
         logger.info(`If you encounter any issues please report them at
