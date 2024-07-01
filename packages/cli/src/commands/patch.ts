@@ -1,11 +1,10 @@
 import { Command } from 'commander';
-import patches from '~/patches';
-import fs from 'node:fs';
-import * as semver from '../helpers/semver';
-import { findWorkspaceRoot, getCurrentNextVersion } from '~/helpers/workspace';
-import path from 'node:path';
-import logger from '~/helpers/logger';
 import inquirer from 'inquirer';
+import logger from '~/helpers/logger';
+import { setTrace } from '~/helpers/trace';
+import { getCurrentNextVersion } from '~/helpers/workspace';
+import patches from '~/patches';
+import * as semver from '../helpers/semver';
 
 export default new Command('patch')
   .description('Patch the local Next.js installation to support WebSockets')
@@ -36,7 +35,7 @@ export default new Command('patch')
             message: 'Continue?',
             default: false,
           })
-          .then((answer) => answer.confirm));
+          .then((a) => a.confirm));
 
       if (confirm) {
         patch = patches[patches.length - 1];
@@ -62,10 +61,7 @@ export default new Command('patch')
     patch();
 
     logger.info('Saving patch information file...');
-    fs.writeFileSync(
-      path.join(findWorkspaceRoot(), 'node_modules/next/.next-ws-trace.json'),
-      JSON.stringify({ patch: patch.supported, version: current }),
-    );
+    setTrace({ patch: patch.supported, version: current });
 
     logger.info(
       "All done! You can now install the core Next WS package if you haven't already",

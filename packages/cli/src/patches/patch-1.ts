@@ -1,11 +1,11 @@
-import parser from '@babel/parser';
-import type { ClassDeclaration, ClassMethod } from '@babel/types';
-import generate from '@babel/generator';
 import fs from 'node:fs';
 import path from 'node:path';
+import generate from '@babel/generator';
+import parser from '@babel/parser';
+import template from '@babel/template';
+import type { ClassDeclaration, ClassMethod } from '@babel/types';
 import logger from '~/helpers/logger';
 import { findWorkspaceRoot } from '~/helpers/workspace';
-import template from '@babel/template';
 
 const NextServerFilePath = path.join(
   findWorkspaceRoot(),
@@ -44,7 +44,8 @@ export function patchNextNodeServer() {
     .ast`require("next-ws/server").setupWebSocketServer(this)`;
   constructorMethod.body.body.push(statement);
 
-  fs.writeFileSync(NextServerFilePath, generate(tree).code);
+  const trueGenerate = Reflect.get(generate, 'default') ?? generate;
+  fs.writeFileSync(NextServerFilePath, trueGenerate(tree).code);
 }
 
 // Add `SOCKET?: Function` to the page module interface check field thing in

@@ -20,7 +20,7 @@
     "lint": "biome lint . --write",
     "format": "biome format . --write",
     "check": "tsc --noEmit",
-    "build": "tsup && cp ../../readme.md .",
+    "build": "cp ../../readme.md . && tsup",
     "dev": "pnpm build --watch"
   },
   "dependencies": {
