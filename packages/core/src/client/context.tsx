@@ -1,6 +1,7 @@
 'use client';
 
-import type React from 'react';
+// biome-ignore lint/style/useImportType: <explanation>
+import React from 'react';
 import { createContext, useContext, useEffect, useMemo } from 'react';
 
 export const WebSocketContext = createContext<WebSocket | null>(null);

@@ -8,12 +8,15 @@ function mainProcessOnly(fnName: string) {
   if (!meta.isMainProcess) {
     throw new Error(
       `[next-ws] Attempt to invoke '${fnName}' outside the main process.
-You may be attempting to interact with the WebSocket server outside of a SOCKET handler. This is likely to fail in production environments, as Next.js employs a worker process for routing in production, which do not have access to the WebSocket server on the main process.`,
+You may be attempting to interact with the WebSocket server outside of a SOCKET handler. This will fail in production, as Next.js employs a worker process for routing, which do not have access to the WebSocket server on the main process.
+You can resolve this by using a custom server.`,
     );
   } else if (!meta.isCustomServer) {
     logger.warnOnce(
       `[next-ws] Caution: The function '${fnName}' was invoked without a custom server.
-This could lead to unintended behaviour, especially if you're attempting to interact with the WebSocket server outside of a SOCKET handler. Please note, while such configurations might function during development, they are likely to fail in production environments. This is because Next.js employs a worker process for routing in production, which do not have access to the WebSocket server on the main process.`,
+This could lead to unintended behaviour, especially if you're attempting to interact with the WebSocket server outside of a SOCKET handler.
+Please note, while such configurations might function during development, they will fail in production. This is because Next.js employs a worker process for routing in production, which do not have access to the WebSocket server on the main process.
+You can resolve this by using a custom server.`,
     );
   }
 }
