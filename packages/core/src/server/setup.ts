@@ -1,47 +1,53 @@
-import * as Log from 'next/dist/build/output/log';
+import * as logger from 'next/dist/build/output/log';
 import type NextNodeServer from 'next/dist/server/next-server';
-import {
-  getHttpServer,
-  getPageModule,
-  resolvePathname,
-} from './utilities/next';
-import { getWsServer } from './utilities/ws';
+import { WebSocketServer } from 'ws';
+import { getPageModule, resolveFilename } from './helpers/next';
+import { useHttpServer, useWebSocketServer } from './helpers/persistent';
 
 export function setupWebSocketServer(nextServer: NextNodeServer) {
-  const httpServer = getHttpServer(nextServer);
-  const wsServer = getWsServer();
-  Log.ready('[next-ws] websocket server started successfully');
+  process.env.NEXT_WS_MAIN_PROCESS = String(1);
 
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  process.env.NEXT_WS_SKIP_ENVIRONMENT_CHECK = String(1);
+  // @ts-expect-error - serverOptions is protected
+  const httpServer = useHttpServer(nextServer.serverOptions?.httpServer);
+  const wsServer = useWebSocketServer(new WebSocketServer({ noServer: true }));
+  // biome-ignore lint/performance/noDelete: <explanation>
+  delete process.env.NEXT_WS_SKIP_ENVIRONMENT_CHECK;
+
+  if (!httpServer)
+    return logger.error('[next-ws] was not able to find the HTTP server');
+  if (!wsServer)
+    return logger.error('[next-ws] was not able to find the WebSocket server');
+
+  logger.ready('[next-ws] has started the WebSocket server');
+
   httpServer.on('upgrade', async (request, socket, head) => {
     const url = new URL(request.url ?? '', 'ws://next');
     const pathname = url.pathname;
     if (pathname.startsWith('/_next')) return;
 
-    const fsPathname = resolvePathname(nextServer, pathname);
-    if (!fsPathname) {
-      Log.error(`[next-ws] could not find module for page ${pathname}`);
+    const filename = resolveFilename(nextServer, pathname);
+    if (!filename) {
+      logger.error(`[next-ws] could not find module for page ${pathname}`);
       return socket.destroy();
     }
 
-    const pageModule = await getPageModule(nextServer, fsPathname);
+    const pageModule = await getPageModule(nextServer, filename);
     if (!pageModule) {
-      Log.error(`[next-ws] could not find module for page ${pathname}`);
+      logger.error(`[next-ws] could not find module for page ${pathname}`);
       return socket.destroy();
     }
 
     const socketHandler = pageModule?.routeModule?.userland?.SOCKET;
     if (!socketHandler || typeof socketHandler !== 'function') {
-      Log.error(`[next-ws] ${pathname} does not export a SOCKET handler`);
+      logger.error(`[next-ws] ${pathname} does not export a SOCKET handler`);
       return socket.destroy();
     }
 
-    return wsServer.handleUpgrade(
-      request,
-      socket,
-      head,
-      (client, request) => void socketHandler(client, request, wsServer)
-    );
+    return wsServer.handleUpgrade(request, socket, head, (c, r) => {
+      const dispose = socketHandler(c, r, wsServer);
+      if (typeof dispose === 'function') c.once('close', () => dispose());
+    });
   });
 }
 

@@ -1,17 +1,7 @@
 {
   "editor.formatOnSave": true,
-  "editor.tabSize": 2,
-  "editor.useTabStops": true,
   "editor.insertSpaces": true,
-  "editor.detectIndentation": false,
-  "files.autoSave": "onFocusChange",
-  "files.eol": "\n",
-  "prettier.tabWidth": 2,
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "eslint.format.enable": true,
-  "eslint.validate": ["typescript"],
-  "typescript.preferences.autoImportFileExcludePatterns": ["**/index.*"],
-  "typescript.tsdk": "node_modules\\typescript\\lib",
+  "editor.tabSize": 2,
   "files.exclude": {
     "**/.git": true,
     "**/.svn": true,
@@ -19,6 +9,11 @@
     "**/CVS": true,
     "**/.DS_Store": true,
     "**/Thumbs.db": true,
-    "//**/node_modules": true
-  }
+    "**/node_modules": true
+  },
+  "editor.codeActionsOnSave": {
+    "source.organizeImports.biome": "explicit"
+  },
+  "cSpell.language": "en-GB",
+  "cSpell.words": []
 }

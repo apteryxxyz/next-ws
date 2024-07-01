@@ -1,10 +1,12 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../tsconfig.base.json",
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"],
   "compilerOptions": {
-    "outDir": ".",
-    "esModuleInterop": true,
-    "sourceMap": false
-  },
-  "exclude": ["./node_modules/", "*.d.ts"],
-  "include": ["./src/**/*.ts"]
+    "baseUrl": ".",
+    "outDir": "dist",
+    "paths": { "~/*": ["src/*"] },
+    "jsx": "preserve",
+    "lib": ["DOM", "ES2022"]
+  }
 }

@@ -1,8 +1,0 @@
-{
-  "extends": "ts-config-apteryx",
-  "exclude": ["./node_modules/", "*.js", "**/**/*.d.ts"],
-  "compilerOptions": {
-    "target": "ES2021",
-    "jsx": "react-jsx"
-  }
-}
