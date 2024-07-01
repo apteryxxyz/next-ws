@@ -17,25 +17,26 @@
 
 ## 🤔 About
 
-Next WS (`next-ws`) is a advanced Next.js plugin that seamlessly integrates WebSocket server capabilities directly into routes located in the **app directory**. This innovation allows you to embed WebSocket functionality into your Next.js applications without the need for a separate server setup.
+Next WS (`next-ws`) is an advanced Next.js plugin that seamlessly integrates WebSocket server capabilities directly into routes located in the **app directory**. With Next WS, you no longer require a separate server for WebSocket functionality.
 
 > [!IMPORTANT]  
 > Next WS is designed for use in server-based environments. It is not suitable for serverless platforms like Vercel, where WebSocket servers are not supported. Furthermore, this plugin is built for the app directory and does not support the older pages directory.
 
-Next WS was inspired by the limitations of the now deprecated `next-plugin-websocket`. For those working with legacy versions of Next.js, `next-plugin-websocket` might still be a viable option.
+This module is inspired by the now outdated `next-plugin-websocket`, if you are using an older version of Next.js, that module may work for you.
+
 
 ## 🏓 Table of Contents
 
 ## 📦 Installation
 
-Setting up a WebSocket server with Next WS involves patching your local Next.js installation. Next WS simplifies this process with a CLI command that automatically detects and patches your Next.js version, ensuring compatibility. Please note, Next.js version 13.1.1 or higher is required.
+Setting up a WebSocket server with Next WS involves patching your local Next.js installation. Next WS simplifies this process with a CLI command that automatically detects and patches your Next.js version, ensuring compatibility. Note that Next.js version 13.1.1 or higher is required.
 
 ```sh
 npx next-ws-cli@latest patch
 ```
 
 > [!NOTE]  
-> Should your local Next.js installation undergo any changes or updates, you will need to re-run the patch command.
+> If at any point your local Next.js installation is changed or updated you will need to re-run the patch command.
 
 After successfully patching Next.js, install the Next WS package along with its peer dependency, ws, into your project:
 
@@ -45,7 +46,7 @@ npm install next-ws ws
 
 ## 🚀 Usage
 
-Using WebSocket functionality in your Next.js application with Next WS is straightforward and requires no additional setup. Simply define a `SOCKET` function within any route file. This function is invoked whenever a client establishes a WebSocket connection to that specific route.
+Using WebSocket functionality in your Next.js application with Next WS is simple and requires no additional configuration. Simply export a `SOCKET` function from any route file. This function will be invoked whenever a client establishes a WebSocket connection to that specific route.
 
 The `SOCKET` function receives three arguments: the WebSocket client instance, the incoming HTTP request - which you can use to get the URL path, query parameters, and headers - and the WebSocket server instance.
 
