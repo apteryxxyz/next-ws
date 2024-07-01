@@ -1,12 +1,12 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import logger from '~/helpers/logger';
-import { findWorkspaceRoot } from '~/helpers/workspace';
 import { patchNextNodeServer } from './patch-1';
+import { findNextDirectory } from '~/helpers/next';
 
 const NextTypesFilePath = path.join(
-  findWorkspaceRoot(),
-  'node_modules/next/dist/build/webpack/plugins/next-types-plugin/index.js',
+  findNextDirectory(),
+  'dist/build/webpack/plugins/next-types-plugin/index.js',
 );
 
 // Add `SOCKET?: Function` to the page module interface check field thing in

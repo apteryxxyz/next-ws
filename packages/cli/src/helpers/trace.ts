@@ -1,11 +1,8 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
-import { findWorkspaceRoot } from './workspace';
+import { findNextDirectory } from './next';
 
-const TracePath = path.join(
-  findWorkspaceRoot(),
-  'node_modules/next/.next-ws-trace.json',
-);
+const TracePath = path.join(findNextDirectory(), '.next-ws-trace.json');
 
 interface Trace {
   patch: string;
