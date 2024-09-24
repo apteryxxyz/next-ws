@@ -1,10 +1,18 @@
 {
   "name": "next-ws-cli",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "type": "commonjs",
   "description": "CLI tool for Next WS, a library for adding support for WebSockets to Next.js 13",
   "license": "MIT",
-  "keywords": ["next", "websocket", "ws", "server", "client", "cli", "patch"],
+  "keywords": [
+    "next",
+    "websocket",
+    "ws",
+    "server",
+    "client",
+    "cli",
+    "patch"
+  ],
   "homepage": "https://github.com/apteryxxyz/next-ws#readme",
   "repository": {
     "type": "git",
@@ -14,7 +22,9 @@
   "bugs": {
     "url": "https://github.com/apteryxxyz/next-ws/issues"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "bin": "./dist/program.cjs",
   "scripts": {
     "lint": "biome lint . --write",
