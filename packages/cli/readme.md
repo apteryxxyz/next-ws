@@ -123,7 +123,7 @@ const webSocketServer = new WebSocketServer({ noServer: true });
 setHttpServer(httpServer);
 setWebSocketServer(webSocketServer);
 
-const app = next({ dev, hostname, port, customServer: httpServer });
+const app = next({ dev, hostname, port, customServer: true });
 const handle = app.getRequestHandler();
 
 app.prepare().then(() => {
