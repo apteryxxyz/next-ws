@@ -22,7 +22,7 @@ export default new Command('patch')
     }
 
     let patch = patches.find((p) => semver.satisfies(current, p.supported));
-    if (patch && semver.gtr(current, maximum)) {
+    if (semver.gtr(current, maximum)) {
       logger.warn(`Next WS has not yet been tested with Next.js v${current},
         it may or may not work, are you sure you want to continue?`);
 
