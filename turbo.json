@@ -8,7 +8,7 @@
     },
     "build": {
       "dependsOn": ["^build"],
-      "inputs": ["src/**"],
+      "inputs": ["../../readme.md", "src/**"],
       "outputs": ["dist/**"],
       "outputLogs": "new-only"
     },

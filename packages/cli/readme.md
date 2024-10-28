@@ -1,16 +1,16 @@
-<div align="center">
+<div align='center'>
   <h1><strong>Next WS</strong></h1>
   <i>Add support for WebSockets in Next.js app directory</i><br>
   <code>npm install next-ws ws</code>
 </div>
 
-<div align="center">
-  <img alt="package version" src="https://img.shields.io/npm/v/next-ws?label=version">
-  <img alt="total downloads" src="https://img.shields.io/npm/dt/next-ws">
+<div align='center'>
+  <img alt='package version' src='https://img.shields.io/npm/v/next-ws?label=version'>
+  <img alt='total downloads' src='https://img.shields.io/npm/dt/next-ws'>
   <br>
-  <a href="https://github.com/apteryxxyz/next-ws"><img alt="next-ws repo stars" src="https://img.shields.io/github/stars/apteryxxyz/next-ws?style=social"></a>
-  <a href="https://github.com/apteryxxyz"><img alt="apteryxxyz followers" src="https://img.shields.io/github/followers/apteryxxyz?style=social"></a>
-  <a href="https://discord.gg/vZQbMhwsKY"><img src="https://discordapp.com/api/guilds/829836158007115806/widget.png?style=shield" alt="discord shield"/></a>
+  <a href='https://github.com/apteryxxyz/next-ws'><img alt='next-ws repo stars' src='https://img.shields.io/github/stars/apteryxxyz/next-ws?style=social'></a>
+  <a href='https://github.com/apteryxxyz'><img alt='apteryxxyz followers' src='https://img.shields.io/github/followers/apteryxxyz?style=social'></a>
+  <a href='https://discord.gg/B2rEQ9g2vf'><img src='https://discordapp.com/api/guilds/829836158007115806/widget.png?style=shield' alt='discord shield'/></a>
 </div>
 
 ## 🤔 About
@@ -59,7 +59,7 @@ The `SOCKET` function receives three arguments: the WebSocket client instance, t
 export function SOCKET(
   client: import('ws').WebSocket,
   request: import('http').IncomingMessage,
-  server: import('ws').WebSocketServer,
+  server: import('ws').WebSocketServer
 ) {
   // ...
 }
@@ -85,7 +85,7 @@ Creating an API route anywhere within the app directory and exporting a `SOCKET`
 export function SOCKET(
   client: import('ws').WebSocket,
   request: import('http').IncomingMessage,
-  server: import('ws').WebSocketServer,
+  server: import('ws').WebSocketServer
 ) {
   console.log('A client connected');
 
@@ -101,6 +101,9 @@ export function SOCKET(
 ```
 
 ### Using a Custom Server
+
+> [!IMPORTANT]  
+> Next WS was made to avoid the need for a custom server, if you are using one, you don't need this package and can just use a websocket server directly.
 
 To use a custom server, all you need to do is tell Next WS to use your server instead of creating its own. This can be done by calling the `setHttpServer` and `setWebSocketServer` functions from `next-ws/server` and passing your server instances.
 
@@ -169,15 +172,15 @@ To make it easier to connect to your new WebSocket server, Next WS also provides
 import { WebSocketProvider } from 'next-ws/client';
 
 export default function Layout({ children }: React.PropsWithChildren) {
-  return <html>
-    <body>
-      <WebSocketProvider
-        url="ws://localhost:3000/api/ws"
-      >
-        {children}
-      </WebSocketProvider>
-    </body>
-  </html>;
+  return (
+    <html>
+      <body>
+        <WebSocketProvider url='ws://localhost:3000/api/ws'>
+          {children}
+        </WebSocketProvider>
+      </body>
+    </html>
+  );
 }
 ```
 
@@ -224,23 +227,20 @@ export default function Page() {
     return () => ws?.removeEventListener('message', onMessage);
   }, [ws]);
 
-  return <>
-    <input
-      ref={inputRef}
-      type="text"
-    />
+  return (
+    <>
+      <input ref={inputRef} type='text' />
 
-    <button
-      onClick={() => ws?.send(inputRef.current?.value ?? '')}
-    >
-      Send message to server
-    </button>
+      <button onClick={() => ws?.send(inputRef.current?.value ?? '')}>
+        Send message to server
+      </button>
 
-    <p>
-      {message === null
-        ? 'Waiting to receive message...'
-        : `Got message: ${message}`}
-    </p>
-  </>;
+      <p>
+        {message === null
+          ? 'Waiting to receive message...'
+          : `Got message: ${message}`}
+      </p>
+    </>
+  );
 }
 ```

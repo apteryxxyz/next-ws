@@ -54,7 +54,10 @@ export default new Command('patch')
     logger.info(
       `Patching Next.js v${current} with patch "${patch.supported}"...`,
     );
-    patch();
+    await patch().catch((e) => {
+      logger.error(e);
+      process.exit(1);
+    });
 
     logger.info('Saving patch information file...');
     setTrace({ patch: patch.supported, version: current });

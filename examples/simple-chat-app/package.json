@@ -2,8 +2,8 @@
   "name": "simple-chat-app",
   "private": true,
   "dependencies": {
-    "next": "^14.1.4",
-    "next-ws": "file:../../packages/core",
+    "next": "^15.0.1",
+    "next-ws": "^1.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "ws": "^8.16.0"

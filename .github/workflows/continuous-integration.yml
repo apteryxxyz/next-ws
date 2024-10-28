@@ -1,11 +1,12 @@
 name: Continuous Integration
-
 on:
   push:
+    branches:
+      - main
   pull_request:
+    types: [opened, synchronize, reopened]
   workflow_dispatch:
   workflow_call:
-
 jobs:
   lint:
     name: Linting
