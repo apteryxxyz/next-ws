@@ -1,12 +1,7 @@
 {
-  "extends": "../../tsconfig.base.json",
-  "include": ["src/**/*"],
-  "exclude": ["node_modules"],
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "baseUrl": ".",
-    "outDir": "dist",
-    "paths": { "~/*": ["src/*"] },
     "jsx": "preserve",
-    "lib": ["DOM", "ES2022"]
+    "paths": { "~/*": ["./src/*"] }
   }
 }

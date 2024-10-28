@@ -1,5 +1,58 @@
 {
   "editor.formatOnSave": true,
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.patterns": {
+    ".env": "*.env, .env.*, .envrc, env.d.ts",
+    "package.json": "pnpm-lock.yaml, pnpm-workspace.yaml",
+    "*.ts": "$(capture).js, $(capture).d.ts.map, $(capture).*.ts, $(capture)_*.js, $(capture)_*.ts",
+    "*.tsx": "$(capture).ts, $(capture).*.tsx, $(capture)_*.ts, $(capture)_*.tsx, $(capture).less, $(capture).module.less, $(capture).module.less.d.ts, $(capture).scss, $(capture).module.scss, $(capture).module.scss.d.ts, $(capture).css.ts"
+  },
+  "todohighlight.keywords": [
+    {
+      "text": "NOTE:",
+      "regex": {
+        "pattern": "NOTE(\\(.*?\\))?:"
+      },
+      "color": "cyan",
+      "border": "1px solid cyan",
+      "borderRadius": "2px",
+      "backgroundColor": "rgba(0,0,0,.2)",
+      "isWholeLine": true
+    },
+    {
+      "text": "IDEA:",
+      "regex": {
+        "pattern": "IDEA(\\(.*?\\))?:"
+      },
+      "color": "lime",
+      "border": "1px solid green",
+      "borderRadius": "2px",
+      "backgroundColor": "rgba(0,0,0,.2)",
+      "isWholeLine": true
+    },
+    {
+      "text": "TODO:",
+      "regex": {
+        "pattern": "TODO(\\(.*?\\))?:"
+      },
+      "color": "orange",
+      "border": "1px solid orange",
+      "borderRadius": "2px",
+      "backgroundColor": "rgba(0,0,0,.2)",
+      "isWholeLine": true
+    },
+    {
+      "text": "FIXME:",
+      "regex": {
+        "pattern": "FIXME(\\(.*?\\))?:"
+      },
+      "color": "red",
+      "border": "1px solid red",
+      "borderRadius": "2px",
+      "backgroundColor": "rgba(0,0,0,.2)",
+      "isWholeLine": true
+    }
+  ],
   "editor.insertSpaces": true,
   "editor.tabSize": 2,
   "files.exclude": {
@@ -8,12 +61,10 @@
     "**/.hg": true,
     "**/CVS": true,
     "**/.DS_Store": true,
-    "**/Thumbs.db": true,
-    "**/node_modules": true
+    "**/Thumbs.db": true
   },
   "editor.codeActionsOnSave": {
     "source.organizeImports.biome": "explicit"
   },
-  "cSpell.language": "en-GB",
-  "cSpell.words": []
+  "cSpell.language": "en-GB"
 }
