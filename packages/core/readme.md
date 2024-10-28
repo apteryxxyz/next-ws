@@ -102,6 +102,9 @@ export function SOCKET(
 
 ### Using a Custom Server
 
+> [!IMPORTANT]  
+> Next WS was made to avoid the need for a custom server, if you are using one, you don't need this package and can just use a websocket server directly.
+
 To use a custom server, all you need to do is tell Next WS to use your server instead of creating its own. This can be done by calling the `setHttpServer` and `setWebSocketServer` functions from `next-ws/server` and passing your server instances.
 
 ```ts
