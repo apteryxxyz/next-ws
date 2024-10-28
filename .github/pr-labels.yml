@@ -1,7 +1,6 @@
 "dependencies":
   - changed-files:
-      - any-glob-to-any-file:
-          ["pnpm-lock.yaml", "package.json", "packages/*/package.json"]
+      - any-glob-to-any-file: ["pnpm-lock.yaml"]
 
 "e:simple-chat-app":
   - changed-files:
