@@ -1,0 +1,19 @@
+"dependencies":
+  - changed-files:
+      - any-glob-to-any-file: ["pnpm-lock.yaml"]
+
+"e:simple-chat-app":
+  - changed-files:
+      - any-glob-to-any-file: ["examples/simple-chat-app/**"]
+
+"e:with-custom-server":
+  - changed-files:
+      - any-glob-to-any-file: ["examples/with-custom-server/**"]
+
+"p:cli":
+  - changed-files:
+      - any-glob-to-any-file: ["packages/cli/**"]
+
+"p:core":
+  - changed-files:
+      - any-glob-to-any-file: ["packages/core/**"]

@@ -1,7 +1,9 @@
 {
-  "$schema": "https://json.schemastore.org/tsconfig",
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "coverage", "test", "tests"],
+  "$schema": "https://json.schemastore.org/tsconfig.json",
+
+  "include": ["${configDir}/src/**/*"],
+  "exclude": ["node_modules"],
+
   "compileOnSave": true,
   "compilerOptions": {
     "allowUnreachableCode": false,
@@ -28,8 +30,7 @@
     "declarationMap": true,
     "importHelpers": false,
     "newLine": "lf",
-    "noEmitHelpers": false,
-    "outDir": "dist",
+    "noEmitHelpers": true,
     "removeComments": false,
     "sourceMap": true,
 
@@ -39,11 +40,13 @@
     "isolatedModules": true,
 
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-
-    "lib": ["ES2022"],
+    "lib": ["DOM", "ESNext"],
     "target": "ES2022",
     "useDefineForClassFields": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+
+    "baseUrl": "${configDir}",
+    "outDir": "${configDir}/dist",
+    "paths": { "~/*": ["./src/*"] }
   }
 }

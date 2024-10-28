@@ -6,19 +6,21 @@ on:
     branches:
       - main
     paths:
-      - '.github/labels.yml'
+      - .github/labels.yml
 
 jobs:
-  label-sync:
-    name: Label Sync
+  sync:
+    name: Label sync
     runs-on: ubuntu-latest
-    if: github.repository_owner == 'apteryxxyz'
+    permissions:
+      contents: read
+      issues: write
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Label sync
-        uses: crazy-max/ghaction-github-labeler@v4
+        uses: crazy-max/ghaction-github-labeler@v5
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}

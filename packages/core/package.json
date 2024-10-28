@@ -28,8 +28,6 @@
     }
   },
   "scripts": {
-    "lint": "biome lint . --write",
-    "format": "biome format . --write",
     "check": "tsc --noEmit",
     "build": "cp ../../readme.md . && tsup",
     "dev": "pnpm build --watch"
@@ -40,7 +38,6 @@
     "ws": "*"
   },
   "devDependencies": {
-    "@configs/tsup": "workspace:^",
     "@types/react": "^18.3.3",
     "@types/ws": "^8.5.10",
     "next": "^14.2.4",
