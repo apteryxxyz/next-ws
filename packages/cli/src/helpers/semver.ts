@@ -1,4 +1,4 @@
-import { gt, Range, SemVer, type Options } from 'semver';
+import { type Options, Range, SemVer, gt } from 'semver';
 
 function maxVersion(range_: Range | string, loose?: Options | boolean) {
   const range = new Range(range_, loose);
