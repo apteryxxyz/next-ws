@@ -1,16 +1,16 @@
-<div align="center">
+<div align='center'>
   <h1><strong>Next WS</strong></h1>
   <i>Add support for WebSockets in Next.js app directory</i><br>
   <code>npm install next-ws ws</code>
 </div>
 
-<div align="center">
-  <img alt="package version" src="https://img.shields.io/npm/v/next-ws?label=version">
-  <img alt="total downloads" src="https://img.shields.io/npm/dt/next-ws">
+<div align='center'>
+  <img alt='package version' src='https://img.shields.io/npm/v/next-ws?label=version'>
+  <img alt='total downloads' src='https://img.shields.io/npm/dt/next-ws'>
   <br>
-  <a href="https://github.com/apteryxxyz/next-ws"><img alt="next-ws repo stars" src="https://img.shields.io/github/stars/apteryxxyz/next-ws?style=social"></a>
-  <a href="https://github.com/apteryxxyz"><img alt="apteryxxyz followers" src="https://img.shields.io/github/followers/apteryxxyz?style=social"></a>
-  <a href="https://discord.gg/B2rEQ9g2vf"><img src="https://discordapp.com/api/guilds/829836158007115806/widget.png?style=shield" alt="discord shield"/></a>
+  <a href='https://github.com/apteryxxyz/next-ws'><img alt='next-ws repo stars' src='https://img.shields.io/github/stars/apteryxxyz/next-ws?style=social'></a>
+  <a href='https://github.com/apteryxxyz'><img alt='apteryxxyz followers' src='https://img.shields.io/github/followers/apteryxxyz?style=social'></a>
+  <a href='https://discord.gg/B2rEQ9g2vf'><img src='https://discordapp.com/api/guilds/829836158007115806/widget.png?style=shield' alt='discord shield'/></a>
 </div>
 
 ## 🤔 About
@@ -57,9 +57,9 @@ The `SOCKET` function receives three arguments: the WebSocket client instance, t
 
 ```ts
 export function SOCKET(
-  client: import("ws").WebSocket,
-  request: import("http").IncomingMessage,
-  server: import("ws").WebSocketServer
+  client: import('ws').WebSocket,
+  request: import('http').IncomingMessage,
+  server: import('ws').WebSocketServer
 ) {
   // ...
 }
@@ -83,19 +83,19 @@ Creating an API route anywhere within the app directory and exporting a `SOCKET`
 // app/api/ws/route.ts (can be any route file in the app directory)
 
 export function SOCKET(
-  client: import("ws").WebSocket,
-  request: import("http").IncomingMessage,
-  server: import("ws").WebSocketServer
+  client: import('ws').WebSocket,
+  request: import('http').IncomingMessage,
+  server: import('ws').WebSocketServer
 ) {
-  console.log("A client connected");
+  console.log('A client connected');
 
-  client.on("message", (message) => {
-    console.log("Received message:", message);
+  client.on('message', (message) => {
+    console.log('Received message:', message);
     client.send(message);
   });
 
-  client.on("close", () => {
-    console.log("A client disconnected");
+  client.on('close', () => {
+    console.log('A client disconnected');
   });
 }
 ```
@@ -110,14 +110,14 @@ To use a custom server, all you need to do is tell Next WS to use your server in
 ```ts
 // server.js
 
-const { setHttpServer, setWebSocketServer } = require("next-ws/server");
-const { Server } = require("node:http");
-const { parse } = require("node:url");
-const next = require("next");
-const { WebSocketServer } = require("ws");
+const { setHttpServer, setWebSocketServer } = require('next-ws/server');
+const { Server } = require('node:http');
+const { parse } = require('node:url');
+const next = require('next');
+const { WebSocketServer } = require('ws');
 
-const dev = process.env.NODE_ENV !== "production";
-const hostname = "localhost";
+const dev = process.env.NODE_ENV !== 'production';
+const hostname = 'localhost';
 const port = 3000;
 
 const httpServer = new Server();
@@ -131,7 +131,7 @@ const handle = app.getRequestHandler();
 
 app.prepare().then(() => {
   httpServer
-    .on("request", async (req, res) => {
+    .on('request', async (req, res) => {
       const parsedUrl = parse(req.url, true);
       await handle(req, res, parsedUrl);
     })
@@ -151,7 +151,7 @@ Along with setters, Next WS also provides getters for the HTTP and WebSocket ser
 ```ts
 // app/api/stats/route.ts
 
-import { getWebSocketServer } from "next-ws/server";
+import { getWebSocketServer } from 'next-ws/server';
 // There is also a `getHttpServer` function available
 
 export function GET() {
@@ -167,15 +167,15 @@ To make it easier to connect to your new WebSocket server, Next WS also provides
 
 ```tsx
 // layout.tsx
-"use client";
+'use client';
 
-import { WebSocketProvider } from "next-ws/client";
+import { WebSocketProvider } from 'next-ws/client';
 
 export default function Layout({ children }: React.PropsWithChildren) {
   return (
     <html>
       <body>
-        <WebSocketProvider url="ws://localhost:3000/api/ws">
+        <WebSocketProvider url='ws://localhost:3000/api/ws'>
           {children}
         </WebSocketProvider>
       </body>
@@ -203,10 +203,10 @@ Now you can use the `useWebSocket` hook to get the WebSocket instance, and send 
 
 ```tsx
 // page.tsx
-"use client";
+'use client';
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import { useWebSocket } from "next-ws/client";
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useWebSocket } from 'next-ws/client';
 
 export default function Page() {
   const ws = useWebSocket();
@@ -218,26 +218,26 @@ export default function Page() {
   useEffect(() => {
     async function onMessage(event: MessageEvent) {
       const payload =
-        typeof event.data === "string" ? event.data : await event.data.text();
+        typeof event.data === 'string' ? event.data : await event.data.text();
       const message = JSON.parse(payload) as Message;
       setMessages((p) => [...p, message]);
     }
 
-    ws?.addEventListener("message", onMessage);
-    return () => ws?.removeEventListener("message", onMessage);
+    ws?.addEventListener('message', onMessage);
+    return () => ws?.removeEventListener('message', onMessage);
   }, [ws]);
 
   return (
     <>
-      <input ref={inputRef} type="text" />
+      <input ref={inputRef} type='text' />
 
-      <button onClick={() => ws?.send(inputRef.current?.value ?? "")}>
+      <button onClick={() => ws?.send(inputRef.current?.value ?? '')}>
         Send message to server
       </button>
 
       <p>
         {message === null
-          ? "Waiting to receive message..."
+          ? 'Waiting to receive message...'
           : `Got message: ${message}`}
       </p>
     </>
