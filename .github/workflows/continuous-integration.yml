@@ -6,6 +6,8 @@ on:
   workflow_dispatch:
   workflow_call:
 
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
 jobs:
   lint:
     name: Linting
