@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Label pull request
-        uses: actions/labeler@v2
+        uses: actions/labeler@v5
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           configuration-path: .github/pr-labels.yml
