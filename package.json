@@ -11,7 +11,7 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "change": "changeset add",
-    "publish": "changeset version && biome format **/**/package.json && turbo build && changeset publish",
+    "publish": "changeset version && pnpm biome format . --write && turbo build && changeset publish",
     "publish:snapshot": "changeset version --snapshot beta && pnpm turbo build && changeset publish --tag beta --no-git-tag",
     "graph": "npx nx@18 graph"
   },
