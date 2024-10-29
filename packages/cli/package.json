@@ -15,7 +15,7 @@
     "url": "https://github.com/apteryxxyz/next-ws/issues"
   },
   "files": ["dist"],
-  "bin": "./dist/program.cjs",
+  "bin": "./dist/program.js",
   "scripts": {
     "check": "tsc --noEmit",
     "build": "cp ../../readme.md . && tsup",
