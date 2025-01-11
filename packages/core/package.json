@@ -17,12 +17,12 @@
   "files": ["dist"],
   "exports": {
     "./client": {
-      "import": "./dist/client/index.mjs",
+      "import": "./dist/client/index.js",
       "require": "./dist/client/index.cjs",
       "types": "./dist/client/index.d.ts"
     },
     "./server": {
-      "import": "./dist/server/index.mjs",
+      "import": "./dist/server/index.js",
       "require": "./dist/server/index.cjs",
       "types": "./dist/server/index.d.ts"
     }

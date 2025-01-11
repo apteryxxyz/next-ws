@@ -1,8 +1,8 @@
 import * as logger from 'next/dist/build/output/log';
 import type NextNodeServer from 'next/dist/server/next-server';
 import { WebSocketServer } from 'ws';
-import { getPageModule, resolveFilename } from './helpers/next';
 import { useHttpServer, useWebSocketServer } from './helpers/persistent';
+import { importRouteModule, resolvePathToRoute } from './helpers/route';
 
 export function setupWebSocketServer(nextServer: NextNodeServer) {
   process.env.NEXT_WS_MAIN_PROCESS = String(1);
@@ -26,27 +26,29 @@ export function setupWebSocketServer(nextServer: NextNodeServer) {
     const pathname = url.pathname;
     if (pathname.startsWith('/_next')) return;
 
-    const filename = resolveFilename(nextServer, pathname);
-    if (!filename) {
+    const routeInfo = resolvePathToRoute(nextServer, pathname);
+    if (!routeInfo) {
       logger.error(`[next-ws] could not find module for page ${pathname}`);
       return socket.destroy();
     }
 
-    const pageModule = await getPageModule(nextServer, filename);
-    if (!pageModule) {
+    const routeModule = await importRouteModule(nextServer, routeInfo.filePath);
+    if (!routeModule) {
       logger.error(`[next-ws] could not find module for page ${pathname}`);
       return socket.destroy();
     }
 
-    const socketHandler = pageModule?.routeModule?.userland?.SOCKET;
+    const socketHandler = routeModule?.routeModule?.userland?.SOCKET;
     if (!socketHandler || typeof socketHandler !== 'function') {
       logger.error(`[next-ws] ${pathname} does not export a SOCKET handler`);
       return socket.destroy();
     }
 
-    return wsServer.handleUpgrade(request, socket, head, (c, r) => {
-      const dispose = socketHandler(c, r, wsServer);
-      if (typeof dispose === 'function') c.once('close', () => dispose());
+    return wsServer.handleUpgrade(request, socket, head, async (c, r) => {
+      const params = routeInfo.routeParams;
+      const handleClose = await socketHandler(c, r, wsServer, params);
+      if (typeof handleClose === 'function')
+        c.once('close', () => handleClose());
     });
   });
 }

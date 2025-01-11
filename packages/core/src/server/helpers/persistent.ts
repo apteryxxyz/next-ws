@@ -1,5 +1,15 @@
 import * as logger from 'next/dist/build/output/log';
-import { getEnvironmentMeta } from './next';
+
+/**
+ * Get the environment metadata.
+ * @returns The environment metadata.
+ */
+function getEnvironmentMeta() {
+  const isCustomServer = !process.title.startsWith('next-');
+  const isMainProcess = process.env.NEXT_WS_MAIN_PROCESS === '1';
+  const isDevelopment = process.env.NODE_ENV === 'development';
+  return { isCustomServer, isMainProcess, isDevelopment };
+}
 
 function mainProcessOnly(fnName: string) {
   if (process.env.NEXT_WS_SKIP_ENVIRONMENT_CHECK === '1') return;
@@ -82,13 +92,3 @@ export function useWebSocketServer(wsServer?: WebSocketServer) {
   if (wsServer) setWebSocketServer(wsServer);
   return wsServer;
 }
-
-/** A function that handles a WebSocket connection. */
-export type SocketHandler = (
-  /** The WebSocket client that connected. */
-  client: import('ws').WebSocket,
-  /** The HTTP request that initiated the WebSocket connection. */
-  request: import('http').IncomingMessage,
-  /** The WebSocket server. */
-  server: import('ws').WebSocketServer,
-) => unknown | (() => void);
