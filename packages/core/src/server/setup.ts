@@ -45,8 +45,8 @@ export function setupWebSocketServer(nextServer: NextNodeServer) {
     }
 
     return wsServer.handleUpgrade(request, socket, head, async (c, r) => {
-      const params = routeInfo.routeParams;
-      const handleClose = await socketHandler(c, r, wsServer, params);
+      const routeContext = { params: routeInfo.routeParams };
+      const handleClose = await socketHandler(c, r, wsServer, routeContext);
       if (typeof handleClose === 'function')
         c.once('close', () => handleClose());
     });

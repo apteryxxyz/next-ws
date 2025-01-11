@@ -6,8 +6,10 @@ export type SocketHandler = (
   request: import('http').IncomingMessage,
   /** The WebSocket server. */
   server: import('ws').WebSocketServer,
-  /** The route parameters. */
-  params: Record<string, string | string[]>,
+  context: {
+    /** The route parameters. */
+    params: Record<string, string | string[]>;
+  },
 ) => Awaitable<OnClose | unknown>;
 
 type OnClose = () => Awaitable<unknown>;
