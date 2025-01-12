@@ -1,6 +1,6 @@
 {
   "name": "next-ws",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "type": "module",
   "description": "Add support for WebSockets in Next.js 13 app directory",
   "license": "MIT",
