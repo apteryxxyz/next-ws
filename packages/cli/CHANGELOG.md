@@ -1,5 +1,11 @@
 # next-ws-cli
 
+## 1.1.7
+
+### Patch Changes
+
+- 5b40f30: Bump `patch-3` support range to `15.1.5`
+
 ## 1.1.6
 
 ### Patch Changes
