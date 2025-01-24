@@ -36,6 +36,6 @@ export default Object.assign(
   },
   {
     date: '2023-11-01' as const,
-    supported: '>=13.5.1 <=15.1.5' as const,
+    supported: '>=13.5.1 <=15.1.6' as const,
   },
 );
