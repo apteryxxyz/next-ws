@@ -37,6 +37,9 @@
     "dev": "tsup --watch",
     "test": "playwright test",
     "prepare": "husky",
+    "postinstall": "pnpm build",
+    "prepack": "pinst --disable && pnpm biome format package.json --write",
+    "postpack": "pinst --enable && pnpm biome format package.json --write",
     "change": "changeset",
     "release": "changeset version && pnpm pretty && pnpm build && changeset publish",
     "release:snapshot": "changeset version --snapshot beta && pnpm pretty && pnpm build && changeset publish --tag beta --no-git-tag"
@@ -58,6 +61,7 @@
     "chalk": "^5.4.1",
     "commander": "^13.1.0",
     "husky": "^9.1.7",
+    "pinst": "^3.0.0",
     "semver": "^7.7.1",
     "tsup": "^8.3.6",
     "typescript": "^5.7.3"
