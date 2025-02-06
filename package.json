@@ -1,27 +1,69 @@
 {
-  "name": "root",
-  "private": true,
-  "packageManager": "pnpm@9.12.1",
-  "workspaces": ["packages/*"],
+  "name": "next-ws",
+  "version": "1.2.0",
+  "packageManager": "pnpm@9.15.4",
+  "type": "module",
+  "description": "Add support for WebSockets in Next.js 13 app directory",
+  "license": "MIT",
+  "keywords": ["next", "websocket", "ws", "server", "client"],
+  "homepage": "https://github.com/apteryxxyz/next-ws#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/apteryxxyz/next-ws.git"
+  },
+  "bugs": {
+    "url": "https://github.com/apteryxxyz/next-ws/issues"
+  },
+  "bin": {
+    "next-ws": "./dist/cli.cjs"
+  },
+  "files": ["dist"],
+  "exports": {
+    "./client": {
+      "require": "./dist/client/index.cjs",
+      "import": "./dist/client/index.js"
+    },
+    "./server": {
+      "require": "./dist/server/index.cjs",
+      "import": "./dist/server/index.js"
+    },
+    "./package.json": "./package.json"
+  },
   "scripts": {
-    "lint": "biome lint . --write",
-    "format": "biome format . --write",
-    "pretty": "biome check . --write",
-    "check": "turbo check",
-    "build": "turbo build",
-    "dev": "turbo dev",
-    "change": "changeset add",
-    "publish": "changeset version && pnpm biome format . --write && turbo build && changeset publish",
-    "publish:snapshot": "changeset version --snapshot beta && pnpm turbo build && changeset publish --tag beta --no-git-tag",
-    "graph": "npx nx@18 graph"
+    "lint": "biome ci .",
+    "format": "biome check . --write",
+    "check": "tsc --noEmit",
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "playwright test",
+    "prepare": "husky",
+    "postinstall": "pnpm build",
+    "prepack": "pinst --disable && pnpm biome format package.json --write",
+    "postpack": "pinst --enable && pnpm biome format package.json --write",
+    "change": "changeset",
+    "release": "changeset version && pnpm format && pnpm build && changeset publish",
+    "release:snapshot": "changeset version --snapshot beta && pnpm format && pnpm build && changeset publish --tag beta --no-git-tag"
+  },
+  "peerDependencies": {
+    "next": ">=13.1.1",
+    "react": "*",
+    "ws": "*"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.8.3",
-    "@changesets/changelog-git": "^0.2.0",
-    "@changesets/cli": "^2.27.9",
-    "tsup": "^8.1.0",
-    "tsx": "^4.16.0",
-    "turbo": "^2.0.6",
-    "typescript": "^5.5.2"
+    "@biomejs/biome": "^1.9.4",
+    "@changesets/changelog-github": "^0.5.0",
+    "@changesets/cli": "^2.27.12",
+    "@playwright/test": "^1.50.1",
+    "@types/node": "^22.13.1",
+    "@types/react": "^19.0.8",
+    "@types/semver": "^7.5.8",
+    "@types/ws": "^8.5.14",
+    "chalk": "^5.4.1",
+    "commander": "^13.1.0",
+    "husky": "^9.1.7",
+    "pinst": "^3.0.0",
+    "semver": "^7.7.1",
+    "tsup": "^8.3.6",
+    "typescript": "^5.7.3"
   }
 }

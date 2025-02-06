@@ -2,39 +2,82 @@ name: Continuous Integration
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
+    branches: [main]
     types: [opened, synchronize, reopened]
   workflow_dispatch:
   workflow_call:
 
 jobs:
-  lint:
+  check:
+    name: Type Checking
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: ./.github/actions/node
+
+      - name: Run the type checker
+        run: pnpm check
+
+  quality:
     name: Linting
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Setup Workflow
-        uses: ./.github/actions/setup
+      - name: Setup Node.js
+        uses: ./.github/actions/node
 
-      - name: Run Linter
+      - name: Run the linter
         run: pnpm lint
 
   build:
     name: Building
-    needs: lint
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Setup Workflow
-        uses: ./.github/actions/setup
+      - name: Setup Node.js
+        uses: ./.github/actions/node
 
-      - name: Build project
+      - name: Build the package
         run: pnpm build
+
+  test:
+    name: Testing
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: ./.github/actions/node
+
+      - name: Install playwright browsers
+        run: pnpm playwright install --with-deps
+
+      - name: Run e2e tests
+        run: pnpm test
+
+      - name: Upload test outputs
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: test-outputs
+          path: |
+            tests/.report/
+            tests/.results/
+          include-hidden-files: true
+          retention-days: 7

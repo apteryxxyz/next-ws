@@ -1,0 +1,19 @@
+{
+  "name": "chat-room",
+  "private": true,
+  "scripts": {
+    "build": "next build",
+    "start": "next start",
+    "dev": "next dev",
+    "prepare": "next-ws patch"
+  },
+  "dependencies": {
+    "next": "15.1.6",
+    "next-ws": "workspace:^",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.8"
+  }
+}

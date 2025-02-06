@@ -1,8 +1,8 @@
 {
   "recommendations": [
     "biomejs.biome",
-    "jgclark.vscode-todo-highlight",
     "streetsidesoftware.code-spell-checker",
-    "formulahendry.auto-rename-tag"
+    "gruntfuggly.todo-tree",
+    "ms-playwright.playwright"
   ]
 }

@@ -3,24 +3,22 @@ name: Label Sync
 on:
   workflow_dispatch:
   push:
-    branches:
-      - main
-    paths:
-      - .github/labels.yml
+    branches: [main]
+    paths: [.github/labels.yml]
 
 jobs:
   sync:
-    name: Label sync
+    name: Label Sync
     runs-on: ubuntu-latest
     permissions:
       contents: read
       issues: write
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Label sync
+      - name: Sync labels
         uses: crazy-max/ghaction-github-labeler@v5
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}

@@ -1,70 +1,77 @@
 {
-  "editor.formatOnSave": true,
+  "cSpell.language": "en-AU",
+  "explorer.compactFolders": true,
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.patterns": {
-    ".env": "*.env, .env.*, .envrc, env.d.ts",
+    ".env": "*.env, .env.*",
     "package.json": "pnpm-lock.yaml, pnpm-workspace.yaml",
-    "*.ts": "$(capture).js, $(capture).d.ts.map, $(capture).*.ts, $(capture)_*.js, $(capture)_*.ts",
-    "*.tsx": "$(capture).ts, $(capture).*.tsx, $(capture)_*.ts, $(capture)_*.tsx, $(capture).less, $(capture).module.less, $(capture).module.less.d.ts, $(capture).scss, $(capture).module.scss, $(capture).module.scss.d.ts, $(capture).css.ts"
+    "*.js": "$(capture).js.map, $(capture).d.ts",
+    "*.jsx": "$(capture).jsx.map, $(capture).d.ts",
+    "*.d.ts": "$(capture).d.ts.map"
   },
-  "todohighlight.keywords": [
-    {
-      "text": "NOTE:",
-      "regex": {
-        "pattern": "NOTE(\\(.*?\\))?:"
-      },
-      "color": "cyan",
-      "border": "1px solid cyan",
-      "borderRadius": "2px",
-      "backgroundColor": "rgba(0,0,0,.2)",
-      "isWholeLine": true
-    },
-    {
-      "text": "IDEA:",
-      "regex": {
-        "pattern": "IDEA(\\(.*?\\))?:"
-      },
-      "color": "lime",
-      "border": "1px solid green",
-      "borderRadius": "2px",
-      "backgroundColor": "rgba(0,0,0,.2)",
-      "isWholeLine": true
-    },
-    {
-      "text": "TODO:",
-      "regex": {
-        "pattern": "TODO(\\(.*?\\))?:"
-      },
-      "color": "orange",
-      "border": "1px solid orange",
-      "borderRadius": "2px",
-      "backgroundColor": "rgba(0,0,0,.2)",
-      "isWholeLine": true
-    },
-    {
-      "text": "FIXME:",
-      "regex": {
-        "pattern": "FIXME(\\(.*?\\))?:"
-      },
-      "color": "red",
-      "border": "1px solid red",
-      "borderRadius": "2px",
-      "backgroundColor": "rgba(0,0,0,.2)",
-      "isWholeLine": true
-    }
-  ],
+  "editor.formatOnSave": true,
   "editor.insertSpaces": true,
   "editor.tabSize": 2,
-  "files.exclude": {
-    "**/.git": true,
-    "**/.svn": true,
-    "**/.hg": true,
-    "**/CVS": true,
-    "**/.DS_Store": true,
-    "**/Thumbs.db": true
+  "editor.codeActionsOnSave": { "source.organizeImports.biome": "explicit" },
+  "cSpell.words": [],
+  "todo-tree.general.tags": ["=====", "NOTE", "IDEA", "TODO", "FIX", "HACK"],
+  "todo-tree.highlights.customHighlight": {
+    "=====": {
+      "type": "whole-line",
+      "icon": "bookmark",
+      "foreground": "#dadada",
+      "gutterIcon": true,
+      "hideFromTree": true
+    },
+    "NOTE": {
+      "type": "whole-line",
+      "icon": "note",
+      "foreground": "#8df7ff",
+      "gutterIcon": true,
+      "hideFromTree": true
+    },
+    "IDEA": {
+      "type": "whole-line",
+      "icon": "light-bulb",
+      "foreground": "#458efc",
+      "gutterIcon": true
+    },
+    "TODO": {
+      "type": "whole-line",
+      "icon": "check",
+      "foreground": "#ff9900",
+      "gutterIcon": true
+    },
+    "FIX": {
+      "type": "whole-line",
+      "icon": "bug",
+      "foreground": "#e63d00",
+      "gutterIcon": true
+    },
+    "HACK": {
+      "type": "whole-line",
+      "icon": "tools",
+      "foreground": "#45da20",
+      "gutterIcon": true
+    }
   },
-  "editor.codeActionsOnSave": {
-    "source.organizeImports.biome": "explicit"
-  },
-  "cSpell.language": "en-GB"
+  "workbench.colorCustomizations": {
+    "activityBar.activeBackground": "#000000",
+    "activityBar.background": "#000000",
+    "activityBar.foreground": "#ffffff",
+    "activityBar.inactiveForeground": "#ffffff99",
+    "activityBarBadge.background": "#000000",
+    "activityBarBadge.foreground": "#ffffff",
+    "commandCenter.border": "#00000099",
+    "sash.hoverBorder": "#000000",
+    "statusBar.background": "#000000",
+    "statusBar.foreground": "#ffffff",
+    "statusBarItem.hoverBackground": "#000000",
+    "statusBarItem.remoteBackground": "#000000",
+    "statusBarItem.remoteForeground": "#ffffff",
+    "titleBar.activeBackground": "#000000",
+    "titleBar.activeForeground": "#ffffff",
+    "titleBar.inactiveBackground": "#00000099",
+    "titleBar.inactiveForeground": "#ffffff99"
+  }
 }

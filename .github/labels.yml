@@ -21,19 +21,3 @@
 - name: dependencies
   color: d93f0b
   description: Dependency updates!!
-
-- name: e:simple-chat-app
-  color: 0075ca
-  description: Simple chat app example
-
-- name: e:with-custom-server
-  color: 0075ca
-  description: Example with custom server
-
-- name: p:cli
-  color: 0075ca
-  description: CLI package
-
-- name: p:core
-  color: 0075ca
-  description: Core package
