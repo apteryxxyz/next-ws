@@ -43,7 +43,7 @@ export const patchNextNodeServer = createPatchStep({
 ;{
   let nextWs;
   try { nextWs = require('next-ws/server') } catch {
-  try { nextWs = require('${getDistDirname()}/server') } catch {
+  try { nextWs = require('${getDistDirname()}/server/index.cjs') } catch {
   /* don't let this crash apps that don't use next-ws */ }}
   nextWs?.setupWebSocketServer(this);
 };
