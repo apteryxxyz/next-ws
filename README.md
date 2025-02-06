@@ -20,8 +20,6 @@
 > [!IMPORTANT]  
 > Next WS is designed for use in server-based environments. It is not suitable for serverless platforms like Vercel, where WebSocket servers are not supported. Furthermore, this plugin is built for the app directory and does not support the older pages directory.
 
-This module is inspired by the now outdated `next-plugin-websocket`, if you are using an older version of Next.js, that module may work for you.
-
 ## 🏓 Table of Contents
 
 - [📦 Installation](#-installation)
@@ -67,7 +65,7 @@ export function SOCKET(
 
 ## 🌀 Examples
 
-> [!TIP]
+> [!TIP]  
 > For more detailed examples, refer the [`examples` directory](https://github.com/apteryxxyz/next-ws/tree/main/examples).
 
 ### Echo Server
@@ -99,4 +97,4 @@ You can now connect to your WebSocket server, send it a message and receive the 
 
 ### Chat Room
 
-See the [chat room example](https://github.com/apteryxxyz/next-ws/tree/main/examples/chat-room)
+See the [chat room example](https://github.com/apteryxxyz/next-ws/tree/main/examples/chat-room).
