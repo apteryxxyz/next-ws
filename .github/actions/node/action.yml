@@ -1,5 +1,5 @@
-name: Setup Workflow
-description: Setup workflow for GitHub Actions
+name: Setup Node.js
+description: Setup Node.js, PNPM, and install dependencies
 
 runs:
   using: "composite"

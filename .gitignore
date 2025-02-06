@@ -6,5 +6,5 @@ dist/
 .next/
 
 # Test Results
-tests/.reports/
+tests/.report/
 tests/.results/

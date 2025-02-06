@@ -30,9 +30,9 @@
     "./package.json": "./package.json"
   },
   "scripts": {
-    "pretty": "biome check . --write",
+    "lint": "biome ci .",
+    "format": "biome check . --write",
     "check": "tsc --noEmit",
-    "quality": "biome ci .",
     "build": "tsup",
     "dev": "tsup --watch",
     "test": "playwright test",
@@ -41,8 +41,8 @@
     "prepack": "pinst --disable && pnpm biome format package.json --write",
     "postpack": "pinst --enable && pnpm biome format package.json --write",
     "change": "changeset",
-    "release": "changeset version && pnpm pretty && pnpm build && changeset publish",
-    "release:snapshot": "changeset version --snapshot beta && pnpm pretty && pnpm build && changeset publish --tag beta --no-git-tag"
+    "release": "changeset version && pnpm format && pnpm build && changeset publish",
+    "release:snapshot": "changeset version --snapshot beta && pnpm format && pnpm build && changeset publish --tag beta --no-git-tag"
   },
   "peerDependencies": {
     "next": ">=13.1.1",

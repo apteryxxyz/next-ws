@@ -14,13 +14,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Workflow
-        uses: ./.github/actions/setup
+      - name: Setup Node.js
+        uses: ./.github/actions/node
 
-      - name: Release Snapshot
+      - name: Publish snapshot version
         run: pnpm run release:snapshot
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

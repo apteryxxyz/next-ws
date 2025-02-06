@@ -16,11 +16,11 @@ jobs:
       bump_needed: ${{ steps.compare-versions.outputs.bump_needed }}
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Workflow
-        uses: ./.github/actions/setup
+      - name: Setup Node.js
+        uses: ./.github/actions/node
 
       - name: Get Current Next.js Version
         id: get-current-version
@@ -48,11 +48,11 @@ jobs:
     if: ${{ needs.check-next-version.outputs.bump_needed == 'true' }}
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Workflow
-        uses: ./.github/actions/setup
+      - name: Setup Node.js
+        uses: ./.github/actions/node
 
       - name: Update Next.js Version
         run: pnpm update next@latest -r
