@@ -71,10 +71,18 @@ jobs:
       - name: Run tests
         run: pnpm test
 
-      - name: Upload test results
+      - name: Upload test report
         uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
           name: tests-report
           path: tests/.report/
+          retention-days: 30
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: tests-results
+          path: tests/.results/
           retention-days: 30

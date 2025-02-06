@@ -2,10 +2,11 @@ import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
   testDir: 'tests',
-  reporter: [['html', { outputFolder: 'tests/.report' }]],
-  outputDir: 'tests/.results',
+  workers: process.env.CI ? 1 : undefined,
   retries: 1,
   use: { trace: 'on-first-retry' },
+  reporter: [['html', { outputFolder: 'tests/.report' }]],
+  outputDir: 'tests/.results',
   webServer: [
     {
       cwd: 'examples/chat-room',
