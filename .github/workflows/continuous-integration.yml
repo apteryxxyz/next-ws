@@ -65,5 +65,8 @@ jobs:
       - name: Setup Workflow
         uses: ./.github/actions/setup
 
+      - name: Install browsers
+        run: pnpm playwright install --with-deps
+
       - name: Run tests
         run: pnpm test
