@@ -65,5 +65,15 @@ jobs:
       - name: Setup Workflow
         uses: ./.github/actions/setup
 
+      - name: Install browsers
+        run: pnpm playwright install --with-deps
+
       - name: Run tests
         run: pnpm test
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: test-report
+          path: tests/.report
