@@ -51,6 +51,9 @@ importers:
       husky:
         specifier: ^9.1.7
         version: 9.1.7
+      pinst:
+        specifier: ^3.0.0
+        version: 3.0.0
       semver:
         specifier: ^7.7.1
         version: 7.7.1
@@ -1138,6 +1141,11 @@ packages:
   pify@4.0.1:
     resolution: {integrity: sha512-uB80kBFb/tfd68bVleG9T5GGsGPjJrLAUpR5PZIrhBnIaRTQRjqdJSsIKkOP6OAIFbj7GOrcudc5pNjZ+geV2g==}
     engines: {node: '>=6'}
+
+  pinst@3.0.0:
+    resolution: {integrity: sha512-cengSmBxtCyaJqtRSvJorIIZXMXg+lJ3sIljGmtBGUVonMnMsVJbnzl6jGN1HkOWwxNuJynCJ2hXxxqCQrFDdw==}
+    engines: {node: '>=12.0.0'}
+    hasBin: true
 
   pirates@4.0.6:
     resolution: {integrity: sha512-saLsH7WeYYPiD25LDuLRRY/i+6HaPYr6G1OUlN39otzkSTxKnubR9RTxS3/Kk50s1g2JTgFwWQDQyplC5/SHZg==}
@@ -2336,6 +2344,8 @@ snapshots:
   picomatch@4.0.2: {}
 
   pify@4.0.1: {}
+
+  pinst@3.0.0: {}
 
   pirates@4.0.6: {}
 
