@@ -1,9 +1,10 @@
 name: Bump Next.js Version
 
 on:
-  schedule:
-    - cron: "0 0 * * *" # Runs daily at midnight UTC
-  workflow_dispatch: # Allow manual trigger
+  # TODO: Test this when the next version of Next.js is released
+  # schedule:
+  #   - cron: "0 0 * * *"
+  workflow_dispatch:
 
 jobs:
   check-next-version:
@@ -58,7 +59,7 @@ jobs:
 
       - name: Bump Supported Range
         run: |
-          new_version='${{ needs.check-next-version.outputs.latest_version }}'
+          new_version="${{ needs.check-next-version.outputs.latest_version }}"
           patch_file=$(ls src/patches/patch-*.ts | sort -V | tail -n 1)
           sed -i "s/\(versions: .*\) <=[0-9\.]\+/\1 <=$new_version/" "$patch_file"
 
