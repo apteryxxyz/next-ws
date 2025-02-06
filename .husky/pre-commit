@@ -1,0 +1,3 @@
+#!/bin/sh
+set -eu
+pnpm biome check --staged --files-ignore-unknown=true --no-errors-on-unmatched

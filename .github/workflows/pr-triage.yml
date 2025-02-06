@@ -6,7 +6,7 @@ on:
 
 jobs:
   label:
-    name: Label pull request
+    name: Label Pull Request
     if: github.event.action != 'edited'
     runs-on: ubuntu-latest
     permissions:

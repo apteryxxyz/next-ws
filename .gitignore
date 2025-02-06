@@ -1,7 +1,10 @@
+# Node
 node_modules/
 
-.turbo/
-.nx/
-
+# Build
 dist/
 .next/
+
+# Test Results
+tests/.reports/
+tests/.results/

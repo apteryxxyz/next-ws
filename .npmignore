@@ -1,6 +1,0 @@
-**/.turbo/
-**/node_modules/
-**/tsup.config.ts
-**/tsconfig.json
-**/*.d.cts
-**/*.tgz

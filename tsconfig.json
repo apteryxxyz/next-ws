@@ -1,8 +1,8 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig.json",
 
-  "include": ["${configDir}/src/**/*"],
-  "exclude": ["node_modules"],
+  "include": ["src/**/*", "tests/**/*"],
+  "exclude": ["node_modules", "dist"],
 
   "compileOnSave": true,
   "compilerOptions": {
@@ -45,8 +45,9 @@
     "useDefineForClassFields": true,
     "skipLibCheck": true,
 
-    "baseUrl": "${configDir}",
-    "outDir": "${configDir}/dist",
-    "paths": { "~/*": ["./src/*"] }
+    "outDir": "./dist",
+    "paths": { "~/*": ["./src/*"] },
+
+    "jsx": "react"
   }
 }

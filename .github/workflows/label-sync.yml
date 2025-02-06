@@ -3,14 +3,12 @@ name: Label Sync
 on:
   workflow_dispatch:
   push:
-    branches:
-      - main
-    paths:
-      - .github/labels.yml
+    branches: [main]
+    paths: [.github/labels.yml]
 
 jobs:
   sync:
-    name: Label sync
+    name: Label Sync
     runs-on: ubuntu-latest
     permissions:
       contents: read

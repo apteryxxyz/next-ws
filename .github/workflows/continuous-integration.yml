@@ -2,16 +2,16 @@ name: Continuous Integration
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
+    branches: [main]
     types: [opened, synchronize, reopened]
   workflow_dispatch:
   workflow_call:
 
 jobs:
-  lint:
-    name: Linting
+  check:
+    name: Type Checking
     runs-on: ubuntu-latest
 
     steps:
@@ -21,12 +21,25 @@ jobs:
       - name: Setup Workflow
         uses: ./.github/actions/setup
 
-      - name: Run Linter
-        run: pnpm lint
+      - name: Run Type Checker
+        run: pnpm check
+
+  quality:
+    name: Quality Checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Workflow
+        uses: ./.github/actions/setup
+
+      - name: Run Quality Checks
+        run: pnpm quality
 
   build:
     name: Building
-    needs: lint
     runs-on: ubuntu-latest
 
     steps:
@@ -38,3 +51,19 @@ jobs:
 
       - name: Build project
         run: pnpm build
+
+  test:
+    name: Testing
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Workflow
+        uses: ./.github/actions/setup
+
+      - name: Run tests
+        run: pnpm test
