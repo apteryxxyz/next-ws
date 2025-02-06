@@ -75,5 +75,6 @@ jobs:
         uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
-          name: test-report
-          path: tests/.report
+          name: tests-report
+          path: tests/.report/
+          retention-days: 30
