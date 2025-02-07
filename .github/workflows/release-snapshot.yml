@@ -3,7 +3,7 @@ name: Release Snapshot
 on:
   push:
     branches: [main]
-    paths: [".changesets/**"]
+    paths: ["package.json", "src/**"]
   workflow_dispatch:
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
