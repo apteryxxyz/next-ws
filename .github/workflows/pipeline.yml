@@ -1,13 +1,18 @@
-name: Continuous Integration
+name: Pipeline
 
 on:
   push:
     branches: [main]
+    paths: ["package.json", "src/**", "tests/**"]
   pull_request:
     branches: [main]
     types: [opened, synchronize, reopened]
+    paths: ["package.json", "src/**", "tests/**"]
   workflow_dispatch:
-  workflow_call:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   check:
@@ -24,7 +29,7 @@ jobs:
       - name: Run the type checker
         run: pnpm check
 
-  quality:
+  lint:
     name: Linting
     runs-on: ubuntu-latest
 
@@ -54,9 +59,8 @@ jobs:
 
   test:
     name: Testing
-    needs: build
+    needs: [build]
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
 
     steps:
       - name: Checkout repository
@@ -68,12 +72,12 @@ jobs:
       - name: Install playwright browsers
         run: pnpm playwright install --with-deps
 
-      - name: Run e2e tests
+      - name: Run tests
         run: pnpm test
 
       - name: Upload test outputs
+        if: failure()
         uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() }}
         with:
           name: test-outputs
           path: |
@@ -81,3 +85,25 @@ jobs:
             tests/.results/
           include-hidden-files: true
           retention-days: 7
+
+  release:
+    name: Releasing Snapshot
+    needs: [test]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: ./.github/actions/node
+
+      - name: Publish snapshot version
+        run: |
+          pnpm changeset version --snapshot beta
+          pnpm biome format package.json --write
+          pnpm build
+          pnpm changeset publish --tag beta --no-git-tag
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

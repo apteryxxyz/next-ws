@@ -1,14 +1,11 @@
 name: Bump Next.js Version
 
 on:
-  # TODO: Test this when the next version of Next.js is released
-  # schedule:
-  #   - cron: "0 0 * * *"
   workflow_dispatch:
 
 jobs:
   check-next-version:
-    name: Check for New Next.js Version
+    name: Check Next.js Version
     runs-on: ubuntu-latest
     outputs:
       current_version: ${{ steps.get-current-version.outputs.current_version }}
@@ -22,19 +19,19 @@ jobs:
       - name: Setup Node.js
         uses: ./.github/actions/node
 
-      - name: Get Current Next.js Version
+      - name: Get current Next.js version
         id: get-current-version
         run: |
-          current_version=$(pnpm list next | grep -o 'next [0-9].*' | cut -d ' ' -f 2)
+          current_version=$(pnpm list next --json | jq -r '.[0]dependencies.next.version')
           echo "current_version=$current_version" >> $GITHUB_OUTPUT
 
-      - name: Get Latest Next.js Version
+      - name: Get latest Next.js version
         id: get-latest-version
         run: |
           latest_version=$(npm show next version)
           echo "latest_version=$latest_version" >> $GITHUB_OUTPUT
 
-      - name: Compare Versions
+      - name: Compare versions
         id: compare-versions
         run: |
           if [ "$latest_version" != "$current_version" ]; then
@@ -43,9 +40,10 @@ jobs:
             echo "bump_needed=false" >> $GITHUB_OUTPUT
 
   update-next-version:
-    name: Bump Next.js Version
-    runs-on: ubuntu-latest
+    name: Update Next.js Version
+    needs: [check-next-version]
     if: ${{ needs.check-next-version.outputs.bump_needed == 'true' }}
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
@@ -54,16 +52,16 @@ jobs:
       - name: Setup Node.js
         uses: ./.github/actions/node
 
-      - name: Update Next.js Version
+      - name: Update Next.js version
         run: pnpm update next@latest -r
 
-      - name: Bump Supported Range
+      - name: Bump supported range
         run: |
           new_version="${{ needs.check-next-version.outputs.latest_version }}"
           patch_file=$(ls src/patches/patch-*.ts | sort -V | tail -n 1)
           sed -i "s/\(versions: .*\) <=[0-9\.]\+/\1 <=$new_version/" "$patch_file"
 
-      - name: Make Pull Request
+      - name: Make pull request
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
