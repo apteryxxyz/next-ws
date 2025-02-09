@@ -1,6 +1,6 @@
 {
   "name": "next-ws",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "packageManager": "pnpm@9.15.4",
   "type": "module",
   "description": "Add support for WebSockets in Next.js 13 app directory",
@@ -37,11 +37,11 @@
     "dev": "tsup --watch",
     "test": "playwright test",
     "prepare": "husky",
-    "postinstall": "pnpm biome format package.json --write && pnpm build",
-    "prepack": "pinst --disable && pnpm biome format package.json --write",
-    "postpack": "pinst --enable && pnpm biome format package.json --write",
+    "postinstall": "biome format package.json --write && pnpm build",
+    "prepack": "pinst --disable && biome format package.json --write",
+    "postpack": "pinst --enable && biome format package.json --write",
     "change": "changeset",
-    "release": "changeset version && pnpm biome package.json --write && pnpm build && changeset publish"
+    "release": "changeset version && biome format package.json --write && pnpm build && changeset publish"
   },
   "peerDependencies": {
     "next": ">=13.1.1",
