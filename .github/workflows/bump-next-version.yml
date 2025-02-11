@@ -75,7 +75,7 @@ jobs:
       - name: Make pull request
         uses: peter-evans/create-pull-request@v5
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GH_PULL_REQUEST_TOKEN }}
           commit-message: "Bump patch supported range to ${{ needs.check-next-version.outputs.next_version }}"
           branch: "bump-next-version"
           title: "Bump patch supported range to ${{ needs.check-next-version.outputs.next_version }}"
