@@ -38,6 +38,7 @@ jobs:
             echo "bump_needed=true" >> $GITHUB_OUTPUT
           else
             echo "bump_needed=false" >> $GITHUB_OUTPUT
+          fi
 
   update-next-version:
     name: Update Next.js Version
