@@ -22,13 +22,13 @@ jobs:
       - name: Get current Next.js version
         id: get-current-version
         run: |
-          current_version=$(pnpm list next --json | jq -r '.[0]dependencies.next.version')
+          current_version=$(pnpm list next --json | jq -r '.[0].dependencies.next.version')
           echo "current_version=$current_version" >> $GITHUB_OUTPUT
 
       - name: Get latest Next.js version
         id: get-latest-version
         run: |
-          latest_version=$(npm show next version)
+          latest_version=$(pnpm show next version)
           echo "latest_version=$latest_version" >> $GITHUB_OUTPUT
 
       - name: Compare versions
