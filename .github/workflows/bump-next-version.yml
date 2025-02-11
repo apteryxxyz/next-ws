@@ -23,20 +23,25 @@ jobs:
         id: get-current-version
         run: |
           current_version=$(pnpm list next --json | jq -r '.[0].dependencies.next.version')
+          echo "Currently using Next.js version $current_version"
           echo "current_version=$current_version" >> $GITHUB_OUTPUT
 
       - name: Get latest Next.js version
         id: get-latest-version
         run: |
           latest_version=$(pnpm show next version)
+          echo "Latest version is $latest_version"
           echo "latest_version=$latest_version" >> $GITHUB_OUTPUT
 
       - name: Compare versions
         id: compare-versions
         run: |
+          echo "Comparing versions $current_version and $latest_version"
           if [ "$latest_version" != "$current_version" ]; then
+            echo "Version bump needed"
             echo "bump_needed=true" >> $GITHUB_OUTPUT
           else
+            echo "Version is up to date"
             echo "bump_needed=false" >> $GITHUB_OUTPUT
           fi
 
@@ -60,6 +65,7 @@ jobs:
         run: |
           new_version="${{ needs.check-next-version.outputs.latest_version }}"
           patch_file=$(ls src/patches/patch-*.ts | sort -V | tail -n 1)
+          echo "Updating $patch_file to $new_version"
           sed -i "s/\(versions: .*\) <=[0-9\.]\+/\1 <=$new_version/" "$patch_file"
 
       - name: Make pull request
