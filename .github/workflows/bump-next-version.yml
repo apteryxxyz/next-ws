@@ -8,9 +8,8 @@ jobs:
     name: Check Next.js Version
     runs-on: ubuntu-latest
     outputs:
-      current_version: ${{ steps.get-current-version.outputs.current_version }}
-      latest_version: ${{ steps.get-latest-version.outputs.latest_version }}
       bump_needed: ${{ steps.compare-versions.outputs.bump_needed }}
+      next_version: ${{ steps.compare-versions.outputs.next_version }}
 
     steps:
       - name: Checkout repository
@@ -24,14 +23,14 @@ jobs:
         run: |
           current_version=$(pnpm list next --json | jq -r '.[0].dependencies.next.version')
           echo "Currently using Next.js version $current_version"
-          echo "current_version=$current_version" >> $GITHUB_OUTPUT
+          echo "current_version=$current_version" >> $GITHUB_ENV
 
       - name: Get latest Next.js version
         id: get-latest-version
         run: |
           latest_version=$(pnpm show next version)
           echo "Latest version is $latest_version"
-          echo "latest_version=$latest_version" >> $GITHUB_OUTPUT
+          echo "latest_version=$latest_version" >> $GITHUB_ENV
 
       - name: Compare versions
         id: compare-versions
@@ -40,6 +39,7 @@ jobs:
           if [ "$latest_version" != "$current_version" ]; then
             echo "Version bump needed"
             echo "bump_needed=true" >> $GITHUB_OUTPUT
+            echo "next_version=$latest_version" >> $GITHUB_OUTPUT
           else
             echo "Version is up to date"
             echo "bump_needed=false" >> $GITHUB_OUTPUT
@@ -63,7 +63,7 @@ jobs:
 
       - name: Bump supported range
         run: |
-          new_version="${{ needs.check-next-version.outputs.latest_version }}"
+          new_version="${{ needs.check-next-version.outputs.next_version }}"
           patch_file=$(ls src/patches/patch-*.ts | sort -V | tail -n 1)
           echo "Updating $patch_file to $new_version"
           sed -i "s/\(versions: .*\) <=[0-9\.]\+/\1 <=$new_version/" "$patch_file"
@@ -72,8 +72,8 @@ jobs:
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "Bump patch supported range to ${{ needs.check-next-version.outputs.latest_version }}"
+          commit-message: "Bump patch supported range to ${{ needs.check-next-version.outputs.next_version }}"
           branch: "bump-next-version"
-          title: "Bump patch supported range to ${{ needs.check-next-version.outputs.latest_version }}"
-          body: "Bump patch supported range to ${{ needs.check-next-version.outputs.latest_version }}"
+          title: "Bump patch supported range to ${{ needs.check-next-version.outputs.next_version }}"
+          body: "Bump patch supported range to ${{ needs.check-next-version.outputs.next_version }}"
           delete-branch: true
