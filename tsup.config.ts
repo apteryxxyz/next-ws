@@ -11,5 +11,6 @@ export default defineConfig([
     format: 'cjs',
     external: ['next-ws'],
     noExternal: ['*'],
+    minify: true,
   },
 ]);

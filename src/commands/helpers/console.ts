@@ -1,67 +1,64 @@
 import readline from 'node:readline';
+import { debuglog as createDebugger } from 'node:util';
 import chalk from 'chalk';
 
-// Helper functions
+export function log(...message: unknown[]) {
+  console.log('[next-ws]', ...message);
+}
 
-const prefix = (message: string, colour = chalk.cyan) =>
-  `${colour('[next-ws]')} ${message}`;
-const line = (message: string) => {
-  // @ts-ignore
-  if (message instanceof Error) return message;
-  return String(message).replaceAll(/(?:\n\s*)+/g, ' ');
-};
+export function info(...message: unknown[]) {
+  console.log(chalk.blue('[next-ws]'), ...message);
+}
 
-// Logging message builders
+export function warn(...message: unknown[]) {
+  console.log(chalk.yellow('[next-ws]'), ...message);
+}
 
-const log = (message: string) => prefix(line(message));
-const info = (message: string) => prefix(line(message), chalk.cyan);
-const warn = (message: string) => prefix(line(message), chalk.yellow);
-const error = (message: string) => prefix(line(message), chalk.red);
+export function error(...message: unknown[]) {
+  console.log(chalk.red('[next-ws]'), ...message);
+}
 
-// Task message builders
+export const debug = createDebugger('next-ws');
 
-const loading = (symbol: string, message: string) =>
-  prefix(`${chalk.cyan(symbol)} ${line(message)}`, chalk.cyan);
-const success = (message: string) =>
-  prefix(`${chalk.green('✔')} ${line(message)}`, chalk.green);
-const failure = (message: string) =>
-  prefix(`${chalk.red('✖')} ${line(message)}`, chalk.red);
+export function success(...message: unknown[]) {
+  console.log(chalk.green('[next-ws]', '✔'), ...message);
+}
 
-// Make logging functions
+export function failure(...message: unknown[]) {
+  console.log(chalk.red('[next-ws]', '✖'), ...message);
+}
 
-const make =
-  (
-    type: 'log' | 'info' | 'warn' | 'error',
-    modifier: (message: string) => string,
-  ) =>
-  (message: string) =>
-    console[type](modifier(message));
-
-// Inquirer confirm
-
-async function confirm(message = 'Continue?', defaultChoice = false) {
+/**
+ * Show a confirmation prompt where the user can choose to confirm or deny.
+ * @param message The message to show
+ * @returns A promise that resolves to a boolean indicating whether the user confirmed or denied
+ */
+export async function confirm(...message: unknown[]) {
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
   });
 
   return new Promise<boolean>((resolve) => {
-    const question = `${prefix(line(message), chalk.yellow)}`;
-    const options = `[${defaultChoice ? 'Y/n' : 'y/N'}]`;
+    const question = chalk.yellow('[next-ws]', ...message);
+    const options = chalk.cyan('[y/N]');
 
-    rl.question(`${question} ${chalk.cyan(options)} `, (answer) => {
+    rl.question(`${question} ${options}`, (answer) => {
       const normalisedAnswer = answer.trim().toLowerCase();
-      if (normalisedAnswer === '') resolve(defaultChoice);
-      else if (normalisedAnswer === 'y') resolve(true);
+      if (normalisedAnswer === 'y') resolve(true);
       else resolve(false);
       rl.close();
     });
   });
 }
 
-// Task runner with spinner
-
-async function task<T>(title: string, promise: Promise<T>) {
+/**
+ * Show a loading spinner while a promise is running.
+ * @param promise The promise to run
+ * @param message The message to show
+ * @returns The result of the promise
+ */
+export async function task<T>(promise: Promise<T>, ...message: unknown[]) {
   // Hide the cursor
   process.stdout.write('\x1B[?25l');
 
@@ -70,7 +67,7 @@ async function task<T>(title: string, promise: Promise<T>) {
   const spinnerInterval = setInterval(() => {
     readline.cursorTo(process.stdout, 0);
     const spinnerChar = spinnerChars[spinnerIndex++ % spinnerChars.length]!;
-    process.stdout.write(loading(spinnerChar, title));
+    process.stdout.write(chalk.cyan('[next-ws]', spinnerChar, ...message));
   }, 100);
 
   return promise
@@ -78,14 +75,14 @@ async function task<T>(title: string, promise: Promise<T>) {
       clearInterval(spinnerInterval);
       readline.cursorTo(process.stdout, 0);
       readline.clearLine(process.stdout, 0);
-      console.info(success(title));
+      success(...message);
       return value;
     })
     .catch((err) => {
       clearInterval(spinnerInterval);
       readline.cursorTo(process.stdout, 0);
       readline.clearLine(process.stdout, 0);
-      console.error(failure(title));
+      failure(...message);
       throw err;
     })
     .finally(() => {
@@ -93,14 +90,3 @@ async function task<T>(title: string, promise: Promise<T>) {
       process.stdout.write('\x1B[?25h');
     });
 }
-
-// Logger
-
-export default {
-  log: make('log', log),
-  info: make('info', info),
-  warn: make('warn', warn),
-  error: make('error', error),
-  confirm,
-  task,
-};
