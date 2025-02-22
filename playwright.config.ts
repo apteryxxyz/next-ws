@@ -16,7 +16,8 @@ export default defineConfig({
     },
     {
       cwd: 'examples/chat-room-with-custom-server',
-      command: 'pnpm dev --port 3002',
+      env: { PORT: '3002' },
+      command: 'pnpm dev',
       port: 3002,
       reuseExistingServer: !process.env.CI,
     },

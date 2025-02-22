@@ -1,21 +1,20 @@
-import { expect, test } from '@playwright/test';
-import type { Page } from '@playwright/test';
+import { type Page, expect, test } from '@playwright/test';
 
-test.describe('Chat Room with Custom Server', () => {
-  test.use({ baseURL: 'http://localhost:3002' });
+test.use({ baseURL: 'http://localhost:3002' });
 
-  // biome-ignore lint/style/useSingleVarDeclarator: I do what I want
-  let page1: Page, page2: Page;
-  test.beforeEach(async ({ browser }) => {
-    page1 = await browser.newPage();
-    const context2 = await browser.newContext({ locale: 'fr-FR' });
-    page2 = await context2.newPage();
-  });
-  test.afterEach(async () => {
-    await page1.close();
-    await page2.close();
-  });
+// biome-ignore lint/style/useSingleVarDeclarator: I do what I want
+let page1: Page, page2: Page;
+test.beforeEach(async ({ browser }) => {
+  page1 = await browser.newPage();
+  const context2 = await browser.newContext({ locale: 'fr-FR' });
+  page2 = await context2.newPage();
+});
+test.afterEach(async () => {
+  await page1.close();
+  await page2.close();
+});
 
+test.describe('Chat Room', () => {
   test('a user joins the chat and receives a welcome message', async () => {
     await page1.goto('/chat/simple');
 
@@ -57,21 +56,7 @@ test.describe('Chat Room with Custom Server', () => {
   });
 });
 
-test.describe('Chat Room with Custom Server with Dynamic Socket Route', () => {
-  test.use({ baseURL: 'http://localhost:3002' });
-
-  // biome-ignore lint/style/useSingleVarDeclarator: I do what I want
-  let page1: Page, page2: Page;
-  test.beforeEach(async ({ browser }) => {
-    page1 = await browser.newPage();
-    const context2 = await browser.newContext({ locale: 'fr-FR' });
-    page2 = await context2.newPage();
-  });
-  test.afterEach(async () => {
-    await page1.close();
-    await page2.close();
-  });
-
+test.describe('Chat Room with Dynamic Socket Route', () => {
   test('a user joins the chat and receives a welcome message with their dynamic value', async () => {
     await page1.goto('/chat/dynamic');
 

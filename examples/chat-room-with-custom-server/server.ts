@@ -11,7 +11,7 @@ setWebSocketServer(webSocketServer);
 
 const dev = process.env.NODE_ENV !== 'production';
 const hostname = 'localhost';
-const port = 3000;
+const port = Number.parseInt(process.env.PORT ?? '3000');
 const app = next({ dev, hostname, port, customServer: true });
 const handle = app.getRequestHandler();
 

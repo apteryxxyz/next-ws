@@ -1,7 +1,6 @@
 {
   "include": ["app/**/*", "server.ts", ".next/types/**/*.ts"],
   "exclude": ["node_modules"],
-
   "compilerOptions": {
     "target": "ES2017",
     "lib": ["dom", "dom.iterable", "esnext"],
@@ -12,10 +11,11 @@
     "incremental": true,
     "module": "esnext",
     "esModuleInterop": true,
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "plugins": [{ "name": "next" }]
+    "plugins": [{ "name": "next" }],
+    "forceConsistentCasingInFileNames": true
   }
 }
