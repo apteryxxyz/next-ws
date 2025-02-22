@@ -109,7 +109,7 @@ async function importModule<T>(modulePath: string): Promise<T> {
   const moduleUrl = pathToFileURL(modulePath).toString();
 
   try {
-    return await import(moduleUrl).then((m) => m.default);
+    return import(moduleUrl);
   } catch (requireError) {
     try {
       return require(modulePath);
@@ -122,17 +122,15 @@ async function importModule<T>(modulePath: string): Promise<T> {
 
 export function getSocketHandler(routeModule: RouteModule) {
   return (
-    routeModule?.routeModule?.userland?.SOCKET ?? routeModule?.handlers?.SOCKET
+    routeModule?.default?.routeModule?.userland?.SOCKET ??
+    routeModule?.routeModule?.userland?.SOCKET ??
+    routeModule?.default?.handlers?.SOCKET ??
+    routeModule?.handlers?.SOCKET
   );
 }
 
 export interface RouteModule {
-  routeModule?: {
-    userland?: {
-      SOCKET?: SocketHandler;
-    };
-  };
-  handlers?: {
-    SOCKET?: SocketHandler;
-  };
+  default?: RouteModule;
+  routeModule?: { userland?: RouteModule['handlers'] };
+  handlers?: { SOCKET?: SocketHandler };
 }
