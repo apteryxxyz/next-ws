@@ -1,6 +1,7 @@
 import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
+  workers: process.env.CI ? 1 : undefined,
   testDir: 'tests',
   reporter: [['html', { outputFolder: 'tests/.report' }]],
   retries: 1,
