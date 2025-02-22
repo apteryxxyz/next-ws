@@ -3,8 +3,8 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "start": "next start",
-    "dev": "next dev",
+    "start": "NODE_ENV=production tsx server.ts",
+    "dev": "tsx server.ts",
     "prepare": "next-ws patch"
   },
   "dependencies": {
@@ -14,6 +14,7 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "@types/react": "^19.0.8"
+    "@types/react": "^19.0.8",
+    "tsx": "^4.19.3"
   }
 }

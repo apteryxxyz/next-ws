@@ -11,14 +11,15 @@ export function SOCKET(
   server: import('ws').WebSocketServer,
   { params }: { params: { language: string } },
 ) {
-  for (const other of server.clients)
-    if (client !== other && other.readyState === other.OPEN)
-      other.send(
-        JSON.stringify({
-          author: 'System',
-          content: `A new user joined the chat, their language is ${params.language}`,
-        }),
-      );
+  for (const other of server.clients) {
+    if (client === other || other.readyState !== other.OPEN) continue;
+    other.send(
+      JSON.stringify({
+        author: 'System',
+        content: `A new user joined the chat, their language is ${params.language}`,
+      }),
+    );
+  }
 
   client.on('message', (message) => {
     // Forward the message to all other clients
@@ -35,13 +36,14 @@ export function SOCKET(
   );
 
   return () => {
-    for (const other of server.clients)
-      if (client !== other && other.readyState === other.OPEN)
-        other.send(
-          JSON.stringify({
-            author: 'System',
-            content: 'A user left the chat',
-          }),
-        );
+    for (const other of server.clients) {
+      if (client === other || other.readyState !== other.OPEN) continue;
+      other.send(
+        JSON.stringify({
+          author: 'System',
+          content: 'A user left the chat',
+        }),
+      );
+    }
   };
 }
