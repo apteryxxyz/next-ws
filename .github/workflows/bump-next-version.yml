@@ -72,6 +72,13 @@ jobs:
           echo "Updating $patch_file to $new_version"
           sed -i "s/\(versions: .*\) <=[0-9\.]\+/\1 <=$new_version/" "$patch_file"
 
+      - name: Add new changeset
+        run: |
+          unique_id=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 13; echo)
+          echo "Adding new changeset with ID $unique_id"
+          echo -e "---\n\"next-ws\": patch\n---\n" >> .changeset/$unique_id.md
+          echo "Bump patch supported range to ${{ needs.check-next-version.outputs.next_version }}" >> .changeset/$unique_id.md
+
       - name: Make pull request
         uses: peter-evans/create-pull-request@v5
         with:
