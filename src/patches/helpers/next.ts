@@ -1,5 +1,5 @@
 import { readFile, writeFile } from 'node:fs/promises';
-import { dirname as resolveDirname, join as resolveJoin } from 'node:path';
+import { join as joinPaths, dirname as resolveDirname } from 'node:path';
 
 /**
  * Get the dist dirname of this package.
@@ -29,7 +29,7 @@ export async function findNextDirectory() {
  */
 export async function getNextVersion() {
   const nextDirectory = await findNextDirectory();
-  const nextPackagePath = resolveJoin(nextDirectory, 'package.json');
+  const nextPackagePath = joinPaths(nextDirectory, 'package.json');
   const nextPackage = await readFile(nextPackagePath, 'utf-8').then(JSON.parse);
   return String(nextPackage.version.split('-')[0]);
 }
@@ -40,7 +40,7 @@ export async function getNextVersion() {
  */
 export async function getTrace() {
   const nextDirectory = await findNextDirectory();
-  const tracePath = resolveJoin(nextDirectory, '.next-ws-trace.json');
+  const tracePath = joinPaths(nextDirectory, '.next-ws-trace.json');
   return readFile(tracePath, 'utf-8')
     .then<Parameters<typeof setTrace>[0]>(JSON.parse)
     .catch(() => null);
@@ -52,6 +52,6 @@ export async function getTrace() {
  */
 export async function setTrace(trace: { patch: string; version: string }) {
   const nextDirectory = await findNextDirectory();
-  const tracePath = resolveJoin(nextDirectory, '.next-ws-trace.json');
+  const tracePath = joinPaths(nextDirectory, '.next-ws-trace.json');
   await writeFile(tracePath, JSON.stringify(trace, null, 2));
 }

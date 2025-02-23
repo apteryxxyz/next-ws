@@ -1,32 +1,41 @@
-import { Command } from 'commander';
 import { getNextVersion, getTrace } from '~/patches/helpers/next';
-import logger from './helpers/logger';
+import * as console from './helpers/console';
+import { defineCommand } from './helpers/define';
 import patchCommand from './patch';
 
-export default new Command('verify')
-  .description('Verify that the local Next.js installation has been patched')
-  .option('-e, --ensure', 'If not patched, then run the patch command')
-  .action(async (options: { ensure: boolean }) => {
+export default defineCommand({
+  name: 'verify',
+  description: 'Verify that the local Next.js installation has been patched',
+  options: [
+    {
+      name: 'ensure',
+      description: 'If not patched, then run the patch command',
+      alias: 'e',
+    },
+  ],
+  async action(options) {
     const trace = await getTrace();
+
     if (!trace) {
       if (options.ensure) {
-        logger.warn(`Next.js has not been patched,
-          running the patch command`);
-        const action = Reflect.get(patchCommand, '_actionHandler');
-        return action(['-y']);
+        console.warn('Next.js has not been patched, running the patch command');
+        return patchCommand.action({ yes: true });
       } else {
-        logger.error(`Next.js has not been patched,
-          you'll need to run the patch command`);
+        console.error(
+          "Next.js has not been patched, you'll need to run the patch command",
+        );
         process.exit(1);
       }
     }
 
     const current = await getNextVersion();
     if (current !== trace.version) {
-      logger.error(`Next.js has been patched with a different version,
-        you'll need to run the patch command`);
+      console.error(
+        "Next.js has been patched with a different version, you'll need to run the patch command",
+      );
       process.exit(1);
     }
 
-    logger.info('Next.js is patched');
-  });
+    console.info('Next.js has been patched!');
+  },
+});
