@@ -1,5 +1,12 @@
 # next-ws
 
+## 2.0.1
+
+### Patch Changes
+
+- f0dbc9e: Fix not correctly getting socket handler on custom servers
+- 442c788: Reduce package bundle size
+
 ## 2.0.0
 
 ### Major Changes
