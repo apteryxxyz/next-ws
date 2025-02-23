@@ -2,4 +2,4 @@
 "next-ws": patch
 ---
 
-Reduce bundle size
+Reduce package bundle size
