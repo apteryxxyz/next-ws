@@ -21,11 +21,10 @@ export const patchNextTypesPlugin = definePatchStep({
 export const patchRouterServer = definePatchStep({
   title: 'Prevent Next.js from immediately closing WebSocket connections',
   path: 'next:dist/server/lib/router-server.js',
-  ignore: 'return socket.end();',
   async modify(source) {
     const newSource = source
-      .replace('return socket.end();', '')
-      .replace(/(\/\/ [a-zA-Z .]+\s+)socket\.end\(\);/, '');
+      .replaceAll('return socket.end();', '')
+      .replaceAll(/(\/\/ [a-zA-Z .]+\s+)socket\.end\(\);/g, '');
     return newSource;
   },
 });
