@@ -41,7 +41,10 @@
     "prepack": "pinst --disable && biome format package.json --write",
     "postpack": "pinst --enable && biome format package.json --write",
     "change": "changeset",
-    "release": "changeset version && biome format package.json --write && pnpm build && changeset publish"
+    "release:version": "changeset version && biome format package.json --write",
+    "release:snapshot:version": "changeset version --snapshot beta && biome format package.json --write",
+    "release:publish": "pnpm build && changeset publish",
+    "release:snapshot:publish": "pnpm build && changeset publish --tag beta --no-git-tag"
   },
   "peerDependencies": {
     "next": ">=13.1.1",

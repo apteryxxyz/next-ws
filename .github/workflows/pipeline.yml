@@ -101,10 +101,8 @@ jobs:
 
       - name: Publish snapshot version
         run: |
-          pnpm changeset version --snapshot beta
-          pnpm biome format package.json --write
-          pnpm build
-          pnpm changeset publish --tag beta --no-git-tag
+          pnpm run release:snapshot:version
+          pnpm run release:snapshot:publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         continue-on-error: true
@@ -125,7 +123,8 @@ jobs:
       - name: Process changesets
         uses: changesets/action@v1
         with:
-          publish: pnpm run release
+          version: pnpm run release:version
+          publish: pnpm run release:publish
           title: "Pending Releases"
           commit: "Update changelog and release"
         env:
