@@ -1,23 +1,49 @@
+# Labels primarily for issues
+
 - name: bug
+  description: Something is broken or not working as expected
   color: d73a4a
-  description: Something isn't working
 
-- name: chore
-  color: ffffff
-  description: Build process or auxiliary tool changes
-
-- name: feature request
+- name: request
+  description: A request for a new feature or a change in behaviour
   color: 0075ca
-  description: New feature or request
 
-- name: duplicate
-  color: cfd3d7
-  description: This issue or pull request already exists
-
-- name: blocked
-  color: d73a4a
-  description: Action required to proceed
+# Labels primarily for pull requests
 
 - name: dependencies
-  color: d93f0b
-  description: Dependency updates!!
+  description: Updates or changes related to project dependencies
+  color: ffb300
+
+- name: client
+  description: Modifications or updates to client-handling code
+  color: 039be5
+
+- name: server
+  description: Modifications or updates to server-handling code
+  color: fbc02d
+
+- name: patches
+  description: Updates or fixes related to Next.js patches
+  color: ff7043
+
+- name: cli
+  description: Improvements or changes to the command-line interface
+  color: 03a9f4
+
+- name: examples
+  description: Updates or additions to example apps
+  color: 009688
+
+- name: tests
+  description: Modifications, additions, or fixes related to testing
+  color: 00bfa5
+
+# Labels primarily for both issues and pull requests
+
+- name: blocked
+  description: Progress is halted due to a dependency or required action
+  color: d73a4a
+
+- name: duplicate
+  description: This issue or pull request already exists
+  color: cfd3d7
