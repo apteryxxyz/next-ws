@@ -86,11 +86,41 @@ jobs:
           include-hidden-files: true
           retention-days: 7
 
-  release:
-    name: Releasing Snapshot
+  process:
+    name: Processing Changesets
     needs: [test]
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    outputs:
+      published: ${{ steps.changesets.outputs.published }}
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: ./.github/actions/node
+
+      - name: Process changesets
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          version: pnpm run release:version
+          publish: pnpm run release:publish
+          title: "Pending Releases"
+          commit: "Update changelog and release"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PULL_REQUEST_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - run: |
+          echo "published=${{ steps.changesets.outputs.published }}" >> $GITHUB_OUTPUT
+
+  snapshot:
+    name: Releasing Snapshot
+    needs: [process]
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.process.outputs.published == 'false' }}
 
     steps:
       - name: Checkout repository
@@ -106,27 +136,3 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         continue-on-error: true
-
-  publish:
-    name: Processing Changesets
-    needs: [test]
-    runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: ./.github/actions/node
-
-      - name: Process changesets
-        uses: changesets/action@v1
-        with:
-          version: pnpm run release:version
-          publish: pnpm run release:publish
-          title: "Pending Releases"
-          commit: "Update changelog and release"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_PULL_REQUEST_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
