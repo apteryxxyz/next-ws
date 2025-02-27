@@ -13,6 +13,7 @@ export const WebSocketConsumer = WebSocketContext.Consumer;
  * allowing for easy access to the WebSocket from anywhere in the app.
  * @param props WebSocket parameters and children.
  * @returns JSX Element
+ * @deprecated `WebSocketProvider` is deprecated, use your own implementation instead.
  */
 export function WebSocketProvider(
   p: React.PropsWithChildren<{
@@ -53,6 +54,7 @@ export function WebSocketProvider(
 /**
  * Access the websocket from anywhere in the app, so long as it's wrapped in a WebSocketProvider.
  * @returns WebSocket client when connected, null when disconnected.
+ * @deprecated `useWebSocket` is deprecated, use your own implementation instead.
  */
 export function useWebSocket() {
   const context = useContext(WebSocketContext);
