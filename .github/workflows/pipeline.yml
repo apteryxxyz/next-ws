@@ -111,6 +111,7 @@ jobs:
           commit: "Update changelog and release"
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PULL_REQUEST_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - run: |
