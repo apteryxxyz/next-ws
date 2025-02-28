@@ -8,7 +8,7 @@
     "prepare": "next-ws patch"
   },
   "dependencies": {
-    "next": "15.1.7",
+    "next": "15.2.0",
     "next-ws": "workspace:^",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
