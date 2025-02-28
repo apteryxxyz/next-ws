@@ -1,5 +1,12 @@
 # next-ws
 
+## 2.0.2
+
+### Patch Changes
+
+- eee09c9: Bump patch supported range to 15.2.0
+- b3a28f0: Mark client context as deprecated
+
 ## 2.0.1
 
 ### Patch Changes
