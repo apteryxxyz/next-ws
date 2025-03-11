@@ -25,7 +25,8 @@ jobs:
       - name: Get current Next.js version
         id: get-current-version
         run: |
-          current_version=$(pnpm list next --json | jq -r '.[0].dependencies.next.version')
+          package=$(pnpm list next --dir examples/chat-room --json)
+          current_version=$(echo "$package" | jq -r '.[0].dependencies.next.version')
           echo "Currently using Next.js version $current_version"
           echo "current_version=$current_version" >> $GITHUB_ENV
 
