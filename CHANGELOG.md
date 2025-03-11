@@ -1,5 +1,11 @@
 # next-ws
 
+## 2.0.4
+
+### Patch Changes
+
+- c37c965: Bump patch supported range to 15.2.2
+
 ## 2.0.3
 
 ### Patch Changes
