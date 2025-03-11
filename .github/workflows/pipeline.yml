@@ -128,7 +128,7 @@ jobs:
         run: |
           package=$(curl -s "https://registry.npmjs.org/next-ws")
           versions=$(echo "$package" | jq -r '.versions | to_entries | map(select(.value.deprecated | not)) | map(.key)')
-          beta_versions=$(echo "$versions" | grep '0.0.0-beta')
+          beta_versions=$(echo "$versions" | jq -r '.[] | select(test("beta"))')
           for version in $beta_versions; do
             sleep 5
             echo "Deprecating next-ws@$version"
