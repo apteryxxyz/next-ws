@@ -1,6 +1,6 @@
 {
   "name": "next-ws",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "packageManager": "pnpm@9.15.4",
   "type": "module",
   "description": "Add support for WebSockets in the Next.js app directory",
