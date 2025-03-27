@@ -1,5 +1,15 @@
 # next-ws
 
+## 2.1.0
+
+### Minor Changes
+
+- 8b30765: Add support for next config `basePath`
+
+### Patch Changes
+
+- 1051ec2: Bump patch supported range to 15.2.4
+
 ## 2.0.5
 
 ### Patch Changes
