@@ -1,0 +1,23 @@
+{
+  "name": "shared",
+  "private": true,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./chat-room": {
+      "types": "./dist/chat-room/index.d.ts",
+      "import": "./dist/chat-room/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "react": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.8"
+  }
+}

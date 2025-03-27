@@ -1,5 +1,5 @@
 {
-  "name": "@examples/chat-room",
+  "name": "@examples/base-path",
   "private": true,
   "scripts": {
     "build": "next build",

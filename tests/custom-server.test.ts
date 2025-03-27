@@ -11,7 +11,7 @@ test.afterEach(async () => {
   await page2.close();
 });
 
-test.use({ baseURL: 'http://localhost:3001' });
+test.use({ baseURL: 'http://localhost:3003' });
 
 test.describe('Chat Room', () => {
   test('a user joins the chat and receives a welcome message', async () => {
