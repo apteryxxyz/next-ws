@@ -12,7 +12,8 @@
     }
   },
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "postinstall": "pnpm build"
   },
   "dependencies": {
     "react": "^19.0.0"
