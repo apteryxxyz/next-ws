@@ -49,6 +49,8 @@ export function resolvePathToRoute(
   nextServer: NextNodeServer,
   requestPath: string,
 ) {
+  // @ts-expect-error - serverOptions is protected
+  const basePath = nextServer.serverOptions.conf.basePath;
   const routes = {
     // @ts-expect-error - appPathRoutes is protected
     ...nextServer.appPathRoutes,
@@ -57,7 +59,8 @@ export function resolvePathToRoute(
   };
 
   for (const [routePath, [filePath]] of Object.entries(routes)) {
-    const routeParams = getRouteParams(routePath, requestPath);
+    const realPath = `${basePath}${routePath}`;
+    const routeParams = getRouteParams(realPath, requestPath);
     if (routeParams) return { filePath: filePath!, routeParams };
   }
 
