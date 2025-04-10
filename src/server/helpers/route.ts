@@ -96,10 +96,23 @@ export async function importRouteModule(
       );
     }
   } catch {}
-
+  
   // @ts-expect-error - getPageModule is protected
   const buildPagePath = nextServer.getPagePath(filePath);
-  return importModule<RouteModule>(buildPagePath);
+  const module = await importModule<RouteModule>(buildPagePath);
+  
+  // Resolve any Promise in the default export. This is needed for Next.js App
+  // Router where the default export is often a Promise. Without this, attempts
+  // to access handlers on the unresolved Promise will fail.
+  if (module?.default instanceof Promise) {
+    const resolvedDefault = await module.default;
+    return {
+      ...module,
+      default: resolvedDefault
+    };
+  }
+  
+  return module;
 }
 
 /**
