@@ -1,8 +1,7 @@
 name: Pull Request Triage
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
+ - pull_request_target
 
 jobs:
   label:
