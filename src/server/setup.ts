@@ -41,7 +41,7 @@ export function setupWebSocketServer(nextServer: NextNodeServer) {
       return socket.destroy();
     }
 
-    const socketHandler = getSocketHandler(routeModule);
+    const socketHandler = await getSocketHandler(routeModule);
     if (!socketHandler || typeof socketHandler !== 'function') {
       logger.error(`[next-ws] ${pathname} does not export a SOCKET handler`);
       return socket.destroy();

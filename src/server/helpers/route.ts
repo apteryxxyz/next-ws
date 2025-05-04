@@ -123,7 +123,10 @@ async function importModule<T>(modulePath: string): Promise<T> {
   }
 }
 
-export function getSocketHandler(routeModule: RouteModule) {
+export async function getSocketHandler(routeModule: RouteModule) {
+  if (routeModule.default instanceof Promise)
+    return getSocketHandler(await routeModule.default);
+
   return (
     routeModule?.default?.routeModule?.userland?.SOCKET ??
     routeModule?.routeModule?.userland?.SOCKET ??
@@ -133,7 +136,7 @@ export function getSocketHandler(routeModule: RouteModule) {
 }
 
 export interface RouteModule {
-  default?: RouteModule;
+  default?: Promise<RouteModule> | RouteModule;
   routeModule?: { userland?: RouteModule['handlers'] };
   handlers?: { SOCKET?: SocketHandler };
 }
