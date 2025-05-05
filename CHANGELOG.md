@@ -1,5 +1,12 @@
 # next-ws
 
+## 2.0.7
+
+### Patch Changes
+
+- ed876c4: Bump patch supported range to 15.3.1
+- 01df147: Await default property of route module
+
 ## 2.0.6
 
 ### Patch Changes
