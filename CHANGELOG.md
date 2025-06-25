@@ -1,5 +1,11 @@
 # next-ws
 
+## 2.0.9
+
+### Patch Changes
+
+- 0c769e0: Bump patch supported range to 15.3.4
+
 ## 2.0.8
 
 ### Patch Changes
