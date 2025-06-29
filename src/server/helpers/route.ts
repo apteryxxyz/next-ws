@@ -24,7 +24,7 @@ function createRouteRegex(routePattern: string) {
  */
 function getRouteParams(routePattern: string, routePath: string) {
   const routeRegex = createRouteRegex(routePattern);
-  const match = routePath.match(routeRegex);
+  const match = routePath.replace(/\/+$/, '').match(routeRegex);
   if (!match) return null;
   if (!match.groups) return {};
 
@@ -58,13 +58,13 @@ export function resolvePathToRoute(
     ...nextServer.getAppPathRoutes(),
   };
 
+  let pathToRoute = null;
   for (const [routePath, [filePath]] of Object.entries(routes)) {
     const realPath = `${basePath}${routePath}`;
     const routeParams = getRouteParams(realPath, requestPath);
-    if (routeParams) return { filePath: filePath!, routeParams };
+    if (routeParams) pathToRoute = { filePath: filePath!, routeParams };
   }
-
-  return null;
+  return pathToRoute || null;
 }
 
 /**
