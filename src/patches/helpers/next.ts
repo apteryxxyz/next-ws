@@ -10,7 +10,9 @@ export function getDistDirname() {
   const nextWsPackagePath = //
     require.resolve('next-ws/package.json', resolveOptions);
   const nextWsDirName = resolveDirname(nextWsPackagePath);
-  return `${nextWsDirName.replaceAll('\\', '/')}/dist`;
+  return `${nextWsDirName}/dist`
+    .replace(/\\/g, '/')
+    .replace(/'/g, "\\'");
 }
 
 /**
