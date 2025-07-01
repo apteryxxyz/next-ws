@@ -2,4 +2,4 @@
 "next-ws": patch
 ---
 
-escape dist path for safe require() usage
+Escape dist path for safe require() usage
