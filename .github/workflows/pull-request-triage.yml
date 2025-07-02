@@ -1,16 +1,15 @@
 name: Pull Request Triage
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
+  - pull_request_target
 
 jobs:
   label:
     name: Label Pull Request
-    runs-on: ubuntu-latest
     permissions:
       contents: read
       pull-requests: write
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
