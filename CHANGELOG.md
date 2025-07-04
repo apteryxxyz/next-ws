@@ -1,5 +1,12 @@
 # next-ws
 
+## 2.0.10
+
+### Patch Changes
+
+- 16a1e06: Bump patch supported range to 15.3.5
+- b68bfdd: Escape dist path for safe require() usage
+
 ## 2.0.9
 
 ### Patch Changes
