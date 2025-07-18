@@ -1,5 +1,11 @@
 # next-ws
 
+## 2.0.11
+
+### Patch Changes
+
+- f4defd1: Bump patch supported range to 15.4.1
+
 ## 2.0.10
 
 ### Patch Changes
