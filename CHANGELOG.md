@@ -1,5 +1,12 @@
 # next-ws
 
+## 2.0.12
+
+### Patch Changes
+
+- 8b2a27e: Bump patch supported range to 15.4.2
+- ff6aa44: Bump patch supported range to 15.4.3
+
 ## 2.0.11
 
 ### Patch Changes
