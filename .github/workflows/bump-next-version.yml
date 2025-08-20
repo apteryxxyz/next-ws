@@ -2,6 +2,8 @@ name: Bump Next.js Version
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "0 */6 * * *"
 
 permissions:
   contents: write
@@ -25,8 +27,8 @@ jobs:
       - name: Get current Next.js version
         id: get-current-version
         run: |
-          package=$(pnpm list next --dir examples/chat-room --json)
-          current_version=$(echo "$package" | jq -r '.[0].dependencies.next.version')
+          package=$(pnpm list next --json)
+          current_version=$(echo "$package" | jq -r '.[0].devDependencies.next.version')
           echo "Currently using Next.js version $current_version"
           echo "current_version=$current_version" >> $GITHUB_ENV
 
@@ -64,14 +66,17 @@ jobs:
         uses: ./.github/actions/node
 
       - name: Update Next.js version
-        run: pnpm update next@latest -r
+        run: |
+          next_version="${{ needs.check-next-version.outputs.next_version }}"
+          echo "Updating pnpm-workspace.yaml catalog to $next_version"
+          sed -i "s/next: .*/next: \"$next_version\"/" "pnpm-workspace.yaml"
 
       - name: Bump supported range
         run: |
-          new_version="${{ needs.check-next-version.outputs.next_version }}"
+          next_version="${{ needs.check-next-version.outputs.next_version }}"
           patch_file=$(ls src/patches/patch-*.ts | sort -V | tail -n 1)
-          echo "Updating $patch_file to $new_version"
-          sed -i "s/\(versions: .*\) <=[0-9\.]\+/\1 <=$new_version/" "$patch_file"
+          echo "Updating $patch_file to $next_version"
+          sed -i "s/\(versions: .*\) <=[0-9\.]\+/\1 <=$next_version/" "$patch_file"
 
       - name: Add new changeset
         run: |
@@ -85,7 +90,7 @@ jobs:
         with:
           token: ${{ secrets.GH_PULL_REQUEST_TOKEN }}
           commit-message: "Bump patch supported range to ${{ needs.check-next-version.outputs.next_version }}"
-          branch: "bump-next-version"
+          branch: "chore/bump-nextjs-${{ needs.check-next-version.outputs.next_version }}"
           title: "Bump patch supported range to ${{ needs.check-next-version.outputs.next_version }}"
           body: "Bump patch supported range to ${{ needs.check-next-version.outputs.next_version }}"
           delete-branch: true

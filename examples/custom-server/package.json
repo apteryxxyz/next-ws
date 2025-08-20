@@ -8,14 +8,14 @@
     "prepare": "next-ws patch"
   },
   "dependencies": {
-    "next": "15.5.0",
+    "next": "catalog:",
     "next-ws": "workspace:^",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "react": "catalog:",
+    "react-dom": "catalog:",
     "shared": "workspace:^"
   },
   "devDependencies": {
-    "@types/react": "^19.0.8",
+    "@types/react": "catalog:",
     "tsx": "^4.19.3"
   }
 }
