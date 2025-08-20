@@ -16,9 +16,9 @@
     "postinstall": "pnpm build"
   },
   "dependencies": {
-    "react": "^19.0.0"
+    "react": "catalog:"
   },
   "devDependencies": {
-    "@types/react": "^19.0.8"
+    "@types/react": "catalog:"
   }
 }
