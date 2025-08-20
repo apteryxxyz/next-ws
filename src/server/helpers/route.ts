@@ -1,4 +1,3 @@
-import { pathToFileURL } from 'node:url';
 import * as logger from 'next/dist/build/output/log.js';
 import type NextNodeServer from 'next/dist/server/next-server.js';
 import type { SocketHandler } from './socket';
@@ -99,28 +98,7 @@ export async function importRouteModule(
 
   // @ts-expect-error - getPageModule is protected
   const buildPagePath = nextServer.getPagePath(filePath);
-  return importModule<RouteModule>(buildPagePath);
-}
-
-/**
- * Import a module from a file path using either import or require.
- * @param modulePath The file path of the module.
- * @returns The imported module.
- * @throws If the module could not be imported.
- */
-async function importModule<T>(modulePath: string): Promise<T> {
-  const moduleUrl = pathToFileURL(modulePath).toString();
-
-  try {
-    return import(moduleUrl);
-  } catch (requireError) {
-    try {
-      return require(modulePath);
-    } catch (requireError) {
-      console.error(`Both import and require failed for ${modulePath}`);
-      throw requireError;
-    }
-  }
+  return require(buildPagePath) as RouteModule;
 }
 
 export async function getSocketHandler(routeModule: RouteModule) {
