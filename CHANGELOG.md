@@ -1,5 +1,12 @@
 # next-ws
 
+## 2.0.14
+
+### Patch Changes
+
+- 9611355: Bump patch supported range to 15.4.7
+- eff3087: Bump patch supported range to 15.5.0
+
 ## 2.0.13
 
 ### Patch Changes
