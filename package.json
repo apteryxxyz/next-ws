@@ -2,7 +2,6 @@
   "name": "next-ws",
   "version": "2.0.14",
   "packageManager": "pnpm@10.15.0",
-  "type": "module",
   "description": "Add support for WebSockets in the Next.js app directory",
   "license": "MIT",
   "keywords": ["next", "websocket", "ws", "server", "client"],
@@ -21,13 +20,11 @@
   "exports": {
     "./client": {
       "types": "./dist/client/index.d.ts",
-      "import": "./dist/client/index.js",
-      "require": "./dist/client/index.cjs"
+      "default": "./dist/client/index.cjs"
     },
     "./server": {
       "types": "./dist/server/index.d.ts",
-      "import": "./dist/server/index.js",
-      "require": "./dist/server/index.cjs"
+      "default": "./dist/server/index.cjs"
     },
     "./package.json": "./package.json"
   },
