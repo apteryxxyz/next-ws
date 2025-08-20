@@ -31,6 +31,6 @@ export const patchRouterServer = definePatchStep({
 
 export default definePatch({
   name: 'patch-2',
-  versions: '>=13.5.1 <=15.4.6',
+  versions: '>=13.5.1 <=15.4.7',
   steps: [p1_patchNextNodeServer, patchRouterServer, patchNextTypesPlugin],
 });
