@@ -32,8 +32,11 @@ export const injectWebSocketSetup = definePatchStep({
           .paths()[0];
         const idx = body.findIndex((s) => s === existing?.parent.node);
 
-        if (existing && idx > -1) body[idx] = block;
-        else body.push(block);
+        if (existing && idx > -1) {
+          body[idx] = block;
+        } else {
+          body.push(block);
+        }
       })
       .toSource();
   },
@@ -89,10 +92,14 @@ export const ensureGlobalAsyncLocalStorage = definePatchStep({
         const existing = $(body)
           .find(CommentLine, { value: ` ${marker}` })
           .paths()[0];
-        const idx = body.findIndex((s) => s === existing?.parent.node);
+        let idx = body.findIndex((s) => s === existing?.parent.node);
 
-        if (existing && idx > -1) body[idx] = block;
-        else body.unshift(block);
+        if (idx > -1) {
+          body[idx] = block;
+        } else {
+          while (idx < 0 || !body[idx] || 'directive' in body[idx]!) idx++;
+          body.splice(idx, 0, block);
+        }
       })
       .toSource();
   },
