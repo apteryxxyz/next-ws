@@ -1,5 +1,6 @@
 import $ from 'jscodeshift';
 import { definePatch, definePatchStep } from './helpers/define';
+const CommentLine = $.Comment as typeof $.CommentLine;
 
 /**
  * Add `require('next-ws/server').attachWebSocketUpgradeHandler({ nextServer: this })`
@@ -27,7 +28,7 @@ export const injectWebSocketSetup = definePatchStep({
         const body = (node.value.body as $.BlockStatement).body;
 
         const existing = $(body)
-          .find($.CommentLine, { value: ` ${marker}` })
+          .find(CommentLine, { value: ` ${marker}` })
           .paths()[0];
         const idx = body.findIndex((s) => s === existing?.parent.node);
 
@@ -86,7 +87,7 @@ export const ensureGlobalAsyncLocalStorage = definePatchStep({
         const body = node.body;
 
         const existing = $(body)
-          .find($.CommentLine, { value: ` ${marker}` })
+          .find(CommentLine, { value: ` ${marker}` })
           .paths()[0];
         const idx = body.findIndex((s) => s === existing?.parent.node);
 
