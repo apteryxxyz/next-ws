@@ -37,7 +37,6 @@
 
     "outDir": "./dist",
     "paths": { "~/*": ["./src/*"] },
-
-    "jsx": "preserve"
+    "jsx": "react"
   }
 }

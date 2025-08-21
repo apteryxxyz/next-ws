@@ -1,5 +1,7 @@
 'use client';
 
+// biome-ignore lint/style/useImportType: React is used in JSX output
+import * as React from 'react';
 import { useCallback } from 'react';
 import type { Message } from './messaging';
 

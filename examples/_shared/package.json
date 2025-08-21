@@ -4,11 +4,11 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "default": "./dist/index.js"
     },
     "./chat-room": {
       "types": "./dist/chat-room/index.d.ts",
-      "import": "./dist/chat-room/index.js"
+      "default": "./dist/chat-room/index.js"
     }
   },
   "scripts": {
