@@ -1,3 +1,4 @@
+import * as React from 'react';
 import type { Message } from './messaging';
 
 export function MessageList({ messages }: { messages: Message[] }) {

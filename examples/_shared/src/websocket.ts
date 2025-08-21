@@ -10,10 +10,8 @@ export function useWebSocket(url: () => string) {
   useEffect(() => {
     if (ref.current) return;
     const socket = new WebSocket(target.current());
-    ref.current = socket;
+    Reflect.set(ref, 'current', socket);
     update((p) => p + 1);
-
-    return () => socket.close();
   }, []);
 
   return ref.current;
