@@ -1,7 +1,9 @@
-export * from './setup';
+export type { RouteContext } from './route/module';
+export type { SocketHandler, NextSocketHandler } from './route/socket';
 export {
-  setHttpServer,
   getHttpServer,
-  setWebSocketServer,
+  setHttpServer,
   getWebSocketServer,
-} from './helpers/persistent';
+  setWebSocketServer,
+} from './persistent';
+export { setupWebSocketServer, attachWebSocketUpgradeHandler } from './setup';

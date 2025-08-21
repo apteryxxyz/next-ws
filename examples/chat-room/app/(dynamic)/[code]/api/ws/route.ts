@@ -1,3 +1,5 @@
+import { headers } from 'next/headers';
+
 export function GET() {
   const headers = new Headers();
   headers.set('Connection', 'Upgrade');
@@ -5,12 +7,19 @@ export function GET() {
   return new Response('Upgrade Required', { status: 426, headers });
 }
 
-export function SOCKET(
+export const experimental_socketAsyncContext = true;
+
+export async function SOCKET(
   client: import('ws').WebSocket,
-  _request: import('node:http').IncomingMessage,
   server: import('ws').WebSocketServer,
-  { params: { code } }: { params: { code: string } },
+  _request: import('next/server').NextRequest,
+  context: import('next-ws/server').RouteContext<'/[code]/api/ws'>,
 ) {
+  // For test purposes
+  await headers();
+
+  const { code } = context.params;
+
   for (const other of server.clients) {
     if (client === other || other.readyState !== other.OPEN) continue;
     other.send(

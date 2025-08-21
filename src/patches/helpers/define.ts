@@ -1,7 +1,7 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import * as console from '~/commands/helpers/console';
-import { findNextDirectory } from './next';
+import { resolveNextDirectory } from './next';
 
 export interface PatchDefinition {
   name: string;
@@ -67,7 +67,7 @@ export function definePatchStep(definition: PatchStepDefinition): PatchStep {
 function resolvePath(path: string) {
   switch (path.split(':')[0]) {
     case 'next': {
-      const nextDirectory = findNextDirectory();
+      const nextDirectory = resolveNextDirectory();
       const realPath = path.slice(5);
       return resolve(nextDirectory, realPath);
     }

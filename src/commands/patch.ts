@@ -1,5 +1,5 @@
 import patches from '~/patches';
-import { getNextVersion, setTrace } from '~/patches/helpers/next';
+import { getInstalledNextVersion, writeTrace } from '~/patches/helpers/next';
 import * as console from './helpers/console';
 import { defineCommand } from './helpers/define';
 import * as semver from './helpers/semver';
@@ -18,7 +18,7 @@ export default defineCommand({
     const supported = patches.map((p) => p.versions).join(' || ');
     const minimum = semver.minVersion(supported)?.version ?? supported;
     const maximum = semver.maxVersion(supported)?.version ?? supported;
-    const current = await getNextVersion();
+    const current = await getInstalledNextVersion();
 
     if (semver.ltr(current, minimum)) {
       // The installed version is lower than the minimum supported version
@@ -61,7 +61,7 @@ export default defineCommand({
     await patch.execute();
 
     console.info('Saving patch trace file...');
-    await setTrace({ patch: patch.versions, version: current });
+    await writeTrace({ patch: patch.versions, version: current });
 
     console.info('All done!');
   },

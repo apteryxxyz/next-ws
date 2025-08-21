@@ -50,7 +50,20 @@ To set up a WebSocket server with `next-ws`, you need to patch your local Next.j
 
 ## 🚀 Usage
 
-Using WebSocket connections in your Next.js app directory is simple with `next-ws`. You can handle WebSocket connections directly in your API routes via exported `SOCKET` functions. Here's an example of a simple WebSocket echo server:
+Using WebSocket connections in your Next.js app directory is simple with `next-ws`. You can handle WebSocket connections directly in your API routes via exported `SOCKET` functions.
+
+<!--
+// TODO: Update this example when socketAsyncContext is made stable
+
+export function SOCKET(
+  client: import('ws').WebSocket,
+  server: import('ws').WebSocketServer,
+  request: import('next/server').NextRequest,
+  context: import('next-ws/server').RouteContext<'/api/ws'>,
+) {
+  // ...
+}
+ -->
 
 ```js
 export function SOCKET(
