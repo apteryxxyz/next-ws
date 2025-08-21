@@ -8,9 +8,9 @@ function compileRoutePattern(routePattern: string) {
   return new RegExp(`^${paramRegex}$`);
 }
 
-function getRouteParams(routePattern: string, routePath: string) {
+function getRouteParams(routePattern: string, requestPathname: string) {
   const routeRegex = compileRoutePattern(routePattern);
-  const match = routePath.replace(/\/+$/, '').match(routeRegex);
+  const match = requestPathname.replace(/\/+$/, '').match(routeRegex);
   if (!match) return null;
   if (!match.groups) return {};
 
@@ -27,10 +27,10 @@ function getRouteParams(routePattern: string, routePath: string) {
 
 export function findMatchingRoute(
   nextServer: NextNodeServer,
-  requestPath: string,
+  requestPathname: string,
 ) {
   // @ts-expect-error - serverOptions is protected
-  const basePath = nextServer.serverOptions?.conf.basePath;
+  const basePath = nextServer.serverOptions?.conf.basePath || '';
   const appPathRoutes = {
     // @ts-expect-error - appPathRoutes is protected
     ...nextServer.appPathRoutes,
@@ -41,7 +41,7 @@ export function findMatchingRoute(
   let matchedRoute = null;
   for (const [routePath, [filePath]] of Object.entries(appPathRoutes)) {
     const realPath = `${basePath}${routePath}`;
-    const routeParams = getRouteParams(realPath, requestPath);
+    const routeParams = getRouteParams(realPath, requestPathname);
     if (routeParams)
       matchedRoute = { filename: filePath!, params: routeParams };
   }
