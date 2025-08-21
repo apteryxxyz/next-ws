@@ -43,15 +43,19 @@ export function attachWebSocketUpgradeHandler({
     if (pathname.includes('/_next')) return;
 
     const route = findMatchingRoute(nextServer, pathname);
-    if (!route)
-      return logger.warnOnce(`[next-ws] no matching route for '${pathname}'`);
+    if (!route) {
+      logger.warnOnce(`[next-ws] no matching route for '${pathname}'`);
+      return socket.destroy();
+    }
     const module = await importRouteModule(nextServer, route.filename);
 
     const handleSocket = module.userland.SOCKET;
-    if (!handleSocket || typeof handleSocket !== 'function')
-      return logger.error(
+    if (!handleSocket || typeof handleSocket !== 'function') {
+      logger.error(
         `[next-ws] route '${pathname}' does not export a valid 'SOCKET' handler`,
       );
+      return socket.destroy();
+    }
 
     // Currently experimental, but will eventually become stable then the default
     let asyncContext = module.userland.experimental_socketAsyncContext;
