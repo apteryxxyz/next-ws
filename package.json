@@ -29,9 +29,9 @@
     "./package.json": "./package.json"
   },
   "scripts": {
+    "check": "tsc --noEmit",
     "lint": "biome ci .",
     "format": "biome check . --write",
-    "check": "tsc --noEmit",
     "build": "tsup",
     "dev": "tsup --watch",
     "test": "playwright test",
@@ -45,8 +45,13 @@
     "release:publish": "pnpm build && changeset publish",
     "release:snapshot:publish": "pnpm build && changeset publish --tag beta --no-git-tag"
   },
+  "dependencies": {
+    "jscodeshift": "^17.3.0",
+    "minimist": "^1.2.8",
+    "semver": "^7.7.1"
+  },
   "peerDependencies": {
-    "next": ">=13.1.1",
+    "next": ">=13.5.1",
     "react": "*",
     "ws": "*"
   },
@@ -55,6 +60,7 @@
     "@changesets/changelog-git": "^0.2.0",
     "@changesets/cli": "^2.27.12",
     "@playwright/test": "^1.50.1",
+    "@types/jscodeshift": "^17.3.0",
     "@types/minimist": "^1.2.5",
     "@types/node": "^22.13.1",
     "@types/react": "catalog:",
@@ -62,12 +68,10 @@
     "@types/ws": "^8.5.14",
     "chalk": "^5.4.1",
     "husky": "^9.1.7",
-    "minimist": "^1.2.8",
     "next": "catalog:",
     "pinst": "^3.0.0",
     "react": "catalog:",
     "react-dom": "catalog:",
-    "semver": "^7.7.1",
     "tsup": "^8.3.6",
     "typescript": "^5.7.3"
   }

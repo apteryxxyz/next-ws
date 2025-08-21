@@ -17,7 +17,7 @@ export function getDistDirname() {
  * Find the Next.js installation directory.
  * @returns The Next.js installation directory
  */
-export async function findNextDirectory() {
+export function findNextDirectory() {
   const resolveOptions = { paths: [process.cwd()] };
   const nextPackagePath = require.resolve('next/package.json', resolveOptions);
   return resolveDirname(nextPackagePath);
@@ -28,7 +28,7 @@ export async function findNextDirectory() {
  * @returns The version of Next.js
  */
 export async function getNextVersion() {
-  const nextDirectory = await findNextDirectory();
+  const nextDirectory = findNextDirectory();
   const nextPackagePath = joinPaths(nextDirectory, 'package.json');
   const nextPackage = await readFile(nextPackagePath, 'utf-8').then(JSON.parse);
   return String(nextPackage.version.split('-')[0]);
@@ -39,7 +39,7 @@ export async function getNextVersion() {
  * @returns Trace object
  */
 export async function getTrace() {
-  const nextDirectory = await findNextDirectory();
+  const nextDirectory = findNextDirectory();
   const tracePath = joinPaths(nextDirectory, '.next-ws-trace.json');
   return readFile(tracePath, 'utf-8')
     .then<Parameters<typeof setTrace>[0]>(JSON.parse)
@@ -51,7 +51,7 @@ export async function getTrace() {
  * @param trace Trace object
  */
 export async function setTrace(trace: { patch: string; version: string }) {
-  const nextDirectory = await findNextDirectory();
+  const nextDirectory = findNextDirectory();
   const tracePath = joinPaths(nextDirectory, '.next-ws-trace.json');
   await writeFile(tracePath, JSON.stringify(trace, null, 2));
 }

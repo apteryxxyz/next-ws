@@ -11,7 +11,7 @@ export interface PatchDefinition {
 }
 
 export interface Patch extends PatchDefinition {
-  execute(): Promise<boolean>;
+  execute(): Promise<void>;
 }
 
 /**
@@ -23,25 +23,20 @@ export function definePatch(definition: PatchDefinition): Patch {
   return {
     ...definition,
     async execute() {
-      const results: boolean[] = [];
       for (const step of this.steps)
-        await console
-          .task(step.execute(), step.title)
-          .then((r) => results.push(r));
-      return results.every((r) => r);
+        await console.task(step.execute(), step.title);
     },
   };
 }
 
 export interface PatchStepDefinition {
   title: string;
-  path: `next:${string}`;
-  ignore?: string;
-  modify(source: string): string | Promise<string>;
+  path: `next:${string}` | (string & {});
+  transform(code: string): Promise<string>;
 }
 
 export interface PatchStep extends PatchStepDefinition {
-  execute(): Promise<boolean>;
+  execute(): Promise<void>;
 }
 
 /**
@@ -52,14 +47,14 @@ export interface PatchStep extends PatchStepDefinition {
 export function definePatchStep(definition: PatchStepDefinition): PatchStep {
   return {
     ...definition,
+    get path() {
+      return resolvePath(definition.path);
+    },
     async execute() {
-      const path = await resolvePath(this.path);
-      console.debug('Applying', `"${this.title}"`, 'to', `"${path}"`);
-      const source = await readFile(path, 'utf-8');
-      if (this.ignore && source.includes(this.ignore)) return false;
-      const newSource = await this.modify(source);
-      await writeFile(path, newSource);
-      return true;
+      console.debug(`Applying '${this.title}' to '${this.path}'`);
+      const code = await readFile(this.path, 'utf8') //
+        .then((code) => this.transform(code));
+      await writeFile(this.path, code);
     },
   };
 }
@@ -69,10 +64,10 @@ export function definePatchStep(definition: PatchStepDefinition): PatchStep {
  * @param path The path to resolve
  * @returns The resolved path
  */
-async function resolvePath(path: string) {
+function resolvePath(path: string) {
   switch (path.split(':')[0]) {
     case 'next': {
-      const nextDirectory = await findNextDirectory();
+      const nextDirectory = findNextDirectory();
       const realPath = path.slice(5);
       return resolve(nextDirectory, realPath);
     }

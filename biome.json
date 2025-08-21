@@ -1,6 +1,8 @@
 {
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
-  "files": { "ignore": ["node_modules/*", "dist/*", ".next/*", "tests/.*"] },
+  "files": {
+    "ignore": ["node_modules/*", "dist/*", ".next/*", "tests/.*"]
+  },
 
   "formatter": {
     "enabled": true,
@@ -21,6 +23,9 @@
       "suspicious": {
         "noAssignInExpressions": "off",
         "noArrayIndexKey": "off"
+      },
+      "complexity": {
+        "noForEach": "off"
       },
       "a11y": {
         "useSemanticElements": "off",
