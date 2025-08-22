@@ -1,6 +1,6 @@
 import $ from 'jscodeshift';
-import { definePatch, definePatchStep } from './helpers/define';
-import { resolveNextWsDirectory } from './helpers/next';
+import { definePatch, definePatchStep } from './helpers/define.js';
+import { resolveNextWsDirectory } from './helpers/next.js';
 const CommentLine = $.Comment as typeof $.CommentLine;
 
 /**

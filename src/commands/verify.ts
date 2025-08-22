@@ -1,7 +1,7 @@
-import { getInstalledNextVersion, readTrace } from '~/patches/helpers/next';
-import * as console from './helpers/console';
-import { defineCommand } from './helpers/define';
-import patchCommand from './patch';
+import { getInstalledNextVersion, readTrace } from '~/patches/helpers/next.js';
+import * as console from './helpers/console.js';
+import { defineCommand } from './helpers/define.js';
+import patchCommand from './patch.js';
 
 export default defineCommand({
   name: 'verify',

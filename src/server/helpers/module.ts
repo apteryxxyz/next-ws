@@ -1,6 +1,6 @@
 import * as logger from 'next/dist/build/output/log.js';
-import type NextNodeServer from 'next/dist/server/next-server';
-import type { SocketHandler } from './socket';
+import type NextNodeServer from 'next/dist/server/next-server.js';
+import type { SocketHandler } from './socket.js';
 
 export async function importRouteModule(
   nextServer: NextNodeServer,

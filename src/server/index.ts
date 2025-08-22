@@ -1,7 +1,7 @@
-export * from './setup';
+export * from './setup.js';
 export {
   setHttpServer,
   getHttpServer,
   setWebSocketServer,
   getWebSocketServer,
-} from './persistent';
+} from './persistent.js';

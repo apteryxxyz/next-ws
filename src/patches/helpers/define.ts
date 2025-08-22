@@ -1,7 +1,7 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import * as console from '~/commands/helpers/console';
-import { resolveNextDirectory } from './next';
+import * as console from '~/commands/helpers/console.js';
+import { resolveNextDirectory } from './next.js';
 
 export interface PatchDefinition {
   name: string;

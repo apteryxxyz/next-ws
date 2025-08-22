@@ -1,7 +1,7 @@
 import type { Options } from 'semver';
-import Range from 'semver/classes/range';
-import SemVer from 'semver/classes/semver';
-import gt from 'semver/functions/gt';
+import Range from 'semver/classes/range.js';
+import SemVer from 'semver/classes/semver.js';
+import gt from 'semver/functions/gt.js';
 
 /**
  * Get the maximum version from a range

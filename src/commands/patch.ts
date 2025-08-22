@@ -1,8 +1,8 @@
-import patches from '~/patches';
-import { getInstalledNextVersion, writeTrace } from '~/patches/helpers/next';
-import * as console from './helpers/console';
-import { defineCommand } from './helpers/define';
-import * as semver from './helpers/semver';
+import { getInstalledNextVersion, writeTrace } from '~/patches/helpers/next.js';
+import patches from '~/patches/index.js';
+import * as console from './helpers/console.js';
+import { defineCommand } from './helpers/define.js';
+import * as semver from './helpers/semver.js';
 
 export default defineCommand({
   name: 'patch',

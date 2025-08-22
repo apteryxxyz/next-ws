@@ -1,4 +1,4 @@
-import type NextNodeServer from 'next/dist/server/next-server';
+import type NextNodeServer from 'next/dist/server/next-server.js';
 
 function compileRoutePattern(routePattern: string) {
   const escapedPattern = routePattern.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');

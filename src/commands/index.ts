@@ -1,6 +1,6 @@
-import { defineCommandGroup } from './helpers/define';
-import patchCommand from './patch';
-import verifyCommand from './verify';
+import { defineCommandGroup } from './helpers/define.js';
+import patchCommand from './patch.js';
+import verifyCommand from './verify.js';
 
 export default defineCommandGroup({
   name: 'next-ws',

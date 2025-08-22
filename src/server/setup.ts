@@ -1,9 +1,9 @@
 import * as logger from 'next/dist/build/output/log.js';
 import type NextNodeServer from 'next/dist/server/next-server.js';
 import { WebSocketServer } from 'ws';
-import { findMatchingRoute } from './helpers/match';
-import { importRouteModule } from './helpers/module';
-import { useHttpServer, useWebSocketServer } from './persistent';
+import { findMatchingRoute } from './helpers/match.js';
+import { importRouteModule } from './helpers/module.js';
+import { useHttpServer, useWebSocketServer } from './persistent.js';
 
 export function setupWebSocketServer(nextServer: NextNodeServer) {
   process.env.NEXT_WS_MAIN_PROCESS = String(1);
