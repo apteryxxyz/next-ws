@@ -34,10 +34,15 @@ export function setupWebSocketServer(nextServer: NextNodeServer) {
 
     const route = findMatchingRoute(nextServer, pathname);
     if (!route) {
-      logger.error(`[next-ws] could not find module for page ${pathname}`);
+      logger.error(`[next-ws] could not find route for page ${pathname}`);
       return socket.end();
     }
+
     const module = await importRouteModule(nextServer, route.filename);
+    if (!module) {
+      logger.error(`[next-ws] could not import module for page ${pathname}`);
+      return socket.end();
+    }
 
     const handleSocket = module.userland.SOCKET;
     if (!handleSocket || typeof handleSocket !== 'function') {

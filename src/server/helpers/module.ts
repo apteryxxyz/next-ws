@@ -26,9 +26,14 @@ export async function importRouteModule(
     }
   } catch {}
 
-  // @ts-expect-error - getPageModule is protected
-  const buildPagePath = nextServer.getPagePath(filePath);
-  return require(buildPagePath).routeModule as RouteModule;
+  try {
+    // @ts-expect-error - getPageModule is protected
+    const buildPagePath = nextServer.getPagePath(filePath);
+    return require(buildPagePath).routeModule as RouteModule;
+  } catch (cause) {
+    console.error(cause);
+    return undefined;
+  }
 }
 
 export interface RouteModule {
