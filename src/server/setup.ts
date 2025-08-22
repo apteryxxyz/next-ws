@@ -48,6 +48,8 @@ export function setupWebSocketServer(nextServer: NextNodeServer) {
     }
 
     wsServer.handleUpgrade(message, socket, head, async (client) => {
+      wsServer.emit('connection', client, message);
+
       try {
         const context = { params: route.params };
         const handleClose = //
