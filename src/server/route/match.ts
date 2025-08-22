@@ -3,8 +3,9 @@ import type NextNodeServer from 'next/dist/server/next-server';
 function compileRoutePattern(routePattern: string) {
   const escapedPattern = routePattern.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
   const paramRegex = escapedPattern
-    .replace(/\\\[([a-zA-Z0-9_]+)\\\]/g, '(?<$1>[^/]+)') // Match [param]
-    .replace(/\\\[(?:\\\.){3}([a-zA-Z0-9_]+)\\\]/g, '(?<rest_$1>.+)'); // Match [...param]
+    .replace(/\\\[\\\[(?:\\\.){3}([a-z0-9_]+)\\\]\\\]/gi, '?(?<r_o_$1>.+)?') // [[...param]]
+    .replace(/\\\[(?:\\\.){3}([a-z0-9_]+)\\\]/gi, '(?<r_$1>.+)') // [...param]
+    .replace(/\\\[([a-z0-9_]+)\\\]/gi, '(?<$1>[^/]+)'); // [param]
   return new RegExp(`^${paramRegex}$`);
 }
 
@@ -16,8 +17,9 @@ function getRouteParams(routePattern: string, requestPathname: string) {
 
   const params: Record<string, string | string[]> = {};
   for (let [k, v] of Object.entries(match.groups)) {
-    if (k.startsWith('rest_')) {
-      k = k.slice(5);
+    if (k.startsWith('r_')) {
+      if (k.startsWith('r_o_')) k = k.slice(4);
+      else k = k.slice(2);
       v = v.split('/') as never;
     }
     Reflect.set(params, k, v);
