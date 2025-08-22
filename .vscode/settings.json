@@ -1,20 +1,32 @@
 {
-  "cSpell.language": "en-AU",
   "explorer.compactFolders": true,
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.patterns": {
-    ".env": "*.env, .env.*",
     "package.json": "pnpm-lock.yaml, pnpm-workspace.yaml",
-    "*.js": "$(capture).js.map, $(capture).d.ts",
-    "*.jsx": "$(capture).jsx.map, $(capture).d.ts",
-    "*.d.ts": "$(capture).d.ts.map"
+    "*.js": "$(capture).js.map, $(capture).d.ts, $(capture).d.ts.map, $(capture).cjs",
+    "*.cjs": "$(capture).cjs.map, $(capture).d.cts, $(capture).d.cts.map"
   },
-  "editor.formatOnSave": true,
+
   "editor.insertSpaces": true,
   "editor.tabSize": 2,
-  "editor.codeActionsOnSave": { "source.organizeImports.biome": "explicit" },
+
+  "[typescript]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "biomejs.biome",
+    "editor.codeActionsOnSave": {
+      "source.organizeImports.biome": "explicit"
+    }
+  },
+
+  // TypeScript
+  "typescript.preferences.importModuleSpecifierEnding": "js",
+
+  // Code Spell Checker
+  "cSpell.language": "en-AU",
   "cSpell.words": [],
-  "todo-tree.general.tags": ["=====", "NOTE", "IDEA", "TODO", "FIX", "HACK"],
+
+  // Todo Tree
+  "todo-tree.general.tags": ["=====", "TODO", "CHANGE"],
   "todo-tree.highlights.customHighlight": {
     "=====": {
       "type": "whole-line",
@@ -23,55 +35,17 @@
       "gutterIcon": true,
       "hideFromTree": true
     },
-    "NOTE": {
-      "type": "whole-line",
-      "icon": "note",
-      "foreground": "#8df7ff",
-      "gutterIcon": true,
-      "hideFromTree": true
-    },
-    "IDEA": {
-      "type": "whole-line",
-      "icon": "light-bulb",
-      "foreground": "#458efc",
-      "gutterIcon": true
-    },
     "TODO": {
       "type": "whole-line",
-      "icon": "check",
+      "icon": "inbox",
       "foreground": "#ff9900",
       "gutterIcon": true
     },
-    "FIX": {
+    "CHANGE": {
       "type": "whole-line",
-      "icon": "bug",
-      "foreground": "#e63d00",
-      "gutterIcon": true
-    },
-    "HACK": {
-      "type": "whole-line",
-      "icon": "tools",
-      "foreground": "#45da20",
+      "icon": "diff",
+      "foreground": "#00ff00",
       "gutterIcon": true
     }
-  },
-  "workbench.colorCustomizations": {
-    "activityBar.activeBackground": "#000000",
-    "activityBar.background": "#000000",
-    "activityBar.foreground": "#ffffff",
-    "activityBar.inactiveForeground": "#ffffff99",
-    "activityBarBadge.background": "#000000",
-    "activityBarBadge.foreground": "#ffffff",
-    "commandCenter.border": "#00000099",
-    "sash.hoverBorder": "#000000",
-    "statusBar.background": "#000000",
-    "statusBar.foreground": "#ffffff",
-    "statusBarItem.hoverBackground": "#000000",
-    "statusBarItem.remoteBackground": "#000000",
-    "statusBarItem.remoteForeground": "#ffffff",
-    "titleBar.activeBackground": "#000000",
-    "titleBar.activeForeground": "#ffffff",
-    "titleBar.inactiveBackground": "#00000099",
-    "titleBar.inactiveForeground": "#ffffff99"
   }
 }

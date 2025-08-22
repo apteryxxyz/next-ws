@@ -1,8 +1,7 @@
 'use client';
 
 // biome-ignore lint/style/useImportType: Actually need the value for JSX
-import React, { useRef } from 'react';
-import { createContext, useContext, useEffect } from 'react';
+import React, { createContext, useContext, useEffect, useRef } from 'react';
 
 export const WebSocketContext = createContext<WebSocket | null>(null);
 WebSocketContext.displayName = 'WebSocketContext';

@@ -1,6 +1,8 @@
+import { sep } from 'node:path';
 import $ from 'jscodeshift';
 import { definePatch, definePatchStep } from './helpers/define.js';
 import { resolveNextWsDirectory } from './helpers/next.js';
+
 const CommentLine = $.Comment as typeof $.CommentLine;
 
 /**
@@ -17,7 +19,7 @@ const CommentLine = $.Comment as typeof $.CommentLine;
       let nextWs;
       try { nextWs ??= require('next-ws/server') } catch {}
       try { nextWs ??= require(require.resolve('next-ws/server', { paths: [process.cwd()] }) )} catch {}
-      try { nextWs ??= require('${resolveNextWsDirectory()}/dist/server/index.cjs') } catch {}
+      try { nextWs ??= require('${resolveNextWsDirectory().replaceAll(sep, '/').replaceAll("'", "\\'")}/dist/server/index.cjs') } catch {}
       nextWs?.setupWebSocketServer(this);
     `);
     const block = $.blockStatement(snippet.nodes()[0].program.body);
@@ -31,7 +33,7 @@ const CommentLine = $.Comment as typeof $.CommentLine;
         const existing = $(body)
           .find(CommentLine, { value: ` ${marker}` })
           .paths()[0];
-        const idx = body.findIndex((s) => s === existing?.parent.node);
+        const idx = body.indexOf(existing?.parent.node);
 
         if (existing && idx > -1) body[idx] = block;
         else body.push(block);

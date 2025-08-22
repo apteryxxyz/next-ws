@@ -35,7 +35,7 @@ export function maxVersion(range: Range | string, loose?: Options | boolean) {
   return maximumVersion;
 }
 
-export { default as minVersion } from 'semver/ranges/min-version';
-export { default as ltr } from 'semver/ranges/ltr';
-export { default as gtr } from 'semver/ranges/gtr';
 export { default as satisfies } from 'semver/functions/satisfies';
+export { default as gtr } from 'semver/ranges/gtr';
+export { default as ltr } from 'semver/ranges/ltr';
+export { default as minVersion } from 'semver/ranges/min-version';

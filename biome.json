@@ -1,49 +1,40 @@
 {
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "files": {
-    "ignore": ["node_modules/*", "dist/*", ".next/*", "tests/.*"]
+    "includes": [
+      "**",
+      "!**/.ignore/**/*",
+      "!**/node_modules/**/*",
+      "!**/dist/**/*",
+      "!**/.next/**/*"
+    ]
   },
 
   "formatter": {
     "enabled": true,
     "indentStyle": "space",
     "indentWidth": 2,
-    "lineEnding": "lf"
+    "lineEnding": "lf",
+    "expand": "auto"
   },
-
   "linter": {
     "enabled": true,
     "rules": {
       "recommended": true,
-      "style": {
-        "noNonNullAssertion": "off",
-        "noUselessElse": "off",
-        "noParameterAssign": "off"
-      },
-      "suspicious": {
-        "noAssignInExpressions": "off",
-        "noArrayIndexKey": "off"
+      "correctness": {
+        "useHookAtTopLevel": "off"
       },
       "complexity": {
-        "noForEach": "off"
-      },
-      "a11y": {
-        "useSemanticElements": "off",
-        "useFocusableInteractive": "off"
-      },
-      "nursery": {
-        "useSortedClasses": {
-          "level": "warn",
-          "options": {
-            "attributes": ["className"],
-            "functions": ["cn", "cva"]
-          }
-        }
+        "noUselessUndefinedInitialization": "off"
       }
     }
   },
-  "organizeImports": {
-    "enabled": true
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
   },
 
   "javascript": {
@@ -51,14 +42,6 @@
       "quoteStyle": "single",
       "jsxQuoteStyle": "double",
       "semicolons": "always"
-    }
-  },
-  "css": {
-    "formatter": {
-      "enabled": false
-    },
-    "linter": {
-      "enabled": false
     }
   }
 }

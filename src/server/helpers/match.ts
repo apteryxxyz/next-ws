@@ -40,12 +40,12 @@ export function findMatchingRoute(
     ...nextServer.getAppPathRoutes(),
   };
 
-  let matchedRoute = null;
+  let matchedRoute = undefined;
   for (const [routePath, [filePath]] of Object.entries(appPathRoutes)) {
+    if (!routePath || !filePath) continue;
     const realPath = `${basePath}${routePath}`;
     const routeParams = getRouteParams(realPath, requestPathname);
-    if (routeParams)
-      matchedRoute = { filename: filePath!, params: routeParams };
+    if (routeParams) matchedRoute = { filename: filePath, params: routeParams };
   }
   return matchedRoute;
 }

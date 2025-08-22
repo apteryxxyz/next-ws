@@ -1,6 +1,5 @@
-import { type Page, expect, test } from '@playwright/test';
+import { expect, type Page, test } from '@playwright/test';
 
-// biome-ignore lint/style/useSingleVarDeclarator: I do what I want
 let page1: Page, page2: Page;
 test.beforeEach(async ({ browser }) => {
   page1 = await browser.newPage();
