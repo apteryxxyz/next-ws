@@ -45,7 +45,7 @@ export function attachWebSocketUpgradeHandler({
     const route = findMatchingRoute(nextServer, pathname);
     if (!route) {
       logger.warnOnce(`[next-ws] no matching route for '${pathname}'`);
-      return socket.destroy();
+      return socket.end();
     }
     const module = await importRouteModule(nextServer, route.filename);
 
@@ -54,7 +54,7 @@ export function attachWebSocketUpgradeHandler({
       logger.error(
         `[next-ws] route '${pathname}' does not export a valid 'SOCKET' handler`,
       );
-      return socket.destroy();
+      return socket.end();
     }
 
     // Currently experimental, but will eventually become stable then the default
@@ -82,6 +82,7 @@ export function attachWebSocketUpgradeHandler({
           client.once('close', () => handleClose());
       };
 
+try {
       if (asyncContext) {
         const workStore = createWorkStore(nextServer, route.filename);
         const requestStore = createRequestStore(nextServer, request);
@@ -91,6 +92,15 @@ export function attachWebSocketUpgradeHandler({
         );
       } else {
         await handler();
+}
+      } catch (cause) {
+        logger.error(
+          `[next-ws] unhandled error in SOCKET handler for '${pathname}'`,
+          cause,
+        );
+        try {
+          client.close(1011, 'Internal Server Error');
+        } catch {}
       }
     });
 
