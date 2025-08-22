@@ -73,6 +73,8 @@ export function attachWebSocketUpgradeHandler({
     }
 
     wsServer.handleUpgrade(message, socket, head, async (client) => {
+      wsServer.emit('connection', client, message);
+
       const handler = async () => {
         const context = { params: route.params };
         const args = asyncContext
