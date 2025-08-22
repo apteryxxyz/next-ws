@@ -33,7 +33,10 @@ export function attachWebSocketUpgradeHandler({
 
   logger.ready('[next-ws] has started the WebSocket server');
 
-  //
+  // Prevent double-attaching
+  const kInstalled = Symbol.for('kInstalled');
+  if (Reflect.has(httpServer, kInstalled)) return;
+  Reflect.set(httpServer, kInstalled, true);
 
   httpServer.on('upgrade', async (message, socket, head) => {
     const request = toNextRequest(message);
@@ -82,17 +85,17 @@ export function attachWebSocketUpgradeHandler({
           client.once('close', () => handleClose());
       };
 
-try {
-      if (asyncContext) {
-        const workStore = createWorkStore(nextServer, route.filename);
-        const requestStore = createRequestStore(nextServer, request);
+      try {
+        if (asyncContext) {
+          const workStore = createWorkStore(nextServer, route.filename);
+          const requestStore = createRequestStore(nextServer, request);
 
-        await module.workAsyncStorage.run(workStore, () =>
-          module.workUnitAsyncStorage.run(requestStore, handler),
-        );
-      } else {
-        await handler();
-}
+          await module.workAsyncStorage.run(workStore, () =>
+            module.workUnitAsyncStorage.run(requestStore, handler),
+          );
+        } else {
+          await handler();
+        }
       } catch (cause) {
         logger.error(
           `[next-ws] unhandled error in SOCKET handler for '${pathname}'`,
