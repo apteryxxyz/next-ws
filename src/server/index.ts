@@ -4,4 +4,4 @@ export {
   getHttpServer,
   setWebSocketServer,
   getWebSocketServer,
-} from './helpers/persistent';
+} from './persistent';

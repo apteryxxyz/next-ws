@@ -1,4 +1,4 @@
-import { getNextVersion, getTrace } from '~/patches/helpers/next';
+import { getInstalledNextVersion, readTrace } from '~/patches/helpers/next';
 import * as console from './helpers/console';
 import { defineCommand } from './helpers/define';
 import patchCommand from './patch';
@@ -14,7 +14,7 @@ export default defineCommand({
     },
   ],
   async action(options) {
-    const trace = await getTrace();
+    const trace = await readTrace();
 
     if (!trace) {
       if (options.ensure) {
@@ -28,7 +28,7 @@ export default defineCommand({
       }
     }
 
-    const current = await getNextVersion();
+    const current = await getInstalledNextVersion();
     if (current !== trace.version) {
       console.error(
         "Next.js has been patched with a different version, you'll need to run the patch command",
