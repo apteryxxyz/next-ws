@@ -59,7 +59,11 @@ export const disableSocketAutoClose = definePatchStep({
           property: { type: 'Identifier', name: 'end' },
         },
       })
-      .replaceWith((path) => `null // ${$(path.node).toSource()}`)
+      .replaceWith((path) => {
+        const expr = $.unaryExpression('void', $.literal(0)); // void 0
+        expr.comments = [$.commentLine(` ${$(path.node).toSource()}`)];
+        return expr;
+      })
       .toSource();
   },
 });
