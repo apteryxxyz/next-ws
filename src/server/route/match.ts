@@ -18,11 +18,11 @@ function getRouteParams(routePattern: string, requestPathname: string) {
   const params: Record<string, string | string[]> = {};
   for (let [k, v] of Object.entries(match.groups)) {
     if (k.startsWith('r_')) {
-      if (k.startsWith('r_o_')) k = k.slice(4);
-      else k = k.slice(2);
-      v = v.split('/') as never;
+      const optional = k.startsWith('r_o_');
+      k = k.slice(optional ? 4 : 2);
+      v = v?.split('/') as never;
     }
-    Reflect.set(params, k, v);
+    if (v) Reflect.set(params, k, v);
   }
   return params;
 }
