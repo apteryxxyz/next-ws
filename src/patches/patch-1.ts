@@ -1,6 +1,9 @@
+import { sep } from 'node:path';
 import $ from 'jscodeshift';
-import { definePatch, definePatchStep } from './helpers/define';
-import { getDistDirname } from './helpers/next';
+import { definePatch, definePatchStep } from './helpers/define.js';
+import { resolveNextWsDirectory } from './helpers/next.js';
+
+const CommentLine = $.Comment as typeof $.CommentLine;
 
 /**
  * Add `require('next-ws/server').setupWebSocketServer(this)` to the constructor of
@@ -10,40 +13,30 @@ import { getDistDirname } from './helpers/next';
   title: 'Add WebSocket server setup script to NextNodeServer constructor',
   path: 'next:dist/server/next-server.js',
   async transform(code) {
-    const PATCH_MARKER = '@patch patchNextNodeServer';
-    const patchProgram = $(`
-      // ${PATCH_MARKER}
+    const marker = '@patch attach-websocket-server';
+    const snippet = $(`
+      // ${marker}
       let nextWs;
-      try { nextWs ??= require('next-ws/dist/server/index.cjs') } catch {}
-      try { nextWs ??= require('${getDistDirname()}/server/index.cjs') } catch {}
+      try { nextWs ??= require('next-ws/server') } catch {}
+      try { nextWs ??= require(require.resolve('next-ws/server', { paths: [process.cwd()] }) )} catch {}
+      try { nextWs ??= require('${resolveNextWsDirectory().replaceAll(sep, '/').replaceAll("'", "\\'")}/dist/server/index.cjs') } catch {}
       nextWs?.setupWebSocketServer(this);
     `);
-    const patchBlock = //
-      $.blockStatement(patchProgram.nodes()[0].program.body);
+    const block = $.blockStatement(snippet.nodes()[0].program.body);
 
     return $(code)
-      .find($.ClassDeclaration, {
-        id: { name: 'NextNodeServer' },
-      })
-      .find($.MethodDefinition, {
-        kind: 'constructor',
-        value: { body: { type: 'BlockStatement' } },
-      })
-      .forEach(({ node: method }) => {
-        const bodyStatements = (method.value.body as $.BlockStatement).body;
+      .find($.ClassDeclaration, { id: { name: 'NextNodeServer' } })
+      .find($.MethodDefinition, { kind: 'constructor' })
+      .forEach(({ node }) => {
+        const body = (node.value.body as $.BlockStatement).body;
 
-        const existingPatchPath = $(bodyStatements)
-          .find($.Comment as typeof $.CommentLine, {
-            value: ` ${PATCH_MARKER}`,
-          })
+        const existing = $(body)
+          .find(CommentLine, { value: ` ${marker}` })
           .paths()[0];
-        const existingPatchIndex = bodyStatements.findIndex(
-          (s) => s === existingPatchPath?.parent.node,
-        );
+        const idx = body.indexOf(existing?.parent.node);
 
-        if (existingPatchIndex > -1)
-          bodyStatements[existingPatchIndex] = patchBlock;
-        else bodyStatements.push(patchBlock);
+        if (existing && idx > -1) body[idx] = block;
+        else body.push(block);
       })
       .toSource();
   },
@@ -65,7 +58,11 @@ export const patchRouterServer = definePatchStep({
           property: { type: 'Identifier', name: 'end' },
         },
       })
-      .replaceWith((path) => `null // ${$(path.node).toSource()}`)
+      .replaceWith((path) => {
+        const expr = $.unaryExpression('void', $.literal(0)); // void 0
+        expr.comments = [$.commentLine(` ${$(path.node).toSource()}`)];
+        return expr;
+      })
       .toSource();
   },
 });

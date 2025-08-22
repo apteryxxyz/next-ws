@@ -11,14 +11,15 @@ setWebSocketServer(webSocketServer);
 
 const dev = process.env.NODE_ENV !== 'production';
 const hostname = 'localhost';
-const port = Number.parseInt(process.env.PORT ?? '3000');
+const port = Number.parseInt(process.env.PORT ?? '3000', 10);
 const app = next({ dev, hostname, port, customServer: true });
 const handle = app.getRequestHandler();
 
 app.prepare().then(() => {
   httpServer
     .on('request', async (req, res) => {
-      const parsedUrl = parse(req.url!, true);
+      if (!req.url) return;
+      const parsedUrl = parse(req.url, true);
       await handle(req, res, parsedUrl);
     })
     .listen(port, () => {

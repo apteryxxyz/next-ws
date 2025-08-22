@@ -48,7 +48,7 @@
   "dependencies": {
     "jscodeshift": "^17.3.0",
     "minimist": "^1.2.8",
-    "semver": "^7.7.1"
+    "semver": "^7.7.2"
   },
   "peerDependencies": {
     "next": ">=13.5.1",
@@ -56,23 +56,23 @@
     "ws": "*"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.9.4",
-    "@changesets/changelog-git": "^0.2.0",
+    "@biomejs/biome": "^2.2.0",
+    "@changesets/changelog-git": "^0.2.1",
     "@changesets/cli": "^2.27.12",
-    "@playwright/test": "^1.50.1",
+    "@playwright/test": "^1.55.0",
     "@types/jscodeshift": "^17.3.0",
     "@types/minimist": "^1.2.5",
-    "@types/node": "^22.13.1",
+    "@types/node": "^24.3.0",
     "@types/react": "catalog:",
-    "@types/semver": "^7.5.8",
-    "@types/ws": "^8.5.14",
-    "chalk": "^5.4.1",
+    "@types/semver": "^7.7.0",
+    "@types/ws": "^8.18.1",
+    "chalk": "^5.6.0",
     "husky": "^9.1.7",
     "next": "catalog:",
     "pinst": "^3.0.0",
     "react": "catalog:",
     "react-dom": "catalog:",
-    "tsup": "^8.3.6",
-    "typescript": "^5.7.3"
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.2"
   }
 }

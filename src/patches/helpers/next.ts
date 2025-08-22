@@ -1,48 +1,49 @@
 import { readFile, writeFile } from 'node:fs/promises';
-import { join as joinPaths, dirname as resolveDirname } from 'node:path';
+import { dirname, join } from 'node:path';
 
 /**
- * Get the dist dirname of this package.
- * @returns The dist dirname of this package
+ * Resolve the path to the next-ws installation directory.
+ * @returns The installation directory for this package
  */
-export function getDistDirname() {
-  const resolveOptions = { paths: [process.cwd()] };
-  const nextWsPackagePath = //
-    require.resolve('next-ws/package.json', resolveOptions);
-  const nextWsDirName = resolveDirname(nextWsPackagePath);
-  return `${nextWsDirName}/dist`.replace(/\\/g, '/').replace(/'/g, "\\'");
+export function resolveNextWsDirectory() {
+  const id = //
+    require.resolve('next-ws/package.json', { paths: [process.cwd()] });
+  return dirname(id);
 }
 
 /**
- * Find the Next.js installation directory.
+ * Resolve the path to the Next.js installation directory.
  * @returns The Next.js installation directory
  */
-export function findNextDirectory() {
-  const resolveOptions = { paths: [process.cwd()] };
-  const nextPackagePath = require.resolve('next/package.json', resolveOptions);
-  return resolveDirname(nextPackagePath);
+export function resolveNextDirectory() {
+  const id = //
+    require.resolve('next/package.json', { paths: [process.cwd()] });
+  return dirname(id);
 }
 
 /**
  * Get the version of Next.js from the installation directory's `package.json`.
  * @returns The version of Next.js
  */
-export async function getNextVersion() {
-  const nextDirectory = findNextDirectory();
-  const nextPackagePath = joinPaths(nextDirectory, 'package.json');
-  const nextPackage = await readFile(nextPackagePath, 'utf-8').then(JSON.parse);
-  return String(nextPackage.version.split('-')[0]);
+export async function getInstalledNextVersion() {
+  const id = join(resolveNextDirectory(), 'package.json');
+  const pkg = await readFile(id, 'utf8').then(JSON.parse);
+  return String(pkg.version.split('-')[0]);
+}
+
+export interface Trace {
+  patch: string;
+  version: string;
 }
 
 /**
  * Get the next-ws trace of the current installation of Next.js.
  * @returns Trace object
  */
-export async function getTrace() {
-  const nextDirectory = findNextDirectory();
-  const tracePath = joinPaths(nextDirectory, '.next-ws-trace.json');
-  return readFile(tracePath, 'utf-8')
-    .then<Parameters<typeof setTrace>[0]>(JSON.parse)
+export async function readTrace() {
+  const id = join(resolveNextDirectory(), '.next-ws-trace.json');
+  return readFile(id, 'utf-8')
+    .then<Trace>(JSON.parse)
     .catch(() => null);
 }
 
@@ -50,8 +51,7 @@ export async function getTrace() {
  * Set the next-ws trace of the current installation of Next.js.
  * @param trace Trace object
  */
-export async function setTrace(trace: { patch: string; version: string }) {
-  const nextDirectory = findNextDirectory();
-  const tracePath = joinPaths(nextDirectory, '.next-ws-trace.json');
-  await writeFile(tracePath, JSON.stringify(trace, null, 2));
+export async function writeTrace(trace: Trace) {
+  const id = join(resolveNextDirectory(), '.next-ws-trace.json');
+  await writeFile(id, JSON.stringify(trace, null, 2));
 }

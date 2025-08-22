@@ -66,7 +66,8 @@ export async function task<T>(promise: Promise<T>, ...message: unknown[]) {
   let spinnerIndex = 0;
   const spinnerInterval = setInterval(() => {
     readline.cursorTo(process.stdout, 0);
-    const spinnerChar = spinnerChars[spinnerIndex++ % spinnerChars.length]!;
+    const spinnerChar =
+      spinnerChars[spinnerIndex++ % spinnerChars.length] ?? ' ';
     process.stdout.write(chalk.cyan('[next-ws]', spinnerChar, ...message));
   }, 100);
 
