@@ -17,6 +17,6 @@ export function toNextRequest(message: IncomingMessage) {
         ? undefined
         : (message as unknown as ReadableStream<Uint8Array>),
     signal: controller.signal,
-    referrer: headers.get('referrer') || undefined,
+    referrer: headers.get('referer') || undefined,
   });
 }
