@@ -3,6 +3,7 @@ import type NextNodeServer from 'next/dist/server/next-server.js';
 import { WebSocketServer } from 'ws';
 import { findMatchingRoute } from './helpers/match.js';
 import { importRouteModule } from './helpers/module.js';
+import { toNextRequest } from './helpers/request.js';
 import { useHttpServer, useWebSocketServer } from './persistent.js';
 
 export function setupWebSocketServer(nextServer: NextNodeServer) {
@@ -28,8 +29,9 @@ export function setupWebSocketServer(nextServer: NextNodeServer) {
   Reflect.set(httpServer, kInstalled, true);
 
   httpServer.on('upgrade', async (message, socket, head) => {
-    const url = new URL(message.url ?? '', 'ws://next');
-    const pathname = url.pathname;
+    const request = toNextRequest(message);
+
+    const pathname = request.nextUrl.pathname;
     if (pathname.includes('/_next')) return;
 
     const route = findMatchingRoute(nextServer, pathname);
@@ -44,23 +46,33 @@ export function setupWebSocketServer(nextServer: NextNodeServer) {
       return socket.end();
     }
 
+    const handleUpgrade = module.userland.UPGRADE;
     const handleSocket = module.userland.SOCKET;
-    if (!handleSocket || typeof handleSocket !== 'function') {
-      logger.error(
-        `[next-ws] route '${pathname}' does not export a valid 'SOCKET' handler`,
-      );
+    if (
+      (!handleUpgrade || typeof handleUpgrade !== 'function') &&
+      (!handleSocket || typeof handleSocket !== 'function')
+    ) {
+      logger.error(`[next-ws] route '${pathname}' does not export a handler`);
       return socket.end();
     }
+    if (handleSocket)
+      logger.warnOnce(
+        'DeprecationWarning: [next-ws] SOCKET is deprecated, use UPGRADE instead, see https://github.com/apteryxxyz/next-ws#-usage',
+      );
 
     wsServer.handleUpgrade(message, socket, head, async (client) => {
       wsServer.emit('connection', client, message);
 
       try {
         const context = { params: route.params };
-        const handleClose = //
-          await handleSocket(client, message, wsServer, context);
-        if (typeof handleClose === 'function')
-          client.once('close', () => handleClose());
+        if (handleUpgrade) {
+          await handleUpgrade(client, wsServer, request, context);
+        } else if (handleSocket) {
+          const handleClose = //
+            await handleSocket(client, message, wsServer, context);
+          if (typeof handleClose === 'function')
+            client.once('close', () => handleClose());
+        }
       } catch (cause) {
         logger.error(
           `[next-ws] error in socket handler for '${pathname}'`,

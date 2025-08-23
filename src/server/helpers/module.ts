@@ -1,6 +1,6 @@
 import * as logger from 'next/dist/build/output/log.js';
 import type NextNodeServer from 'next/dist/server/next-server.js';
-import type { SocketHandler } from './socket.js';
+import type { SocketHandler, UpgradeHandler } from './socket.js';
 
 export async function importRouteModule(
   nextServer: NextNodeServer,
@@ -37,5 +37,25 @@ export async function importRouteModule(
 }
 
 export interface RouteModule {
-  userland: { SOCKET?: SocketHandler };
+  userland: {
+    /** @deprecated Prefer UPGRADE and {@link UpgradeHandler} */
+    SOCKET?: SocketHandler;
+    UPGRADE?: UpgradeHandler;
+  };
 }
+
+export type RouteParams<Path extends string> =
+  Path extends `${infer Before}[[...${infer Param}]]${infer After}`
+    ? RouteParams<Before> & { [K in Param]?: string[] } & RouteParams<After>
+    : Path extends `${infer Before}[...${infer Param}]${infer After}`
+      ? RouteParams<Before> & { [K in Param]: string[] } & RouteParams<After>
+      : Path extends `${infer Before}[${infer Param}]${infer After}`
+        ? RouteParams<Before> & { [K in Param]: string } & RouteParams<After>
+        : // biome-ignore lint/complexity/noBannedTypes: do nothing
+          {};
+
+export type RouteContext<Path extends string> = {
+  params: Record<string, string | string[] | undefined> &
+    RouteParams<Path> &
+    RouteParams<Path>;
+};

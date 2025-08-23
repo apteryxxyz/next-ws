@@ -50,14 +50,14 @@ To set up a WebSocket server with `next-ws`, you need to patch your local Next.j
 
 ## 🚀 Usage
 
-Using WebSocket connections in your Next.js app directory is simple with `next-ws`. You can handle WebSocket connections directly in your API routes via exported `SOCKET` functions. Here's an example of a simple WebSocket echo server:
+Using WebSocket connections in your Next.js app directory is simple with `next-ws`. You can handle WebSocket connections directly in your API routes via exported `UPGRADE` functions.
 
 ```js
-export function SOCKET(
+export function UPGRADE(
   client: import('ws').WebSocket,
-  request: import('http').IncomingMessage,
   server: import('ws').WebSocketServer,
-  context: { params: Record<string, string | string[]> },
+  request: import('next/server').NextRequest,
+  context: import('next-ws/server').RouteContext<'/api/ws'>,
 ) {
   // ...
 }
@@ -70,25 +70,24 @@ export function SOCKET(
 
 ### Echo Server
 
-This example demonstrates a simple WebSocket echo server that sends back any message it receives. Create a new API route file anywhere in your app directory and export a `SOCKET` function to handle WebSocket connections:
+This example demonstrates a simple WebSocket echo server that sends back any message it receives. Create a new API route file anywhere in your app directory and export a `UPGRADE` function to handle WebSocket connections:
 
 ```ts
 // app/api/ws/route.ts (can be any route file in the app directory)
 
-export function SOCKET(
-  client: import("ws").WebSocket,
-  request: import("http").IncomingMessage,
-  server: import("ws").WebSocketServer
+export function UPGRADE(
+  client: import('ws').WebSocket,
+  server: import('ws').WebSocketServer
 ) {
-  console.log("A client connected");
+  console.log('A client connected');
 
-  client.on("message", (message) => {
-    console.log("Received message:", message);
+  client.on('message', (message) => {
+    console.log('Received message:', message);
     client.send(message);
   });
 
-  client.on("close", () => {
-    console.log("A client disconnected");
+  client.once('close', () => {
+    console.log('A client disconnected');
   });
 }
 ```
