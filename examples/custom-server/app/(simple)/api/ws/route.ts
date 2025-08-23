@@ -5,9 +5,8 @@ export function GET() {
   return new Response('Upgrade Required', { status: 426, headers });
 }
 
-export function SOCKET(
+export function UPGRADE(
   client: import('ws').WebSocket,
-  _request: import('node:http').IncomingMessage,
   server: import('ws').WebSocketServer,
 ) {
   for (const other of server.clients) {
@@ -34,7 +33,7 @@ export function SOCKET(
     }),
   );
 
-  return () => {
+  client.once('close', () => {
     for (const other of server.clients) {
       if (client === other || other.readyState !== other.OPEN) continue;
       other.send(
@@ -44,5 +43,5 @@ export function SOCKET(
         }),
       );
     }
-  };
+  });
 }

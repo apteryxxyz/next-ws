@@ -4,7 +4,7 @@
   "scripts": {
     "build": "next build",
     "start": "NODE_ENV=production tsx server.ts",
-    "dev": "tsx server.ts",
+    "dev": "tsx --require=\"./global.js\" server.ts",
     "prepare": "next-ws patch"
   },
   "dependencies": {
