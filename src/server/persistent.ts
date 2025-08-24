@@ -28,3 +28,10 @@ export const [getWebSocketServer, setWebSocketServer, useWebSocketServer] =
   useGlobal<import('ws').WebSocketServer>(
     Symbol.for('next-ws.websocket-server'),
   );
+
+// ===== Request Storage ===== //
+
+export const [getRequestStorage, setRequestStorage, useRequestStorage] = //
+  useGlobal<import('./helpers/store').RequestStorage>(
+    Symbol.for('next-ws.request-store'), //
+  );

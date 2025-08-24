@@ -1,3 +1,5 @@
+import { headers } from 'next/headers';
+
 export function GET() {
   const headers = new Headers();
   headers.set('Connection', 'Upgrade');
@@ -5,10 +7,14 @@ export function GET() {
   return new Response('Upgrade Required', { status: 426, headers });
 }
 
-export function UPGRADE(
+export async function UPGRADE(
   client: import('ws').WebSocket,
   server: import('ws').WebSocketServer,
 ) {
+  // For testing purposes
+  // TODO: Make a real world use case for this
+  await headers();
+
   for (const other of server.clients) {
     if (client === other || other.readyState !== other.OPEN) continue;
     other.send(
