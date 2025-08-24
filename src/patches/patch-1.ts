@@ -67,8 +67,70 @@ export const patchRouterServer = definePatchStep({
   },
 });
 
+export const patchHeaders = definePatchStep({
+  title: 'Add WebSocket contextual headers resolution to request headers',
+  path: 'next:dist/client/components/headers.js',
+  async transform(code) {
+    const marker = '@patch headers';
+    const snippet = $(`
+      // ${marker}
+      const kRequestStorage = Symbol.for('next-ws.request-store');
+      const requestStorage = Reflect.get(globalThis, kRequestStorage);
+      const contextualHeaders = requestStorage?.getStore()?.headers;
+      if (contextualHeaders) return contextualHeaders;
+    `);
+    const block = $.blockStatement(snippet.nodes()[0].program.body);
+
+    return $(code)
+      .find($.FunctionDeclaration, { id: { name: 'headers' } })
+      .forEach(({ node }) => {
+        const body = node.body.body;
+
+        const existing = $(body)
+          .find(CommentLine, { value: ` ${marker}` })
+          .paths()[0];
+        const idx = body.indexOf(existing?.parent.node);
+
+        if (existing && idx > -1) body[idx] = block;
+        else body.unshift(block);
+      })
+      .toSource();
+  },
+});
+
+export const patchCookies = definePatchStep({
+  title: 'Add WebSocket contextual cookies resolution to request cookies',
+  path: 'next:dist/client/components/headers.js',
+  async transform(code) {
+    const marker = '@patch cookies';
+    const snippet = $(`
+      // ${marker}
+      const kRequestStorage = Symbol.for('next-ws.request-store');
+      const requestStorage = Reflect.get(globalThis, kRequestStorage);
+      const contextualCookies = requestStorage?.getStore()?.cookies;
+      if (contextualCookies) return contextualCookies;
+    `);
+    const block = $.blockStatement(snippet.nodes()[0].program.body);
+
+    return $(code)
+      .find($.FunctionDeclaration, { id: { name: 'cookies' } })
+      .forEach(({ node }) => {
+        const body = node.body.body;
+
+        const existing = $(body)
+          .find(CommentLine, { value: ` ${marker}` })
+          .paths()[0];
+        const idx = body.indexOf(existing?.parent.node);
+
+        if (existing && idx > -1) body[idx] = block;
+        else body.unshift(block);
+      })
+      .toSource();
+  },
+});
+
 export default definePatch({
   name: 'patch-1',
-  versions: '>=13.5.1 <=15.5.0',
-  steps: [patchNextNodeServer, patchRouterServer],
+  versions: '>=13.5.1 <=14.2.32',
+  steps: [patchNextNodeServer, patchRouterServer, patchHeaders, patchCookies],
 });
