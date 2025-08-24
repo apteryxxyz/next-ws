@@ -1,5 +1,22 @@
 # next-ws
 
+## 2.1.0
+
+### Minor Changes
+
+- 2d2926b: Migrate patches to use ast parser instead of find/replace
+- 30be438: Remove environment checks for getting persistent variables
+- 1e29ec2: Drop esm build, ship cjs only
+- 806c873: Introduce `UPGRADE` handler, mark `SOCKET` as deprecated
+- b981361: Add request async storage for upgrade handlers
+- 064cfd4: Catch and handle errors inside socket handlers
+
+### Patch Changes
+
+- 064cfd4: Fix not emitting connection event on websocket server
+- 064cfd4: Prevent double-attaching upgrade listener
+- 064cfd4: Support optional catch-all routes in matcher
+
 ## 2.0.14
 
 ### Patch Changes
