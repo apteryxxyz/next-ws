@@ -10,7 +10,7 @@ function useGlobal<T>(key: PropertyKey) {
       const existing = Reflect.get(globalThis, key);
       if (existing) return existing as T;
       Reflect.set(globalThis, key, getter());
-      return getter() as T;
+      return Reflect.get(globalThis, key) as T;
     },
   ] as const;
 }
