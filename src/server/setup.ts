@@ -7,9 +7,6 @@ import { toNextRequest } from './helpers/request.js';
 import { useHttpServer, useWebSocketServer } from './persistent.js';
 
 export function setupWebSocketServer(nextServer: NextNodeServer) {
-  process.env.NEXT_WS_MAIN_PROCESS = String(1);
-
-  process.env.NEXT_WS_SKIP_ENVIRONMENT_CHECK = String(1);
   const httpServer = //
     // @ts-expect-error - serverOptions is protected
     useHttpServer(() => nextServer.serverOptions?.httpServer);
@@ -17,14 +14,11 @@ export function setupWebSocketServer(nextServer: NextNodeServer) {
     return logger.error('[next-ws] was not able to find the HTTP server');
   const wsServer = //
     useWebSocketServer(() => new WebSocketServer({ noServer: true }));
-  if (!wsServer)
-    return logger.error('[next-ws] was not able to find the WebSocket server');
-  process.env.NEXT_WS_SKIP_ENVIRONMENT_CHECK = String(0);
 
   logger.ready('[next-ws] has started the WebSocket server');
 
   // Prevent double-attaching
-  const kInstalled = Symbol.for('kInstalled');
+  const kInstalled = Symbol.for('next-ws.http-server.attached');
   if (Reflect.has(httpServer, kInstalled)) return;
   Reflect.set(httpServer, kInstalled, true);
 
