@@ -9,7 +9,8 @@ const CommentLine = $.Comment as typeof $.CommentLine;
  * Add `require('next-ws/server').setupWebSocketServer(this)` to the constructor of
  * `NextNodeServer` in `next/dist/server/next-server.js`.
  * @remark Starting the server and handling connections is part of the core
- */ export const patchNextNodeServer = definePatchStep({
+ */
+export const patchNextNodeServer = definePatchStep({
   title: 'Add WebSocket server setup script to NextNodeServer constructor',
   path: 'next:dist/server/next-server.js',
   async transform(code) {
@@ -67,6 +68,9 @@ export const patchRouterServer = definePatchStep({
   },
 });
 
+/**
+ * Add WebSocket contextual headers resolution to request headers.
+ */
 export const patchHeaders = definePatchStep({
   title: 'Add WebSocket contextual headers resolution to request headers',
   path: 'next:dist/client/components/headers.js',
@@ -98,6 +102,9 @@ export const patchHeaders = definePatchStep({
   },
 });
 
+/**
+ * Add WebSocket contextual cookies resolution to request cookies.
+ */
 export const patchCookies = definePatchStep({
   title: 'Add WebSocket contextual cookies resolution to request cookies',
   path: 'next:dist/client/components/headers.js',

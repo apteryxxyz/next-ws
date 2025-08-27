@@ -12,6 +12,10 @@ import {
   useWebSocketServer,
 } from './persistent.js';
 
+/**
+ * Attach the WebSocket server to the HTTP server.
+ * @param nextServer Next.js Node server instance
+ */
 export function setupWebSocketServer(nextServer: NextNodeServer) {
   const httpServer = //
     // @ts-expect-error - serverOptions is protected
@@ -26,9 +30,9 @@ export function setupWebSocketServer(nextServer: NextNodeServer) {
   logger.ready('[next-ws] has started the WebSocket server');
 
   // Prevent double-attaching
-  const kInstalled = Symbol.for('next-ws.http-server.attached');
-  if (Reflect.has(httpServer, kInstalled)) return;
-  Reflect.set(httpServer, kInstalled, true);
+  const kAttached = Symbol.for('next-ws.http-server.attached');
+  if (Reflect.has(httpServer, kAttached)) return;
+  Reflect.set(httpServer, kAttached, true);
 
   httpServer.on('upgrade', async (message, socket, head) => {
     const request = toNextRequest(message);
