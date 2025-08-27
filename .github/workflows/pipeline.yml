@@ -69,11 +69,10 @@ jobs:
       - name: Setup Node.js
         uses: ./.github/actions/node
 
-      - name: Install playwright browsers
-        run: pnpm playwright install --with-deps
-
       - name: Run tests
-        run: pnpm test
+        uses: docker://mcr.microsoft.com/playwright:v1.55.0-jammy
+        with:
+          args: npx playwright test
 
       - name: Upload test outputs
         if: failure()
