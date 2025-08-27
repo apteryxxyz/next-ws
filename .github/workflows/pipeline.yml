@@ -125,14 +125,7 @@ jobs:
     steps:
       - name: Deprecate beta versions
         run: |
-          package=$(curl -s "https://registry.npmjs.org/next-ws")
-          versions=$(echo "$package" | jq -r '.versions | to_entries | map(select(.value.deprecated | not)) | map(.key)')
-          beta_versions=$(echo "$versions" | jq -r '.[] | select(test("beta"))')
-          for version in $beta_versions; do
-            sleep 5
-            echo "Deprecating next-ws@$version"
-            npm deprecate next-ws@$version "This beta version has been merged into the latest release. Please upgrade to the latest version."
-          done
+          pnpm npm-deprecate --name "*beta*" --message "This beta version has been merged into the latest release. Please upgrade to the latest version."
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
