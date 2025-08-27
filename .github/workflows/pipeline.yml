@@ -123,6 +123,12 @@ jobs:
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.process.outputs.published == 'true' }}
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: ./.github/actions/node
+
       - name: Deprecate beta versions
         run: |
           pnpm npm-deprecate --name "*beta*" --message "This beta version has been merged into the latest release. Please upgrade to the latest version."
