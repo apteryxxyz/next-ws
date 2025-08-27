@@ -1,6 +1,9 @@
-import { AsyncLocalStorage } from 'node:async_hooks';
+import type { AsyncLocalStorage } from 'node:async_hooks';
 import { RequestCookies } from 'next/dist/compiled/@edge-runtime/cookies';
 
+/**
+ * Readonly {@link Headers} implementation.
+ */
 class ReadonlyHeaders extends Headers {
   override append(): never {
     throw new Error('Headers are read-only');
@@ -15,6 +18,9 @@ class ReadonlyHeaders extends Headers {
   }
 }
 
+/**
+ * Readonly {@link RequestCookies} implementation.
+ */
 class ReadonlyRequestsCookies extends RequestCookies {
   override set(): never {
     throw new Error('Cookies are read-only');
@@ -30,7 +36,12 @@ export interface RequestStore {
   readonly cookies: ReadonlyRequestsCookies;
 }
 
-export function createRequestStore(request: Request) {
+/**
+ * Create a new request store.
+ * @param request {@link Request} instance
+ * @returns A {@link RequestStore} object
+ */
+export function createRequestStore(request: Request): RequestStore {
   return {
     headers: new ReadonlyHeaders(request.headers),
     cookies: new ReadonlyRequestsCookies(request.headers),
@@ -38,5 +49,3 @@ export function createRequestStore(request: Request) {
 }
 
 export type RequestStorage = AsyncLocalStorage<RequestStore>;
-
-export const requestStorage = new AsyncLocalStorage<RequestStore>();
