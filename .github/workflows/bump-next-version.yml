@@ -70,6 +70,7 @@ jobs:
           next_version="${{ needs.check-next-version.outputs.next_version }}"
           echo "Updating pnpm-workspace.yaml catalog to $next_version"
           sed -i "s/next: .*/next: \"$next_version\"/" "pnpm-workspace.yaml"
+          pnpm i
 
       - name: Bump supported range
         run: |
