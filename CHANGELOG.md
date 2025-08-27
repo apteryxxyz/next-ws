@@ -1,5 +1,12 @@
 # next-ws
 
+## 2.1.1
+
+### Patch Changes
+
+- fde9dc7: Bump patch supported range to 15.5.1
+- e318e37: Bump patch supported range to 15.5.2
+
 ## 2.1.0
 
 ### Minor Changes
