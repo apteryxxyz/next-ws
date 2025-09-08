@@ -69,6 +69,30 @@ export const patchRouterServer = definePatchStep({
 });
 
 /**
+ * Add UPGRADE as allowed route HTTP method.
+ */
+export const patchNextTypesPlugin = definePatchStep({
+  title: 'Add UPGRADE as allowed export from route modules',
+  path: 'next:dist/build/webpack/plugins/next-types-plugin/index.js',
+  async transform(code) {
+    return $(code)
+      .find($.MemberExpression, {
+        property: { name: 'HTTP_METHODS' },
+      })
+      .at(0)
+      .replaceWith((path) => {
+        if (path.parent.value.type === 'SpreadElement') return path.node;
+        return $.arrayExpression([
+          $.spreadElement(path.node),
+          $.literal('UPGRADE'),
+          $.literal('SOCKET'),
+        ]);
+      })
+      .toSource();
+  },
+});
+
+/**
  * Add WebSocket contextual headers resolution to request headers.
  */
 export const patchHeaders = definePatchStep({
@@ -139,5 +163,11 @@ export const patchCookies = definePatchStep({
 export default definePatch({
   name: 'patch-1',
   versions: '>=13.5.1 <=14.2.32',
-  steps: [patchNextNodeServer, patchRouterServer, patchHeaders, patchCookies],
+  steps: [
+    patchNextNodeServer,
+    patchNextTypesPlugin,
+    patchRouterServer,
+    patchHeaders,
+    patchCookies,
+  ],
 });

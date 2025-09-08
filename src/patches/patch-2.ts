@@ -3,6 +3,7 @@ import {
   patchCookies as p1_patchCookies,
   patchHeaders as p1_patchHeaders,
   patchNextNodeServer as p1_patchNextNodeServer,
+  patchNextTypesPlugin as p1_patchNextTypesPlugin,
   patchRouterServer as p1_patchRouterServer,
 } from './patch-1.js';
 
@@ -24,6 +25,7 @@ export default definePatch({
   steps: [
     p1_patchNextNodeServer,
     p1_patchRouterServer,
+    p1_patchNextTypesPlugin,
     patchHeaders,
     patchCookies,
   ],
