@@ -1,5 +1,11 @@
 # next-ws
 
+## 2.1.2
+
+### Patch Changes
+
+- 5624dda: Add patch step to allow UPGRADE exports from route modules
+
 ## 2.1.1
 
 ### Patch Changes
