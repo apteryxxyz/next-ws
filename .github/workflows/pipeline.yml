@@ -131,7 +131,7 @@ jobs:
 
       - name: Deprecate beta versions
         run: |
-          pnpm npm-deprecate --package next-ws --name "*beta*" --message "This beta version has been merged into the latest release. Please upgrade to the latest version."
+          pnpm npm-deprecate --package next-ws --name "*beta*" --deprecate-dist-tag --message "This beta version has been merged into the latest release. Please upgrade to the latest version."
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
