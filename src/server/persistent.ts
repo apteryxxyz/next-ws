@@ -96,7 +96,7 @@ export {
 // ===== Adapter ===== //
 
 const [getAdapter, setAdapter, useAdapter] = //
-  useGlobal<import('../adapters/adapter').Adapter | undefined>(
+  useGlobal<import('./helpers/adapter').Adapter | undefined>(
     Symbol.for('next-ws.adapter'), //
   );
 
