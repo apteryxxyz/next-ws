@@ -2,7 +2,7 @@ import { AsyncLocalStorage } from 'node:async_hooks';
 import * as logger from 'next/dist/build/output/log.js';
 import type NextNodeServer from 'next/dist/server/next-server.js';
 import { WebSocketServer } from 'ws';
-import type { Adapter } from '../adapters/adapter.js';
+import type { Adapter } from './helpers/adapter.js';
 import { findMatchingRoute } from './helpers/match.js';
 import { importRouteModule } from './helpers/module.js';
 import { toNextRequest } from './helpers/request.js';
