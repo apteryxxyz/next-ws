@@ -1,5 +1,12 @@
 # next-ws
 
+## 2.1.6
+
+### Patch Changes
+
+- 782a2d6: Bump patch supported range to 16.0.0
+- ecddf0b: Bump patch supported range to 16.0.1
+
 ## 2.1.5
 
 ### Patch Changes
