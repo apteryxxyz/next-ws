@@ -66,11 +66,15 @@ test.describe('Redis Adapter Multi-Instance', () => {
 
   test.afterAll(async () => {
     if (instance1) {
-      instance1.kill('SIGTERM');
+      try {
+        instance1.kill('SIGTERM');
+      } catch {}
       await waitForProcessExit(instance1);
     }
     if (instance2) {
-      instance2.kill('SIGTERM');
+      try {
+        instance2.kill('SIGTERM');
+      } catch {}
       await waitForProcessExit(instance2);
     }
   });
@@ -257,12 +261,18 @@ async function waitForProcessExit(
   timeout = 5000,
 ): Promise<void> {
   return new Promise((resolve) => {
+    // Already exited
+    if (proc.exitCode !== null || proc.signalCode) return resolve();
+
     const timer = setTimeout(() => {
-      proc.kill('SIGKILL');
+      try {
+        // Only attempt if still running
+        if (proc.exitCode === null && !proc.killed) proc.kill('SIGKILL');
+      } catch {}
       resolve();
     }, timeout);
 
-    proc.on('exit', () => {
+    proc.once('exit', () => {
       clearTimeout(timer);
       resolve();
     });

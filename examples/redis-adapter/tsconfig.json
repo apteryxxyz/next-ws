@@ -48,7 +48,6 @@
 
     "jsx": "preserve",
     "outDir": "./dist",
-    "paths": { "~/*": ["./src/*"] },
 
     "plugins": [{ "name": "next" }],
     "incremental": true

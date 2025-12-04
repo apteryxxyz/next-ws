@@ -1,7 +1,7 @@
 import { AsyncLocalStorage } from 'node:async_hooks';
 import * as logger from 'next/dist/build/output/log.js';
 import type NextNodeServer from 'next/dist/server/next-server.js';
-import { WebSocketServer } from 'ws';
+import { WebSocketServer, WebSocket } from 'ws';
 import type { Adapter } from './helpers/adapter.js';
 import { findMatchingRoute } from './helpers/match.js';
 import { importRouteModule } from './helpers/module.js';
@@ -97,7 +97,7 @@ export function setupWebSocketServer(
             if (!clients) return;
 
             for (const localClient of clients) {
-              if (localClient.readyState === localClient.OPEN) {
+              if (localClient.readyState === WebSocket.OPEN) {
                 localClient.send(
                   typeof message === 'string'
                     ? message
